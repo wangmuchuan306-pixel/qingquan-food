@@ -1,0 +1,502 @@
+/* pages/reward/receivereward.wxss */
+/* pages/reward/reward.wxss */
+page {
+  background: #eeeeee;
+  width: 100%;
+  height: 100%;
+}
+
+.header {
+  width: 100%;
+  height: 200rpx;
+  /* border: 2rpx solid red; */
+  display: flex;
+  align-items: center;
+  text-align: center;
+  flex-direction: column;
+  padding: 30rpx 0;
+}
+.yestext{
+  font-size: 30rpx;
+  color: #000;
+  font-weight: bold;
+}
+.yes{
+  width: 100%;
+  font-size: 60rpx;
+  color: #f60;
+  padding: 30rpx 0;
+}
+.jsMoney {
+  /* width: 176rpx; */
+  height: 38rpx;
+  line-height: 40rpx;
+  /* padding: 0 5rpx; */
+  vertical-align: middle;
+  border: 2rpx solid #015637;
+  border-radius: 10rpx;
+  padding-left: 10rpx;
+  padding-right: 10rpx;
+  /* overflow: hidden;
+	text-overflow: ellipsis; */
+}
+
+.shopping {
+  width: 650rpx;
+  height: 94rpx;
+  margin-left: 50rpx;
+  border-radius: 47rpx;
+  line-height: 94rpx;
+  text-align: center;
+  margin-top: 30rpx;
+  color: #015637;
+  /* background: #015637; */
+  border: 2rpx solid #015637;
+}
+
+.touxiang {
+  width: 160rpx;
+  height: 160rpx;
+  /* background: red; */
+  border-radius: 50%;
+}
+
+.jishi {
+  width: 100%;
+  font-size: 24rpx;
+  color: #999;
+  margin: 60rpx auto;
+  text-align: center;
+}
+
+/* 开心收下部分 */
+.receive {
+  width: 650rpx;
+  height: 98rpx;
+  border-radius: 50rpx;
+  background: #015637;
+  margin-left: 50rpx;
+  font-size: 30rpx;
+  color: #fff;
+  line-height: 98rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.receive2 {
+  animation: scaleDrew 1.0s linear infinite;
+}
+
+@keyframes scaleDrew {
+
+  /* 定义关键帧、scaleDrew是需要绑定到选择器的关键帧名称 */
+  0%,
+  100% {
+    transform: scale(0.95);
+  }
+
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+/* 开心收下奖券部分 */
+.swbox {
+  position: fixed;
+  top: 0;
+  width: 750rpx;
+  height: 100rpx;
+  font-size: 30rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  z-index: 999;
+}
+
+.switem {
+  position: relative;
+  margin-left: 40rpx;
+  margin-right: 40rpx;
+  text-align: center;
+  line-height: 100rpx;
+}
+
+.select {
+  position: absolute;
+  bottom: 15rpx;
+  left: 50%;
+  transform: translate(-50%);
+  width: 60rpx;
+  height: 8rpx;
+  background: #015637;
+}
+
+.select1 {
+  color: #015637;
+  font-weight: 600;
+}
+
+.itembox {
+  /* height: 240rpx; */
+  width: 630rpx;
+  margin: 30rpx;
+  padding: 30rpx;
+  background: #fff;
+  padding-bottom: 30rpx;
+  border-radius: 30rpx;
+}
+
+.jackitem {
+  display: flex;
+  align-items: center
+}
+
+
+
+.jackbt2 {
+  font-size: 24rpx;
+  color: #999999;
+  padding-top: 10rpx
+}
+
+.jackbt3 {
+  font-size: 24rpx;
+  color: #015637;
+  padding-top: 10rpx
+}
+
+
+
+.twoitem {
+  border-top: 1rpx solid #eeeeee;
+  margin-top: 30rpx;
+  padding-top: 30rpx;
+  width: 630rpx;
+  display: flex
+}
+
+.cla1 {
+  width: 270rpx;
+  height: 60rpx;
+  border: 2rpx solid #015637;
+  border-radius: 30rpx;
+  box-sizing: border-box;
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #015637;
+  text-align: center;
+  line-height: 60rpx;
+}
+
+.cla2 {
+  width: 128rpx;
+  height: 60rpx;
+  border-radius: 30rpx;
+  background: #015637;
+  box-sizing: border-box;
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #fff;
+  text-align: center;
+  line-height: 60rpx;
+  margin-left: 32rpx
+}
+
+.all {
+  width: 690rpx;
+  margin: 30rpx;
+  position: relative;
+  /* margin-top: 130rpx; */
+}
+
+.switem {
+  position: relative;
+  margin-left: 40rpx;
+  margin-right: 40rpx;
+  text-align: center;
+  line-height: 100rpx;
+}
+
+.select {
+  position: absolute;
+  bottom: 15rpx;
+  left: 50%;
+  transform: translate(-50%);
+  width: 60rpx;
+  height: 8rpx;
+  background: #015637;
+}
+
+.timer {
+  color: #999;
+  margin-bottom: 10rpx;
+  white-space: nowrap;
+}
+
+.time {
+  /* width: 230rpx; */
+  width: 100%;
+  white-space: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}
+
+.jindu {
+  width: 300rpx;
+  height: 70rpx;
+  margin-top: 50rpx;
+  /* margin-left: 30rpx; */
+  text-align: left;
+  margin-left: 30rpx;
+  font-size: 26rpx;
+
+}
+
+.btn {
+  width: 168rpx;
+  height: 60rpx;
+  border-radius: 30rpx;
+  /* background: #015637; */
+  color: #015637;
+  border: 2rpx solid #015637;
+  text-align: center;
+  line-height: 60rpx;
+  margin-top: 55rpx;
+  font-size: 30rpx;
+  margin-right: 30rpx;
+  /* color: #fff; */
+}
+
+.btn1 {
+  width: 168rpx;
+  height: 60rpx;
+  border-radius: 30rpx;
+  background: #cccccc;
+  font-size: 28rpx;
+
+  color: #fff;
+  /* border: 1rpx solid #015637; */
+  text-align: center;
+  line-height: 60rpx;
+  margin-top: 55rpx;
+  margin-right: 30rpx;
+  /* color: #fff; */
+}
+
+.btn2 {
+  width: 168rpx;
+  height: 60rpx;
+  border-radius: 30rpx;
+  background: #ffffff;
+  color: #015637;
+  border: 2rpx solid #015637;
+  text-align: center;
+  line-height: 60rpx;
+  margin-top: 55rpx;
+  margin-right: 20rpx;
+  font-size: 30rpx;
+  /* color: #fff; */
+}
+
+.btn3 {
+  width: 150rpx;
+  height: 60rpx;
+  font-size: 26rpx;
+  /* border: 2rpx solid #cccccc; */
+  border-radius: 30rpx;
+  color: #fff;
+  /* border: 1rpx solid #015637; */
+  text-align: center;
+  line-height: 60rpx;
+  margin-top: 55rpx;
+  margin-right: 20rpx;
+  /* color: #fff; */
+}
+
+.select1 {
+  color: #015637;
+  font-weight: 600;
+}
+
+/* .footer {
+	text-align: center;
+	margin-top: 30rpx;
+	padding-bottom: 300rpx;
+}
+
+.footer image {
+	width: 340rpx;
+	height: 340rpx;
+	border-radius: 50%;
+} */
+
+.itembox {
+  /* height: 240rpx; */
+  width: 630rpx;
+  margin: 30rpx;
+  padding: 30rpx;
+  background: #fff;
+  padding-bottom: 30rpx;
+  border-radius: 30rpx;
+}
+
+.jackitem {
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding: 30rpx 0rpx 0 30rpx;
+  background: #fff;
+  width: 660rpx;
+  border-radius: 30rpx 30rpx 0 0;
+  position: relative;
+
+}
+
+.shangjia {
+  width: 340rpx;
+  height: 40rpx;
+  line-height: 40rpx;
+  overflow: hidden;
+  white-space: nowrap;
+  display: flex;
+  /* display: block; */
+  flex-direction: row;
+  text-overflow: ellipsis;
+  align-items: center;
+}
+
+.name2 {
+  max-width: 340rpx;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.name {
+  /* width: 240rpx; */
+  max-width: 240rpx;
+  /* display: inline-block; */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  height: 40rpx;
+}
+
+
+.name1 {
+  width: 60rpx;
+  height: 40rpx;
+
+  /* display: inline-block; */
+}
+
+.guoqi {
+  color: #015637;
+  font-size: 22rpx;
+  padding-bottom: 20rpx;
+}
+
+.jackbt1 {
+
+  font-size: 30rpx;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  /* font-weight: bold; */
+  color: #333333;
+}
+
+.jackbt2 {
+  width: 340rpx;
+  font-size: 24rpx;
+  color: #015637;
+  /* background: #015637; */
+  /* padding: 0 10rpx; */
+  padding: 10rpx 0;
+  height: 44rpx;
+  line-height: 44rpx;
+  /* display: flex;
+	flex-direction: row; */
+  /* align-items: center; */
+  /* border-radius: 8rpx; */
+  /* margin-top: 10rpx; */
+  /* justify-content: space-between; */
+}
+
+.delPrice {
+  text-decoration: line-through;
+  color: #999;
+  margin-left: 10rpx;
+}
+
+.jackbt2Img {
+  /* width: 14rpx; */
+  height: 22rpx;
+}
+
+
+.jackbt4 {
+  font-size: 24rpx;
+  padding-top: 10rpx;
+  color: #333333;
+
+}
+
+.botLeft {
+  display: flex;
+  flex-direction: row;
+  width: 464rpx;
+  justify-content: space-between;
+  margin-top: 20rpx;
+  font-size: 24rpx;
+  color: #999;
+}
+
+
+
+.bot {
+  width: 690rpx;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 140rpx;
+  /* align-items: center; */
+  text-align: right;
+  /* border: 1px solid red; */
+  position: relative;
+  padding-bottom: 10rpx;
+  /* background: rgba(0,0,0,.5); */
+
+}
+
+.box_shadow {
+  width: 240rpx;
+  height: 240rpx;
+  border-radius: 34rpx;
+  position: absolute;
+  top: 0;
+  left: 0;
+  text-align: center;
+  background: rgba(0, 0, 0, .5);
+
+  line-height: 240rpx;
+  align-items: center;
+  z-index: 999;
+
+}
+
+.footer {
+  text-align: center;
+  margin-top: 60rpx;
+  opacity: .5;
+  padding-bottom: 300rpx;
+}
+
+.footer image {
+  width: 340rpx;
+}

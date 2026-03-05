@@ -1,0 +1,46 @@
+#page {
+  background-color: #f8f8f8;
+}
+page{
+  background-color: #f8f8f8;
+}
+.btmbtn{
+  width: 630rpx;
+  height: 100rpx;
+  border-radius: 20rpx;
+  margin: 30rpx;
+  background-color: #015637;
+  font-size: 30rpx;
+  font-weight: bold;
+  text-align: center;
+  line-height: 100rpx;
+  color: white;
+}
+.titlebox{
+  /* width: 25%; */
+  text-align: center;
+  /* height: 100rpx;
+  line-height: 100rpx; */
+  font-size: 30rpx;
+}
+
+.instruction {
+  text-align: center;
+  font-size: 34rpx;
+  color: #015637;
+  opacity: 0.6;
+  padding-bottom: 200rpx;
+}
+
+.goCDK {
+  width: 690rpx;
+  height: 100rpx;
+  line-height: 100rpx;
+  text-align: center;
+  font-size: 30rpx;
+  color: #fff;
+  background: #015637;
+  /* margin-left: 30rpx; */
+  border-radius: 30rpx;
+  margin: 30rpx;
+}

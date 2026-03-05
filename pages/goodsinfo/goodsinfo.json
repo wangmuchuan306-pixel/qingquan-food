@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "van-popup": "@vant/weapp/popup/index",
+    "van-notice-bar": "@vant/weapp/notice-bar/index",
+    "mp-html": "mp-html"
+  },
+  "navigationStyle": "custom"
+}

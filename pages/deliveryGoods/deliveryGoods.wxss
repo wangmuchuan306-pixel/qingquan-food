@@ -1,0 +1,102 @@
+/* pages/preparegoods/preparegoods.wxss */
+page{
+  background-color: #f8f8f8;
+}
+.btitlebox{
+  width: 50%;
+  text-align: center;
+  font-size: 30rpx;
+  font-weight: bold;
+  line-height: 80rpx;
+  border-bottom: 4rpx solid #000;
+  box-sizing: border-box;
+}
+.titlebox{
+  width: 50%;
+  text-align: center;
+  font-size: 30rpx;
+  line-height: 80rpx;
+  color: #999;
+}
+.excelbox{
+  width: 240rpx;
+  height: 100rpx;
+  text-align: center;
+  line-height: 96rpx;
+  border: 2rpx solid #015637;
+  box-sizing: border-box;
+  /* background-color: #015637; */
+  margin: 30rpx;
+  border-radius: 20rpx;
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #015637;
+}
+.goodstitle{
+  overflow:hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 1;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  width: 200rpx;
+  font-size: 30rpx;
+}
+.istitle{
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #015637;
+  border-bottom: 10rpx solid #015637;
+  margin-right: 30rpx;
+}
+.titletext{
+  font-size: 36rpx;
+  margin-right: 30rpx;
+}
+.deliverybox{
+  width: 120rpx;
+  height: 60rpx;
+  border-radius: 30rpx;
+  background-color: #015637;
+  text-align: center;
+  line-height: 60rpx;
+  font-size: 30rpx;
+  font-weight: bold;
+  color: white;
+}
+.alldelivery{
+  width: 360rpx;
+  height: 100rpx;
+  border-radius: 20rpx;
+  font-size: 30rpx;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+  line-height: 100rpx;
+  background-color: #ccc;
+}
+.csbtn{
+  width: 690rpx;
+  height: 100rpx;
+  border-radius: 20rpx;
+  font-size: 30rpx;
+  color: #fff;
+  text-align: center;
+  line-height: 100rpx;
+  margin: 30rpx;
+  margin-top: 80rpx;
+}
+.none{
+  text-align: center;
+}
+.dbox{
+  width: 690rpx;
+  height: 100rpx;
+  border-radius: 20rpx;
+  font-size: 30rpx;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+  line-height: 100rpx;
+  background-color: #015637;
+  margin: 30rpx;
+}

@@ -1,0 +1,16 @@
+{
+  "usingComponents": {
+    "painter":"/component/painter/painter",
+    "van-notice-bar": "@vant/weapp/notice-bar/index",
+    "me-waterfall": "me-waterfall/waterfall/index",
+    "me-waterfall-item": "me-waterfall/waterfall-item/index",
+    "grid-tile": "/component/grid-tile/index",
+    "naviBar": "/component/naviBar/naviBar",
+    "goodslist": "/component/goodslist/goodslist"
+  },
+  "backgroundColorBottom": "#f8f8f8",
+  "backgroundColorTop": "#015637",
+  "navigationBarTextStyle":"white",
+  "navigationBarBackgroundColor": "#005832",
+  "navigationStyle": "custom"
+}

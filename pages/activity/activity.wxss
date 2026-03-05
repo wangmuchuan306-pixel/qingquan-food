@@ -1,0 +1,101 @@
+/* pages/activity/activity.wxss */
+.activity_box{
+  width: 100%;
+  padding: 30rpx;
+  background-color: #fff;
+  border-radius: 20rpx;
+  box-sizing: border-box;
+  margin-bottom: 30rpx;
+}
+
+.title{
+  font-size: 36rpx;
+  color: #000;
+  font-weight: bold;
+  width: 100%;
+}
+.desc{
+  font-size: 26rpx;
+  color: #999;
+  margin-top: 20rpx;
+}
+.tiem{
+  font-size: 26rpx;
+  color: #333;
+  margin-top: 20rpx;
+}
+
+.goods_box{
+  padding: 30rpx 0;
+  width: 100%;
+  border-bottom: 2rpx solid #eee;
+  height: 360rpx;
+}
+.activity_img{
+  width: 100%;
+  height: 360rpx;
+  border-radius: 20rpx;
+  background-color: #999;
+}
+.activity_type{
+  width: 130rpx;
+  height: 40rpx;
+  color: #fff;
+  font-size: 20rpx;
+  background-color: rgba(0, 0, 0, 0.4);
+  border-radius: 20rpx;
+  text-align: center;
+  line-height: 40rpx;
+  position: absolute;
+  top: 10rpx;
+  left: 10rpx;
+}
+
+.goods{
+  width: 100%;
+}
+
+.goods_img{
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 20rpx;
+  background-color: #999;
+  margin-right: 20rpx;
+}
+.f26_c000{
+  font-size: 26rpx;
+  color: #000;
+  width: 100%;
+}
+.f26_c005832_b{
+  font-size: 26rpx;
+  color: #005832;
+  font-weight: bold;
+}
+.f24_c999_tdlt{
+  font-size: 24rpx;
+  color: #999;
+  margin-left: 10rpx;
+  font-weight: normal;
+  text-decoration: line-through;
+}
+.but1{
+  width: 130rpx;
+  height: 60rpx;
+  border-radius: 30rpx;
+  border: 2rpx solid #005832;
+  box-sizing: border-box;
+  font-size: 24rpx;
+  color: #005832;
+  position: relative;
+}
+.but2{
+  width: 140rpx;
+  height: 60rpx;
+  border-radius: 30rpx;
+  box-sizing: border-box;
+  font-size: 24rpx;
+  color: #fff;
+  background-color: #005832;
+  margin-left: 30rpx;
+}

@@ -1,0 +1,75 @@
+// 总背景色
+$bg-color: (light: #f8f8f8,
+  dark: #0f0c1a);
+// 纯白背景色
+$white-color:(light: #fff,
+  dark: #1C1926);
+// 商品背景
+$sp-bgcolor:(light:#fff,
+  dark:#1a1927);
+// 输入框背景色
+$inputbg-color: (light: #eee,
+  dark: #1C1A28);
+// 文字颜色
+$text-color:(light:#000,
+  dark:#fff);
+// 渐变文字颜色
+$jb-color:(light:#fff,
+  dark:linear-gradient(to left, rgba(33, 28, 38, 1), rgba(33, 28, 38, 0.8)));
+// 轮播文字颜色
+$swiper-color:(light:#000,
+  dark:#999);
+// 签到文字
+$qd-color:(light:#000,
+  dark:#f60);
+$text1-color:(
+  light:#999,
+  dark:#ccc
+);
+// 上边框颜色
+$border-tcolor:(
+  light:2rpx solid #eee,
+  dark:2rpx solid #1A1D28
+);
+$footer-color:(
+  light:#fff,
+  dark:linear-gradient(to top, #0E0C1A, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0))
+);
+// 混淆控制器
+@mixin themify($key, $valueMap) {
+  &[data-theme='light'] {
+    #{$key}: map-get($valueMap, 'light');
+  }
+
+  &[data-theme='dark'] {
+    #{$key}: map-get($valueMap, 'dark');
+  }
+}
+
+// 设置样式开始
+#page {
+  @include themify('background-color', $bg-color);
+  @include themify('color', $text-color);
+}
+
+.instruction{
+	text-align: center;
+	font-size: 34rpx;
+	color: #FF6600;
+	opacity: 0.6;
+	padding-bottom: 200rpx;
+}
+.goCDK{
+	position:fixed;
+	bottom: 50rpx;
+	left: 30rpx;
+	width: 690rpx;
+	height: 98rpx;
+	line-height: 98rpx;
+	text-align: center;
+	font-size: 30rpx;
+	color: #fff;
+	background: #f60;
+	/* margin-left: 30rpx; */
+	border-radius: 30rpx;
+}

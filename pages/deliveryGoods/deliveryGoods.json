@@ -1,0 +1,9 @@
+{
+  "usingComponents": {},
+  "navigationBarTitleText": "待发货清单",
+  "navigationBarBackgroundColor": "#ffffff",
+  "navigationBarTextStyle": "black",
+  "backgroundColor": "#f8f8f8",
+  "backgroundColorTop": "#f8f8f8",
+  "backgroundColorBottom": "#f8f8f8"
+}

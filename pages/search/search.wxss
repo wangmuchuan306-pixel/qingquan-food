@@ -1,0 +1,115 @@
+/* pages/search/search.wxss */
+.goodsFor {
+  background-color: #fff;
+  width: 690rpx;
+  padding: 30rpx;
+  box-sizing: border-box;
+  border-radius: 20rpx;
+}
+
+.recView {
+  text-align: center;
+  font-size: 30rpx;
+  margin-right: 50rpx;
+}
+
+.recView_atc {
+  text-align: center;
+  font-size: 34rpx;
+  font-weight: bold;
+  margin-right: 50rpx;
+}
+
+.waterfallitem {
+  width: 335rpx;
+  height: auto;
+}
+
+.goodsView {
+  min-height: 60vh;
+  width: 100%;
+}
+
+.topbox {
+  width: 100%;
+  background-color: var(--theme-color);
+  text-align: center;
+  padding-bottom: 20rpx;
+  font-size: 30rpx;
+  z-index: 999;
+  position: fixed;
+  color: #fff;
+  top: 0;
+}
+
+.hbox {
+  /* width: 140rpx; */
+  height: 50rpx;
+  padding: 0 10rpx;
+  background-color: #eee;
+  font-size: 26rpx;
+  text-align: center;
+  line-height: 50rpx;
+  margin-right: 20rpx;
+  border-radius: 10rpx;
+}
+
+.goodsImage {
+  width: 220rpx;
+  height: 220rpx;
+  border-radius: 20rpx;
+  background-color: #f8f8f8;
+  margin-right: 30rpx;
+}
+
+.goodsDetails {
+  width: 440rpx;
+  height: auto;
+}
+
+.goodsH1 {
+  font-size: 32rpx;
+  color: #333;
+  font-weight: bold;
+}
+
+.goodsH2 {
+  font-size: 26rpx;
+  color: #999;
+  margin-top: 16rpx;
+}
+
+.goodsLabel {
+  margin: 16rpx 0rpx;
+}
+
+.goodsLabel view {
+  width: auto;
+  height: auto;
+  border-radius: 10rpx;
+  font-size: 26rpx;
+  text-align: center;
+  padding: 4rpx 12rpx;
+}
+
+.goodsLabel1 {
+  background-color: #eee;
+  color: #333;
+  margin-right: 10rpx;
+}
+
+.goodsLabel2 {
+  background-color: #ffccd5;
+  color: #005832;
+}
+
+.goodsH3 text {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #005832;
+}
+
+.SurvivalOrDeath image {
+  width: 36rpx;
+  height: 36rpx;
+}

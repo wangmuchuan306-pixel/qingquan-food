@@ -1,0 +1,25 @@
+<view class="commodityItem" bindtouchstart="handleTouchStart" bindtouchmove="handleTouchMove" style="transform:translateX({{-rightSpace}}px)">
+	<view class="selectedBtn" bindtap="handleSelect" data-is-selected="{{commodity.isselected}}">
+		<view class="noSelected" wx:if="{{commodity.isselected==0}}"></view>
+		<image class="selectedImg" wx:else src="https://usd.0315678.cn/Public/summer/tongg.png"></image>
+	</view>
+	<view class="commodityInfo">
+		<view class="commodityImg" bindtap='goGoodsInfo' data-gid='{{commodity.goods._id}}'>
+			<image-loader  default-image='{{url}}/summer/noimg.png' original-image='{{commodity.goods.coverimg}}' mode="aspectFill"  />
+		</view>
+		<view class="commodityTitle">
+			<view class="title">{{commodity.goods.title}}{{commodity.goods.subtitle}}</view>
+			<view class="standard">已选：{{commodity.full_sku_id?commodity.sku_info.sku_desc:'无'}} x{{commodity.num}}</view>
+			<view class="count">
+				<view class="price">￥{{commodity.gprice}}</view>
+				<view class="commodityNum">
+					<i-input-number value="{{commodity.num}}" min="1" max="{{commodity.maxnum}}" bindchange="numChange" />
+				</view>
+			</view>
+		</view>
+	</view>
+	<view class="deleteBtn" bindtap="deletethis">
+		<image class="deleteImg" src="https://usd.0315678.cn/Public/summer/del.png"></image>
+		<text class="deleteText">删除</text>
+	</view>
+</view>

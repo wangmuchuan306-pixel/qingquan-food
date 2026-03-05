@@ -1,0 +1,62 @@
+/* pages/goodslist/goodslist.wxss */
+page{
+  background-color: #fff;
+}
+.leftbox {
+  width: 200rpx;
+  background-color: #eee;
+  padding-bottom: 30rpx;
+}
+
+.thiscate {
+  width: 140rpx;
+  height: 60rpx;
+  text-align: center;
+  line-height: 60rpx;
+  border-radius: 20rpx;
+  margin: 30rpx;
+  background-color: #f60;
+  font-size: 26rpx;
+  font-weight: bold;
+  color: white;
+}
+.thiscate:last-child{
+  margin-bottom: 0;
+}
+
+.catebox {
+  width: 140rpx;
+  height: 60rpx;
+  text-align: center;
+  line-height: 60rpx;
+  border-radius: 20rpx;
+  margin: 30rpx;
+  font-size: 24rpx;
+}
+.catebox{
+  margin-bottom: 0;
+}
+
+.goodsbox {
+  width: 550rpx;
+  margin: 30rpx;
+  background-color: white;
+  border-radius: 20rpx;
+  display: flex;
+  align-items: center;
+  padding-bottom: 30rpx;
+  border-bottom: 2rpx solid #eee;
+}
+.goodsbox:last-child{
+  border: none;
+}
+
+.smalltext {
+  font-size: 24rpx;
+  color: #999;
+  overflow:hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+}

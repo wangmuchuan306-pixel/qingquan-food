@@ -1,0 +1,15 @@
+/* pages/jianjie/jianjie.wxss */
+page{
+  background: #fff;
+}
+.tuijian_main{
+  color: #333;
+  font-size: 34rpx;
+  padding: 30rpx;
+}
+.tuijian_main text,.tuijian_main view{
+  color: #333;
+}
+.tuijian_main image{
+  width: 100%;
+}

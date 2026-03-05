@@ -1,0 +1,53 @@
+<view class="scroll_box">
+    <view>
+        <slot name="head"></slot>
+    </view>
+    <scroll-view class="scroll_view" 
+    scroll-y="{{scrollY}}" 
+    bindscrolltolower="scrolltolower" 
+    bindrefresherrefresh="refresherrefresh" 
+    refresher-enabled="{{refresherEnabled && empty}}" 
+    refresher-triggered="{{refresh}}" 
+    bindrefresherrestore="refresherrestore" 
+    bindscroll="scroll" 
+    lower-threshold="2000"
+    scroll-top="{{scrollTop}}"
+    scroll-with-animation
+    enable-passive>
+
+        <!-- 下拉刷新动画 -->
+        <shauxin triggered="{{triggered}}" is="{{refreshType}}"></shauxin>
+
+        <!-- 内容插槽 -->
+        <slot name="body"></slot>
+
+        <!-- 加载动画 -->
+        <view hidden="{{!loading}}" class="loading_box">
+            <van-loading type="spinner" size="{{l_size}}px" color="{{l_color}}">
+                {{l_text}}
+            </van-loading>
+        </view>
+
+        <!-- 暂无更多 -->
+        <view hidden="{{!none}}" class="none_box" style="font-size: {{l_size}}px;color: {{l_color}};">
+            {{n_text}}
+        </view>
+
+    </scroll-view>
+
+    <view id="foot">
+        <slot name="foot"></slot>
+    </view>
+</view>
+<view wx:if="{{page_loading}}" class="page_loading">
+    <shauxin triggered="{{triggered}}" is="fangLogo" class="fangLogo"></shauxin>
+</view>
+
+<!-- 
+setTimeout(() => {
+    that.setData({
+        refresh: false,
+        loading: false,
+    })
+}, 500)
+ -->

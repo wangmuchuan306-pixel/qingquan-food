@@ -1,0 +1,100 @@
+/* pages/mypage/mypage.wxss */
+page {
+  background-color: #f8f8f8;
+  padding-bottom: 30rpx;
+}
+
+.gbox {
+  width: 180rpx;
+  height: 80rpx;
+  background-color: #005832;
+  border-radius: 20rpx;
+  text-align: center;
+  line-height: 80rpx;
+  font-size: 30rpx;
+  color: white;
+}
+
+.userColumn {
+  width: 690rpx;
+  height: auto;
+  padding: 30rpx;
+  box-sizing: border-box;
+  margin: 30rpx;
+  background-color: #fff;
+  border-radius: 20rpx;
+}
+
+.title1 {
+  font-size: 30rpx;
+  margin-bottom: 10rpx;
+}
+
+.title2 {
+  font-size: 22rpx;
+  color: #999;
+}
+
+.shengcheng {
+  width: 60vw;
+  position: fixed;
+  bottom: 32%;
+  left: 50%;
+  margin-left: -30vw;
+  z-index: 999;
+  background: #fff;
+  border-radius: 20rpx;
+}
+
+.contentList {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 40rpx 0;
+  border-bottom: 1px solid #eee;
+}
+
+.contentList:nth-last-of-type(1) {
+  border: 0;
+}
+
+.contentList>image {
+  width: 18rpx;
+  height: 24rpx;
+}
+
+.contentListLeft {
+  display: flex;
+  align-items: center;
+}
+
+.contentListLeft>view {
+  font-size: 30rpx;
+  padding-left: 20rpx;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.contentListLeft>image {
+  width: 30rpx;
+  height: 30rpx;
+}
+
+.content {
+  background-color: #fff;
+  border-radius: 16rpx;
+  padding: 0 30rpx;
+  width: 630rpx;
+  margin: 0 auto;
+  margin-top: 30rpx;
+}
+
+.content1 {
+  background-color: #fff;
+  border-radius: 16rpx;
+  padding: 30rpx;
+  width: 630rpx;
+  margin: 0 auto;
+  margin-top: 30rpx;
+}

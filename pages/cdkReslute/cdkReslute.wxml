@@ -1,0 +1,76 @@
+<!--pages/cdkReslute/cdkReslute.wxml-->
+<view>
+
+  <view class="itembox">
+    <!-- 结果图片 -->
+    <view class="flex1" style="width: 100%;">
+      <image src="/images/success_f60.png" style="width:200rpx;height:200rpx;" />
+    </view>
+    <view style="font-size: 30rpx;color: #000;margin:20rpx auto;text-align: center;">恭喜您成功兑换</view>
+    <view class="topimgbox">
+      <image wx:if="{{cdk_type !=4}}" src="{{goodsImg}}" style="width:160rpx;height:160rpx;border-radius:20rpx"></image>
+      <image wx:else src="{{url}}/xunbao/redbox.png" style="width:160rpx;height:160rpx;border-radius:20rpx"></image>
+
+    </view>
+    <!-- 扫码结果 -->
+    <!--   // cdk_type 1折扣券2现金券3免费奖品4红包-->
+    <view class="res1" wx:if="{{cdk_type ==4 }}">
+      成功兑换 <text style="color:#f60">￥{{money}} 现金红包</text>
+    </view>
+    <view class="res1" wx:if="{{cdk_type ==2}}">
+      成功兑换 <text style="color:#f60">￥{{used_amount}} 代金券</text>
+    </view>
+    <view class="res1" wx:if="{{cdk_type ==1}}">
+      成功兑换 <text style="color:#f60"> {{zhekou_num}}折 折扣券</text>
+    </view>
+    <view class="res1" wx:if="{{cdk_type ==3 }}">
+      <!-- 碉堡了~ <text style="color:#f60"> 免费奖品</text> 都被你抽中啦 -->
+      <view> 成功兑换 <text style="color:#f60">免费奖品</text></view>
+      <!-- <view class="mf" style="font-size:28rpx;">{{goods_name}}</view> -->
+    </view>
+    <view class="res2" style="color:#333" wx:if="{{cdk_type ==4}}">
+      <view style="font-size:26rpx;margin-top:20rpx">无门槛现金红包仅用于平台下单，不可提现 </view>
+      <view style="color:#f60;font-size:26rpx;margin:20rpx 0">已自动转存到您的账户余额</view>
+    </view>
+    <view class="res2" style="color:#333" wx:if="{{cdk_type!=4}}">
+      <view style="font-size:26rpx;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;margin-top:20rpx">
+        {{goods_name}}
+      </view>
+      <!-- <view style="color:#f60;font-size:26rpx;vertical-align:middle;"> <text>券后价</text> ￥{{qprice}} <text class="delPrice">
+          {{line_price}}</text> <text> / 共减 ￥{{reduce}}</text></view> -->
+    </view>
+    <view class="res2 " style="color:#333" wx:if="{{type==2}}">{{arr[1]}}</view>
+    <view class="res2" style="color:#333" wx:if="{{type==3}}">{{arr[0]}}</view>
+    <view class="res2" style="color:#333" wx:if="{{type==4}}">{{arr[3]}}</view>
+    <view wx:if="{{type==1}}">
+      <view class="quanBtn">
+        <view class="quanBtn1" wx:if="{{datainfo.treasure_type==4}}" bindtap="gohome">去{{procedure.wxname}}商城</view>
+        <!-- 现金券  禁用了 -->
+        <button wx:if="{{datainfo.treasure_type!=4}}" data-s="1" open-type="share" plain="true" style="border:1rpx solid #f60;margin:0;padding:0;width:300rpx;height:98rpx;color:#f60;border-radius:30rpx;font-size:30rpx;line-height:98rpx">转赠给好友</button>
+        <view class="quanBtn1" bindtap="back">返回重新扫码</view>
+      </view>
+      <view>
+        <view class="buybtn" bindtap="goyuE" wx:if="{{cdk_type==4}}">查看我的余额</view>
+        <view class="buybtn" bindtap="goJq" wx:else>查看奖券并兑奖</view>
+      </view>
+    </view>
+    <view wx:else>
+      <view class="quanBtn">
+        <view class="quanBtn1" bindtap="shouye">去{{procedure.wxname}}商城</view>
+        <view class="quanBtn1" bindtap="back">返回继续兑换</view>
+      </view>
+      <view class="buybtn" bindtap="goyuE" wx:if="{{cdk_type==4}}">查看我的余额</view>
+      <view class="buybtn" bindtap="jiangquan" wx:else>查看我的卡券</view>
+    </view>
+
+  </view>
+</view>
+<view class="guding">
+  <!-- <view class='footer1'>
+    <image src="{{url}}/summer/ysd.png?123" mode="widthFix"></image>
+  </view> -->
+  <view bindtap="phone" style="color:#ccc; font-size:22rpx;text-align:center;">
+    唐山共享科技有限公司提供技术支持
+  </view>
+  <!-- <view style="color:#ccc; font-size:22rpx;text-align:center;padding-bottom:100rpx;margin-top:20rpx;" bindtap="phone">客服电话:18833330416</view> -->
+</view>

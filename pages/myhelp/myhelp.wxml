@@ -1,0 +1,122 @@
+<!-- packageB/pages/myhelp/myhelp.wxml -->
+<image class="header" bindtap="goWebView" src="{{help_background}}">
+  <!-- <view class="guize2"></view> -->
+</image>
+<!-- <text class="guize" bindtap="goWebView">规则</text> -->
+<view class="main">
+  <image class="main_top" src="{{headimg}}" style="width: 160rpx;height: 160rpx;border-radius: 100%;" mode="aspectFill"/>
+  <!-- <image class="main_top" src=""></image> -->
+  <view class="main_top_myzl">{{!isThelp?'我的助力':'好友的助力'}}</view>
+  <view class="main_top_myzl2">
+    <view class="main_main">
+      <!-- //自己看到的助力页面 -->
+      <block wx:if="{{!isThelp}}">
+        <view class="main_main_top" wx:if="{{timeend&&!issuccess}}">
+          仅需
+          <text>{{neednum}}</text>
+          名好友帮忙助力
+        </view>
+        <view style="text-align: center;font-size: 24rpx;color:#333;margin-top: 20rpx;" wx:if="{{timeend&&!issuccess}}">
+          <text style="color:#015637">奖励</text>
+          {{integralNum}}积分
+          <text style="color:#015637" bindtap="gogoodsinfo"></text>
+        </view>
+        <view class="main_main_top" wx:if="{{ishelp&&!timeend&&!issuccess}}">时间到了，你差一点就集齐助力啦</view>
+        <view class="main_main_top" wx:if="{{issuccess}}">恭喜您已助力成功</view>
+        <!-- <view style="text-align: center;margin-top: 20rpx;color:#999;font-size: 24rpx;" wx:if="{{issuccess}}">
+        {{signset.coupon.title}}
+      </view> -->
+        <view class="main_main_top1" wx:if="{{ishelp&&timeend&&!issuccess}}">
+          <text class="main_main_top1_left">距离失效:</text>
+          <view class="main_main_top1_right">
+            {{endTimeArr.h}} : {{endTimeArr.m}} :
+            <text style="color:#015637;">{{endTimeArr.s}}</text>
+          </view>
+        </view>
+        <!-- <view class="main_main_top2" wx:if="{{issuccess}}" bindtap="goWallet">
+        <text>去余额查看</text>
+        <image src="{{url}}/summer/gdgd.png?{{veision}}"></image>
+      </view> -->
+        <view class="main_main_top2" wx:if="{{issuccess}}" bindtap="goWallet">
+          <text style="color:#333">已获得{{integralNum}}积分，</text>
+          <text bindtap="gocoupon">去我的积分查看</text>
+          <image src="/images/blackjiantou.png"></image>
+        </view>
+        <!-- <button wx:if="{{!issuccess&&timeend}}" open-type="share" class="main_main_btn" animation="{{animationDatas_dou}}">喊好友马上领津贴</button> -->
+        <!-- <button wx:if="{{!issuccess&&timeend}}" open-type="share" class="main_main_btn btn">喊好友马上领津贴</button> -->
+        <button wx:if="{{!issuccess&&timeend}}" class="main_main_btn btn" bindtap="chooseShare">
+          分享给好友帮我助力
+        </button>
+        <!-- <button wx:if="{{!issuccess&&timeend&&!isLogin}}" open-type="share" class="main_main_btn btn">登录后可发起领津贴</button> -->
+        <!-- <button wx:if="{{!issuccess&&!timeend}}" open-type="share" class="main_main_btn" animation="{{animationDatas_dou}}">再来一轮我还要领津贴</button> -->
+        <!-- <button wx:if="{{!issuccess&&!timeend}}" open-type="share" class="main_main_btn btn">再来一轮我还要领津贴</button> -->
+        <button wx:if="{{ishelp&&!issuccess&&!timeend}}" class="main_main_btn" style="background:#CECECE;">
+          次数已用完，明天再来吧
+        </button>
+        <view class="main_main_btn" style="background:#CECECE;" wx:if="{{issuccess}}">
+          助力已完成，明天再来吧
+        </view>
+      </block>
+      <!-- 帮助别人助力 -->
+      <block wx:if="{{isThelp}}">
+        <!-- <view class="over" wx:if="{{isself}}">{{issuccess?'TA已完成助力啦':'已经帮他助力啦！'}}</view>
+      <view class="over" wx:if="{{!isself&&issuccess}}">TA已完成助力啦</view> -->
+        <view class="over" wx:if="{{iscantext}}">{{iscantext}}</view>
+        <view class="main_main_top" wx:if="{{!isself&&!iscantext}}">
+          <text wx:if="{{!isuserhelp}}">{{helpnum==neednum?'你来晚了，助力已' + helptext :'您的好友正在发起助力得积分'}}</text>
+          <text wx:else>已成功帮好友助力</text>
+        </view>
+        <view class="main_main_top" wx:if="{{iscantext}}">发起你的助力，积分奖励等着你！</view>
+        <!-- <button  class="main_main_btn" animation="{{animationDatas_dou}}" open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo" wx:if="{{!isself}}">帮TA一下，成功你也能领奖</button>
+      <view  class="main_main_btn" animation="{{animationDatas_dou}}" wx:if="{{isself}}" bindtap="gohelp">我也要助力领奖</view> -->
+        <!-- <button class="main_main_btn  {{disabled?'nodj':'btn'}}" open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo" wx:if="{{!isself&&!iscantext}}" disabled="{{disabled}}">帮TA一下，成功你也能领奖</button> -->
+        <button class="main_main_btn  {{disabled?'nodj':'btn'}}" bind:tap="startLxZhuli" wx:if="{{!ishelped && helpnum!=neednum && !helptext}}" disabled="{{disabled}}">
+          立即帮TA助力
+        </button>
+        <button class="main_main_btn btn" bindtap="chooseShare" wx:if="{{ishelped || helpnum==neednum  || helptext}}" data-type="me">
+          我也要助力得积分
+        </button>
+      </block>
+      <view class="main_main_fg">
+        <image src="/images/helplt.png"></image>
+        <view>好友助力进度 {{helpnum}}/{{neednum}} 人</view>
+        <image src="/images/helplt.png" style="transform: rotate(180deg);"></image>
+      </view>
+      <view class="main_main_bot">
+        <block wx:for="{{neednum}}">
+          <view class="main_main_bot_list">
+            <image src="{{helpnum>=index+1?helpList[index].userInfo.headimg:'/images/helptx.png'}}" mode="aspectFill"></image>
+            <view>{{helpnum>=index+1?'已助力':'待助力'}}</view>
+          </view>
+        </block>
+      </view>
+    </view>
+  </view>
+  <view class="bottom"></view>
+</view>
+<!-- <view class="footer1" bindtap="gohome">
+  <text>回到清泉食品商城</text>
+  <image src="{{url}}/summer/hq.png?{{veision}}"></image>
+</view> -->
+<!-- <view class="footer">
+  <image src="{{url}}/summer/helplg.png?{{veision}}"></image>
+
+</view> -->
+<!-- 分享弹框 -->
+<van-popup show="{{ share }}" round position="bottom" custom-style="height: 28%;" bind:close="onClose">
+  <view class="fenxiangtan {{isIpx?'isIpxstyle1':''}}" style="z-index:999">
+    <view class="fenxiangtan_top">
+      <view class="but" style="margin-right:26rpx;" bindtap="hideModal">
+        <image src="{{url}}/summer/weixin1.png?{{veision}}"></image>
+        <view>发给好友</view>
+        <button open-type='share' style="width: 100%;height: 100%;"></button>
+      </view>
+      <poster class="but" id="poster" hide-loading="{{false}}" preload="{{false}}" config="{{posterConfig}}" bind:success="onPosterSuccess" bind:fail="onPosterFail">
+        <image src="{{url}}/summer/haibao.png?{{veision}}"></image>
+        <view>生成海报</view>
+        <button></button>
+      </poster>
+    </view>
+    <view class="fenxiangtan_bottom " bindtap="onClose">取消</view>
+  </view>
+</van-popup>

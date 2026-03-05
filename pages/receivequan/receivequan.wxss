@@ -1,0 +1,32 @@
+/* pages/receivequan/receivequan.wxss */
+.borbox{
+  font-size: 22rpx;
+  width: 90rpx;
+  height: 32rpx;
+  border: 2rpx solid;
+  border-radius: 10rpx;
+  text-align: center;
+  line-height: 32rpx;
+  margin-left: 20rpx;
+}
+.rightbtn{
+  width: 150rpx;
+  height: 60rpx;
+  border-radius: 30rpx;
+  font-size: 26rpx;
+  text-align: center;
+  line-height: 60rpx;
+  color: white;
+}
+.btn{
+  width: 450rpx;
+  height: 80rpx;
+  background-color: #015637;
+  margin: 30rpx;
+  font-size: 30rpx;
+  font-weight: bold;
+  text-align: center;
+  line-height: 80rpx;
+  color: white;
+  border-radius: 20rpx;
+}

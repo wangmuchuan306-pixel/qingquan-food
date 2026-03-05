@@ -1,0 +1,71 @@
+/* component/marquee/marquee.wxss */
+/* 跑马灯 */
+
+/*首页跑马灯效果*/
+/* @keyframes around {
+  from {
+   margin-left: 100%;
+  }
+  to {
+   margin-left: var(--marqueeWidth--);
+  }
+ } */
+ 
+.marquee_container{
+  background-color: #fe4655;
+  height: 62rpx;
+  line-height: 44rpx;
+  position: relative;
+  /* width: 100%; */
+  margin: 20rpx 30rpx;
+  border-radius: 10rpx;
+  display: flex;align-self: center;
+  justify-content: space-between;
+  overflow: hidden;
+}
+/* .marquee_container:hover{
+  animation-play-state: paused;
+} */
+.marquee_container_left{
+  width: 32rpx;
+  height: 32rpx;
+  padding:17rpx 16rpx ;
+  background: #0f0c1a;
+  position: absolute;
+  left: 0;
+  top:0;
+}
+.marquee_container_left image{
+  width: 100%;height: 100%;
+}
+.marquee_container_right{
+  width: 16rpx;
+  height: 16rpx;
+  padding:32rpx 16rpx ;
+  background: #0f0c1a;
+  position: absolute;
+  right: 0;
+  top:0;
+}
+.marquee_container_right image{
+  width: 100%;height: 100%;
+}
+/* .marquee_text{
+  color:#fff;
+  font-size: 28rpx;
+  line-height: 62rpx;
+  display: inline-block;
+  white-space: nowrap;
+  animation-name: around;
+  animation-duration: 10s;  
+  animation-iteration-count: infinite;
+  animation-timing-function:linear;
+} */
+.marquee_text {
+  position: absolute;
+  white-space: nowrap;
+  top: 0;
+  color:#fff;
+  font-size: 28rpx;
+  line-height: 62rpx;
+}

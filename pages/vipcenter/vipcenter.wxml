@@ -1,0 +1,93 @@
+<!--pages/vipcenter/vipcenter.wxml-->
+<view style="width: 690rpx;margin: 30rpx;background-color: white;border-radius: 20rpx;">
+  <view style="width: 630rpx;padding: 30rpx;display: flex;align-items: center;justify-content: space-between;">
+    <view style="display: flex;align-items: center;">
+      <image src="{{headimg}}" style="width: 100rpx;height: 100rpx;border-radius: 100%;" mode="" />
+      <view style="margin-left: 30rpx;">
+        <view style="font-size: 32rpx;">{{nickname}}</view>
+        <view style="font-size: 26rpx;color: #999;">{{level==1?'到期时间：'+end_time:'非会员'}}</view>
+      </view>
+    </view>
+    <!-- <view class="smallbox" bind:tap="ishow">兑换会员年卡</view> -->
+  </view>
+  <view style="width: 630rpx;height: 2rpx;background-color: #eee;margin: 0 auto;"></view>
+  <view style="font-size: 30rpx;margin: 30rpx;">请选择会员年卡类型</view>
+  <scroll-view scroll-x style="width: 630rpx;margin-left: 30rpx;height: 240rpx;">
+    <view style="width: max-content;display: flex;align-items: center;justify-content: space-between;">
+      <view wx:for="{{open}}" class="{{index==vipindex?'vipbox':'borderbox'}}" bind:tap="choosevip" data-index="{{index}}">
+        <view style="text-align: center;">
+          <view style="font-size: 30rpx;">{{item.vipname}}</view>
+          <view style="font-size: 42rpx;font-weight: bold;">￥{{item.vip_price}}</view>
+          <view style="font-size: 24rpx;">{{item.vipyhq_num}}盒</view>
+          <!-- <view style="font-size: 24rpx;">有效期 365天</view> -->
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+  <view class="btmbtn" bind:tap="addPay">立即购买 ￥{{open[vipindex].vip_price}} 会员年卡</view>
+  <view class="borderbox" style="width: 630rpx;height: 100rpx;margin: 30rpx;" bind:tap="ishow">我有兑换码，立即兑换年卡</view>
+  <view style="width: 630rpx;height: 2rpx;background-color: #eee;margin: 30rpx;"></view>
+  <view style="font-size: 30rpx;font-weight: bold;margin: 30rpx;">会员年卡说明</view>
+  <view style="font-size: 26rpx;color: #999;margin: 30rpx;padding-bottom: 30rpx;font-weight: bold;">
+    <view style="line-height: 50rpx;">一、购买会员年卡(自动升级为会员)的二种方法：</view>
+    <view style="line-height: 50rpx;">1、电子会员年卡，可以在线上小程序直接付款购买 ；</view>
+    <view style="line-height: 50rpx;">2、实体会员年卡，线上下单购买（邮寄）或者线下购买，刮开涂层，输入16位兑换码，兑换卡券；</view>
+    <view style="line-height: 50rpx;margin-top: 20rpx;">二、 购买会员年卡后，会得到13盒鸡蛋兑换券，可以单盒转赠，不记名，不挂失，不兑换现金，遗失不补；</view>
+    <view style="line-height: 50rpx;margin-top: 20rpx;">三、下单时选择使用优惠券即可抵用，填写收货信息，预约送货， 正常情况下48小时送货上门，节假日等特殊情况除外；</view>
+    <view style="line-height: 50rpx;margin-top: 20rpx;">四、如复购，点击我的——会员年卡——选择会员年卡类型，直接付款购买；</view>
+  </view>
+  <!-- <view class="linebox">
+    <view style="display: flex;align-items: center;justify-content: center;width: 100rpx;height: 100rpx;background-color: #015637;border-radius: 100%;">
+      <image src="/images/huanguan.png" style="width: 60rpx;height: 48rpx;" mode="" />
+    </view>
+    <view style="margin-left: 20rpx;">
+      <view style="font-size: 30rpx;">会员价购物</view>
+      <view style="font-size: 24rpx;color: #999;">会员有效期内享受会员价购物权益</view>
+    </view>
+  </view>
+  <view class="linebox">
+    <view style="display: flex;align-items: center;justify-content: center;width: 100rpx;height: 100rpx;background-color: #015637;border-radius: 100%;">
+      <image src="/images/mfsong.png" style="width: 60rpx;height: 58rpx;" mode="" />
+    </view>
+    <view style="margin-left: 20rpx;">
+      <view style="font-size: 30rpx;">免费送鸡蛋</view>
+      <view style="font-size: 24rpx;color: #999;">送{{vipindex==0?12:13}}张{{vipindex==0?'清泉食品36枚富硒柴鸡蛋礼盒年卡':'清泉食品36枚原生态散养笨鸡蛋礼盒年卡'}}抵用券</view>
+    </view>
+  </view>
+  <view class="linebox">
+    <view style="display: flex;align-items: center;justify-content: center;width: 100rpx;height: 100rpx;background-color: #015637;border-radius: 100%;">
+      <image src="/images/birthday.png" style="width: 60rpx;height: 54rpx;" mode="" />
+    </view>
+    <view style="margin-left: 20rpx;">
+      <view style="font-size: 30rpx;">会员日活动</view>
+      <view style="font-size: 24rpx;color: #999;">有效期内可享受每月会员日活动</view>
+    </view>
+  </view>
+  <view class="linebox" style="border: none;">
+    <view style="display: flex;align-items: center;justify-content: center;width: 100rpx;height: 100rpx;background-color: #015637;border-radius: 100%;">
+      <image src="/images/phone.png" style="width: 46rpx;height: 58rpx;" mode="" />
+    </view>
+    <view style="margin-left: 20rpx;">
+      <view style="font-size: 30rpx;">享专属客服</view>
+      <view style="font-size: 24rpx;color: #999;">有效期内享受VIP会员专属客服</view>
+    </view>
+  </view> -->
+</view>
+<view style="height: 180rpx;"></view>
+<van-popup show="{{ show }}" bind:close="onClose" round>
+  <view style="width: 600rpx;height: 400rpx;">
+    <view style="font-size: 36rpx;font-weight: bold;text-align: center;margin: 30rpx auto;">兑换年卡</view>
+    <view style="width: 540rpx;height: 120rpx;background-color: #eee;margin: 30rpx;border-radius: 20rpx;">
+      <input type="text" style="font-size: 30rpx;height: 120rpx;margin-left: 30rpx;" placeholder="请输入16位兑换码" bindinput="incdk" />
+    </view>
+    <view class="btmbtn" style="width: 540rpx;" bind:tap="getcdkvi">确定</view>
+  </view>
+</van-popup>
+<van-popup show="{{ buysuccess }}" round>
+  <view style="width: 560rpx;text-align: center;margin-top: 50rpx;">
+    <image src="/images/success.png" style="width: 120rpx;height: 120rpx;" mode=""/>
+    <view style="font-size: 38rpx;font-weight: bold;margin-top: 30rpx;">恭喜您</view>
+    <view style="font-size: 32rpx;font-weight: bold;margin-top: 30rpx;">已升级为{{open[vipindex].vipname}}会员</view>
+    <view class="gbtn" bind:tap="successClose">我知道了</view>
+  </view>
+</van-popup>

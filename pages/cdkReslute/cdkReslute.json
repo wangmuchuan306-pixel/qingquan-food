@@ -1,0 +1,8 @@
+{
+  "usingComponents": {},
+  "navigationBarTextStyle":"black",
+  "backgroundColor":"#eeeeee",
+  "navigationBarBackgroundColor":"#fff",
+  "navigationBarTitleText": "兑换结果"
+
+}

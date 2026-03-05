@@ -1,0 +1,93 @@
+<!--pages/ztorderlist/ztorderlist.wxml-->
+<view style="width: 100%;background-color: white;height: 180rpx;padding-top: 20rpx;position: fixed;top: 0;">
+  <view style="width:690rpx;height: 80rpx;border-radius: 40rpx;background-color: #eee;margin:0 30rpx;display: flex;align-items: center;justify-content: space-between;">
+    <input type="text" placeholder="搜索客户昵称/手机尾号后四位" style="font-size: 30rpx;height: 80rpx;width: 590rpx;padding-left: 30rpx;" placeholder-style="color:#999" bindinput="insearch" bindconfirm="tosearch" confirm-type="search" value="{{search_str}}" />
+    <image src="/images/close.png" style="width: 40rpx;height: 40rpx;margin-right: 30rpx;white-space: nowrap;" bind:tap="nosearch" wx:if="{{search_str}}"/>
+  </view>
+  <view style="width: 690rpx;margin: 0 auto;display: flex;align-items: center;justify-content: space-between;margin-top: 20rpx;">
+    <view class="{{order_status==0?'istatus':'status'}}" bind:tap="changestatus" data-status="0">全部</view>
+    <view class="{{order_status==1?'istatus':'status'}}" bind:tap="changestatus" data-status="1">待发货</view>
+    <view class="{{order_status==2?'istatus':'status'}}" bind:tap="changestatus" data-status="2">待接货</view>
+    <view class="{{order_status==100?'istatus':'status'}}" bind:tap="changestatus" data-status="100">待提货</view>
+    <view class="{{order_status==4?'istatus':'status'}}" bind:tap="changestatus" data-status="4">已完成</view>
+  </view>
+</view>
+<view style="height: 200rpx;"></view>
+<view style="width: 690rpx;border-radius: 20rpx;margin: 30rpx;background-color: white;" wx:for="{{orderlist}}" wx:key="orderid">
+  <view style="width: 630rpx;padding: 30rpx;display: flex;align-items: center;justify-content: space-between;">
+    <view style="font-size: 26rpx;color: #999;">{{item.add_timeymd}}</view>
+    <view style="font-size: 26rpx;color: #f60;">
+      <text>{{item.deliver_type==1?'同城配送':'线下自提'}}/</text>
+      <text wx:if="{{item.order_status==1}}">待发货</text>
+      <text wx:if="{{item.order_status==2}}">待接货</text>
+      <text wx:if="{{item.order_status==100}}">待提货</text>
+      <text wx:if="{{item.order_status==4}}">已完成</text>
+      <text wx:if="{{item.order_status==9}}">已取消</text>
+    </view>
+  </view>
+  <view style="width: 630rpx;height: 2rpx;background-color: #eee;margin: 0 auto;"></view>
+  <view style="width: 630rpx;padding: 30rpx;display: flex;align-items: center;">
+    <image src="https://qiniu.0315678.cn/{{item.goodsimg}}" style="width: 160rpx;height: 160rpx;border-radius: 20rpx;background-color: #eee4;" mode="aspectFill" />
+    <view style="width: 440rpx;margin-left: 30rpx;">
+      <view style="width: 100%;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;font-size: 28rpx;">{{item.goodsname}}</view>
+      <view style="font-size: 26rpx;color: #999;margin: 20rpx 0;">[{{item.goods_cat2.cate_name}}/{{item.goods_cat1.cate_name}}]</view>
+      <view style="display: flex;align-items: center;justify-content: space-between;width: 100%;">
+        <view style="font-size: 30rpx;">{{item.goodsprice}}</view>
+        <view style="font-size: 30rpx;color: #f60;">x{{item.goodsnum}}</view>
+      </view>
+    </view>
+  </view>
+  <view style="width: 630rpx;height: 2rpx;background-color: #eee;margin: 0 auto;"></view>
+  <view style="width: 630rpx;margin: 30rpx;display: flex;align-items: center;">
+    <view style="font-size: 26rpx;color: #999;">买家信息</view>
+    <view style="font-size: 26rpx;margin-left: 30rpx;">{{item.user.nickname}} {{item.user.phone}}</view>
+  </view>
+  <view style="width: 630rpx;margin: 30rpx;display: flex;align-items: center;">
+    <view style="font-size: 26rpx;color: #999;">收货信息</view>
+    <view style="font-size: 26rpx;margin-left: 30rpx;">{{item.username}} {{item.userphone}}</view>
+  </view>
+  <block wx:if="{{item.open}}">
+    <view style="width: 630rpx;margin: 30rpx;display: flex;align-items: center;" wx:if="{{item.orderremark}}">
+      <view style="font-size: 26rpx;color: #999;">订单备注</view>
+      <view style="font-size: 26rpx;margin-left: 30rpx;">{{item.orderremark}}</view>
+    </view>
+    <view style="width: 630rpx;margin: 30rpx;display: flex;align-items: center;">
+      <view style="font-size: 26rpx;color: #999;">订单编号</view>
+      <view style="font-size: 26rpx;margin-left: 30rpx;">{{item.orderno}}</view>
+    </view>
+    <view style="width: 630rpx;margin: 30rpx;display: flex;align-items: center;">
+      <view style="font-size: 26rpx;color: #999;">订单金额</view>
+      <view style="font-size: 26rpx;margin-left: 30rpx;">￥ {{item.order_total_money}}</view>
+    </view>
+    <view style="width: 630rpx;margin: 30rpx;display: flex;align-items: center;">
+      <view style="font-size: 26rpx;color: #999;">使用余额</view>
+      <view style="font-size: 26rpx;margin-left: 30rpx;">￥ {{item.balancepay}}</view>
+    </view>
+    <view style="width: 630rpx;margin: 30rpx;display: flex;align-items: center;">
+      <view style="font-size: 26rpx;color: #999;">实付金额</view>
+      <view style="font-size: 26rpx;margin-left: 30rpx;">￥ {{item.pay_real_money}}</view>
+    </view>
+    <view style="width: 630rpx;margin: 30rpx;display: flex;align-items: center;">
+      <view style="font-size: 26rpx;color: #999;">支付时间</view>
+      <view style="font-size: 26rpx;margin-left: 30rpx;">{{item.pay_real_money}}</view>
+    </view>
+  </block>
+  <view style="text-align: center;margin: 30rpx auto;font-size: 28rpx;color: #666;" bind:tap="changeshow" data-index="{{index}}">{{item.open?'收起':'展开'}}</view>
+  <view style="width: 630rpx;height: 2rpx;background-color: #eee;margin: 0 auto;"></view>
+  <view style="width: 630rpx;padding: 30rpx;display: flex;align-items: center;justify-content: space-between;">
+    <view style="font-size: 26rpx;color: #666;">结算金额
+      <text style="color: #f60;margin-left: 10rpx;">￥{{item.pay_real_money}}</text>
+    </view>
+    <view style="display: flex;align-items: center;">
+      <view class="smallbtn" wx:if="{{item.order_status==1}}" bind:tap="cancelOrderfy" data-id="{{item.orderno}}" data-index="{{index}}">退款</view>
+      <view class="bigbtn" wx:if="{{item.order_status==1}}" bind:tap="pifahuo" data-orderno="{{item.orderno}}" data-index="{{index}}">确认发货</view>
+      <view class="bigbtn" wx:if="{{item.order_status==2}}" bind:tap="zitijiehuo" data-orderno="{{item.orderno}}" data-index="{{index}}">确认接货</view>
+      <view class="bigbtn" wx:if="{{item.order_status==100}}" bind:tap="scanCode">确认提货</view>
+      <view class="bigbtn" style="background-color: #ccc;" wx:if="{{item.order_status==4}}">已完成</view>
+    </view>
+  </view>
+</view>
+<view style="height: 180rpx;"></view>
+<view style="width: 100%;height: 180rpx;position: fixed;bottom: 0;background-color: white;">
+  <view class="btmbtn" bind:tap="scanCode">订单核销</view>
+</view>

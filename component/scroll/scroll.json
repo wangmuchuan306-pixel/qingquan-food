@@ -1,0 +1,7 @@
+{
+  "component": true,
+  "usingComponents": {
+    "shauxin": "/component/shauxin/shauxin",
+    "van-loading": "@vant/weapp/loading/index"
+  }
+}

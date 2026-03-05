@@ -1,0 +1,53 @@
+<!--pages/setyearcard/setyearcard.wxml-->
+<view style="width: 100%;height: 80rpx;background-color: white;position: fixed;top: 0;z-index: 999;display: flex;align-items: flex-end;">
+  <view class="{{goods_vip==1?'iscat':'catext'}}" bind:tap="changevip" data-type="1">电子年卡</view>
+  <view class="{{goods_vip==2?'iscat':'catext'}}" bind:tap="changevip" data-type="2">实体年卡</view>
+</view>
+<view style="height: 80rpx;"></view>
+<view wx:if="{{false}}" style="width: 100%;padding:0 30rpx;box-sizing: border-box;padding-bottom: 30rpx;">
+  <me-waterfall id="waterfall" width="{{690*pixelRatio}}" gap="{{10*pixelRatio}}">
+    <me-waterfall-item wx:for="{{goodslist}}" wx:key="{{index}}" custom-class="waterfallitem" bind:tap="toinfo" data-id="{{item.goods_id}}">
+      <view style="width: 335rpx;background-color: #fff;border-radius: 20rpx;margin-top: 20rpx;padding-bottom: 10rpx;" bind:tap="toinfo" data-id="{{item.goods_id}}">
+        <view style="width: 335rpx;position: relative;">
+          <image src="{{item.goods_img}}" style="width: 335rpx;border-radius: 20rpx 20rpx 0 0;" mode="widthFix" />
+        </view>
+        <view class="twolinetext" style="font-size: 28rpx;width: 300rpx;margin: 10rpx auto;">{{item.goods_name}}</view>
+        <view style="font-size: 24rpx;color: #999;font-weight: normal;margin: 10rpx auto;width: 300rpx;">
+          <text>原价 ￥{{item.line_price}}</text>
+          / 已售 {{item.volume+1000}}
+        </view>
+        <view style="display: flex;align-items: center;width: 300rpx;margin: 10rpx auto;">
+          <view class="hbox" wx:if="{{goods_vip == 2}}" style="height: 120rpx;height: 40rpx;font-size: 24rpx;line-height: 40rpx;">
+            <text wx:if="{{item.zttype==12}}">配送/自提</text>
+            <text wx:if="{{item.zttype==1}}">仅自提</text>
+            <text wx:if="{{item.zttype==2}}">仅配送</text>
+          </view>
+          <view class="hbox" style="height: 120rpx;height: 40rpx;font-size: 24rpx;line-height: 40rpx;">{{item.xg_num==0?'不限购':'限购 '+item.xg_num}}</view>
+        </view>
+        <view style="display: flex;align-items: center;justify-content: space-between;">
+          <view style="font-size: 32rpx;font-weight: bold;color: #005832;width: 300rpx;margin: 0 auto;;">
+            <text>￥{{userinfo.level==1?item.normalprice:item.memberprice}}</text>
+          </view>
+
+        </view>
+      </view>
+    </me-waterfall-item>
+  </me-waterfall>
+</view>
+<view style="padding: 30rpx;box-sizing: border-box;width: 100%;">
+  <block wx:for="{{goodslist}}" wx:key="{{index}}">
+    <view class="goodscard_box" bind:tap="toinfo" data-id="{{item.goods_id}}">
+      <image src="{{item.goods_img}}" style="width: 100%;height: 440rpx;" mode="aspectFill" />
+      <view style="padding: 20rpx 30rpx 30rpx;width: 100%;box-sizing: border-box;">
+        <view class="txt1" style="font-size: 34rpx;width: 100%;margin-bottom: 20rpx;">{{item.goods_name}}</view>
+        <view class="flex2">
+          <view style="flex: 1;min-width: 0;">
+            <view style="font-size: 42rpx;color: #005832;font-weight: bold;">￥{{userinfo.level==1?item.normalprice:item.memberprice}}</view>
+            <view style="font-size: 26rpx;color: #999;margin-top: 10rpx;">市场价 ￥{{item.line_price}} / 已售 {{item.volume+1000}}</view>
+          </view>
+          <view style="width: 180rpx;height: 80rpx;border-radius: 20rpx;background-color: #005832;color: #fff;line-height: 80rpx;text-align: center;font-size: 30rpx;">立即购买</view>
+        </view>
+      </view>
+    </view>
+  </block>
+</view>

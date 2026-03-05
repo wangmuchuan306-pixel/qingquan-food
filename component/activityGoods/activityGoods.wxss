@@ -1,0 +1,131 @@
+/* component/activityGoods/activityGoods.wxss */
+
+/* 商品 */
+.activityItem{
+	padding:30rpx;
+	display: flex;
+	position: relative;
+	justify-content: space-around;
+}
+.activityItem image{
+	display:block;
+	width:240rpx;
+	height:240rpx;
+	border-radius:30rpx;
+}
+.activityItem .discount{
+	background:url('https://usd.0315678.cn/summer/activityItem3x.png');
+	width: 134rpx;
+	height: 102rpx;
+	background-size: 100% 100%;
+	position: absolute;
+	left: 10rpx;
+	top: 10rpx;
+	transform: rotate(-30deg);
+	font-size: 24rpx;
+	text-align: center;
+	padding-top: 20rpx;
+	color: #fff;
+}
+.endedItem.activityItem  .discount{
+	background:url('https://usd.0315678.cn/summer/endactivityItem3x.png');
+	background-size: 100% 100%;
+}
+.activityItem .discount text{
+	font-size: 40rpx;
+	color: #fff;
+	font-weight: bold;
+}
+.activityItem .details{
+	margin-left:30rpx;
+	display:flex;
+	flex-direction:column;
+	justify-content:space-between;
+}
+.activityItem .details .goodTitle{
+		display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    word-break: break-all;
+    text-overflow: ellipsis;
+		color: #222;
+		font-weight:bold;
+    font-size: 34rpx;
+}
+.activityItem.endedItem .details .goodTitle{
+	color: #666;
+}
+.activityItem .details .priceArea{
+	display:flex;
+	justify-content:space-between;
+	word-wrap: normal;
+	align-items: center;
+}
+.activityItem .details .priceArea .aPrice{
+	display: block;
+	color: #FF6600;
+	font-weight: bold;
+}
+.activityItem.endedItem .details .priceArea .aPrice{
+	display: block;
+	color: #999;
+	font-weight: bold;
+}
+.activityItem .details .priceArea .aPrice text:nth-child(1){
+	font-size:54rpx;
+}
+.activityItem .details .priceArea .aPrice text:nth-child(2){
+	font-size:28rpx;
+}
+.activityItem .details .priceArea .aPrice::before{
+	content:"¥";
+	color:#f60;
+	font-size:28rpx;
+	margin-right:6rpx;
+}
+.activityItem.endedItem .details .priceArea .aPrice::before{
+	color:#999;
+}
+.activityItem .details .priceArea .oPrice{
+	font-size:24rpx;
+	color:#999;
+	text-decoration:line-through;
+}
+.activityItem .details .priceArea .right{
+	border-radius: 12rpx;
+	text-align:center;
+	width:160rpx;
+	background-image:linear-gradient(to bottom,#FFF6C9,#fff);
+}
+.activityItemendedItem .details .priceArea .right{
+	background-image:linear-gradient(to bottom,#E6E6E6,#fff);
+}
+.activityItem .details .priceArea .right .inventory,
+.activityItem .details .priceArea .right .btn{
+	display:block;
+}
+.activityItem .details .priceArea .right .inventory{
+	font-size:22rpx;
+	padding:15rpx 0;
+	color: #666666;
+}
+.activityItem .details .priceArea .right .inventory text{
+	font-size: 30rpx;
+	color: #f60;
+	font-weight: bold;
+}
+.activityItem.endedItem .details .priceArea .right .inventory text{
+	color: #9F9F9F;
+}
+.activityItem .details .priceArea .right .btn{
+	font-size:32rpx;
+	color:#fff;
+	padding:15rpx 0;
+	background-image:linear-gradient(to bottom,#FF8D0D,#FE6410);
+	border-radius: 12rpx;
+	cursor: pointer;
+}
+.activityItem.endedItem .details .priceArea .right .btn{
+	background-image:linear-gradient(to bottom,#E6E6E6,#CECECE);
+}

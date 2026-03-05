@@ -1,0 +1,15 @@
+<!--pages/paysuccess/paysuccess.wxml-->
+<view style="width: 670rpx;background-color: white;border-radius: 20rpx;padding: 50rpx 0;margin: 30rpx auto;">
+  <view style="text-align: center;font-size: 120rpx;font-weight: bold;color: #060;">{{h}}:{{m}}:{{s}}</view>
+  <view style="margin: 30rpx auto;text-align: center;">
+    <image src="/images/success.png" style="width: 160rpx;height: 160rpx;border-radius: 100%;" mode="" />
+    <view style="font-size: 36rpx;font-weight: bold;margin-top: 30rpx;">付款金额 ¥{{money}}</view>
+  </view>
+  <view class="btn">请向店员展示此页面</view>
+</view>
+<view style="position: fixed;bottom: 50rpx;width: 100%;display: flex;justify-content: center;">
+  <view style="text-align: center;">
+    <view style="font-size: 30rpx;font-weight: bold;color: #999;">{{ztdian}}</view>
+    <view style="font-size: 24rpx;color: #ccc;margin-top: 20rpx;" bind:tap="callphone">唐山共享科技有限公司提供技术支持</view>
+  </view>
+</view>

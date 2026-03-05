@@ -1,0 +1,31 @@
+<!--pages/myMoney/myMoney.wxml-->
+<!-- 2024.9.29/14.23 xxxxx-->
+<!-- 提现没写 -->
+<!-- <view class="balance">
+  <view class="item1">累计服务费</view>
+  <view class="item2">{{allmoney}}
+  </view>
+    <view class="item3">账户积分余额仅可用于平台消费，不可提现和转增</view>
+</view> -->
+<!-- 列表 -->
+<view class="listBox">
+  <view wx:for="{{walletsList}}" wx:key="listK" wx:for-index='index' wx:if="{{walletcount!=0}}">
+    <view class="listTime" wx:if="{{walletsList[index].year!=walletsList[index-1].year}}">{{item.left_year}}</view>
+    <view class="itemListBox {{walletsList[index].year!=walletsList[index-1].year?'one':''}} {{walletsList[index].year!=walletsList[index+1].year?'two':''}}">
+      <view class="timeItemList">
+        <view class="itemListLeft">
+          <view class="day">{{item.day}}</view>
+          <view class="hourMin">{{item.hour_min}}</view>
+        </view>
+        <view class="itemListRight">
+          <view class="rightTop">
+            <view class="title">{{item.log_title}}</view>
+            <view class="money">￥{{item.money}}</view>
+          </view>
+          <view class="rightBottom">{{item.txt}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+<view style="height: 90rpx;"></view>

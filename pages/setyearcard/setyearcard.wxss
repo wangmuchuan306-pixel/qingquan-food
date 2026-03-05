@@ -1,0 +1,38 @@
+/* pages/setyearcard/setyearcard.wxss */
+.iscat {
+  font-size: 34rpx;
+  font-weight: bold;
+  border-bottom: 6rpx solid #030;
+  text-align: center;
+  width: 50%;
+  color: #030;
+  box-sizing: border-box;
+  line-height: 80rpx;
+}
+.hbox {
+  /* width: 140rpx; */
+  height: 50rpx;
+  padding: 0 10rpx;
+  background-color: #eee;
+  font-size: 26rpx;
+  text-align: center;
+  line-height: 50rpx;
+  margin-right: 20rpx;
+  border-radius: 10rpx;
+}
+
+.catext {
+  font-size: 30rpx;
+  width: 50%;
+  text-align: center;
+  line-height: 80rpx;
+  /* margin-right: 30rpx; */
+}
+
+.goodscard_box{
+  width: 100%;
+  border-radius: 20rpx;
+  background-color: #fff;
+  overflow: hidden;
+  margin-bottom: 30rpx;
+}

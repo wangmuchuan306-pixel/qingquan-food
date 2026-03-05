@@ -1,0 +1,143 @@
+.shuaxin2 {
+  position: fixed;
+  width: 100vw;
+  height: 114rpx;
+  background-color: #005832;
+  z-index: 999;
+  bottom: 100%;
+  padding-top: 1000rpx;
+}
+.flex1 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shuaxin2 view {
+  width: 20rpx;
+  height: 20rpx;
+  border-radius: 30rpx;
+  border-radius: 100%;
+  background-color: #f8f8f8;
+}
+
+.imageani2_1 {
+  animation: imagea2_1 1s infinite ease-in-out;
+  background-color: #f8f8f8;
+}
+
+@keyframes imagea2_1 {
+
+  0%,
+  100% {
+    transform: translateY(10rpx);
+  }
+
+  50% {
+    transform: translateY(-10rpx);
+  }
+}
+
+.imageani2_2 {
+  animation: imagea2_2 1s infinite ease-in-out;
+  background-color: #ccc;
+}
+
+@keyframes imagea2_2 {
+
+  0%,
+  100% {
+    transform: translateY(-10rpx);
+  }
+
+  50% {
+    transform: translateY(10rpx);
+  }
+}
+
+.shuaxin {
+  position: fixed;
+  width: 100vw;
+  height: 114rpx;
+  background-color: #f8f8f8;
+  z-index: 999;
+  bottom: 100%;
+  padding-top: 1000rpx;
+}
+.flex1 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shuaxin view {
+  width: 20rpx;
+  height: 20rpx;
+  border-radius: 30rpx;
+  border-radius: 100%;
+  background-color: #005832;
+}
+
+
+
+
+
+
+
+
+/* fangLogo */
+.sk-cube-grid {
+  width: 4em;
+  height: 4em;
+  margin: auto; 
+  position: relative;
+}
+.sk-cube-grid .logo{
+  width: 4em;
+  height: 4em;
+  position: absolute;
+  z-index: 2;
+}
+.sk-cube {
+  --theme-color: #005832;
+  width: 33%;
+  height: 33%;
+  background-color: var(--theme-color);
+  float: left;
+  animation: sk-cube-grid-scale-delay 1.5s infinite ease-in-out;
+}
+.sk-cube-1 {
+  animation-delay: 0.2s;
+}
+.sk-cube-2 {
+  animation-delay: 0.3s;
+}
+.sk-cube-3 {
+  animation-delay: 0.4s;
+}
+.sk-cube-4 {
+  animation-delay: 0.1s;
+}
+.sk-cube-5 {
+  animation-delay: 0.2s;
+}
+.sk-cube-6 {
+  animation-delay: 0.3s;
+}
+.sk-cube-7 {
+  animation-delay: 0s;
+}
+.sk-cube-8 {
+  animation-delay: 0.1s;
+}
+.sk-cube-9 {
+  animation-delay: 0.2s;
+}
+@keyframes sk-cube-grid-scale-delay {
+  0%, 70%, 100% {
+    transform: scale3D(1,1,1);
+  }
+  35%           {
+    transform: scale3D(0,0,1);
+  }
+}

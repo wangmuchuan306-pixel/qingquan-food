@@ -1,0 +1,10 @@
+{
+  "usingComponents": {
+    "loading": "/component/loading_all/loading_all",
+    "image-loader": "/component/image-loader/image-loader",
+    "jloading":"/component/loading/loading"
+  },
+  "enablePullDownRefresh": true,
+  "navigationBarTitleText": "我的订单",
+  "backgroundColor": "#f8f8f8"
+}

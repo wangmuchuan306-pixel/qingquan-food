@@ -1,0 +1,249 @@
+<!-- pages/lotaddorder/lotaddorder.wxml -->
+<!-- <view style="width: 750rpx;height: 600rpx;position: fixed;top:150rpx;background: linear-gradient(#c30505, #f8f8f8);z-index: -1;"></view>
+<view style="position: fixed;z-index: 999;background-color: #c30505;width: 100%;height: 150rpx;">
+  <view style="width: 690rpx;height: 100rpx;border-radius: 20rpx;background-color: white;margin: 30rpx;display: flex;margin-top: 20rpx;">
+    <view style="z-index: 1;width: 50%;line-height: 100rpx;text-align: center;font-size: 30rpx;{{chooseStyle==2?'color:#fff;font-weight: bold;':'color:#c30505'}}" bind:tap="chooseStyle" data-id="2" wx:if="{{zttype!=1}}">
+      送货上门
+    </view>
+    <view style="z-index: 1;width: 50%;line-height: 100rpx;text-align: center;font-size: 30rpx;color: #999999;" bind:tap="nottap" data-type="2" wx:else>
+      送货上门
+    </view>
+    <view style="z-index: 1;width: 50%;line-height: 100rpx;text-align: center;font-size: 30rpx;{{chooseStyle==1?'color:#fff;font-weight: bold;':'color:#c30505;'}}" bind:tap="chooseStyle" data-id="1" wx:if="{{zttype!=2}}">
+      到店自提
+    </view>
+    <view style="z-index: 1;width: 50%;line-height: 100rpx;text-align: center;font-size: 30rpx;color: #999999;" bind:tap="nottap" data-type="1" wx:else>
+      到店自提
+    </view>
+    <view style="width: 334rpx;height: 94rpx;margin: 5rpx;position: absolute;background-color: #c30505;border-radius: 20rpx;z-index: 0;transform: translate({{xdistance}}rpx);transition:transform 0.5s"></view>
+  </view>
+</view>
+<view style="height: 150rpx"></view> -->
+<view class="goodsbody">
+  <view style="width: 690rpx;background-color: white;margin: 0 0 30rpx;border-radius: 20rpx;padding: 30rpx;box-sizing: border-box;" wx:if="{{chooseStyle==2}}">
+    <!-- <view class="deliverstore" bind:tap="gogogocfl">
+      <view class="addtop flex3">
+        <view class="flex2">
+          <image class="addimg1" src="https://qiniu.0315678.cn/{{ztdian.stall_logo}}" />
+          <view class="storename txt1">{{ztdian.name}}</view>
+        </view>
+        <view class="flex2">
+          <view class="addH1">查看位置</view>
+          <image class="yjt" src="/images/blackjiantou.png" />
+        </view>
+      </view>
+      <view wx:if="{{ztdian}}" class="addbottom">
+        距您{{ztdian.distance}}km | {{ztdian.store_area}}{{ztdian.address}}
+      </view>
+    </view> -->
+    <!-- <view wx:if="{{ztdian.distance>3}}" class="titlehuo">此门店距您较远，请确认是否更换其他送货门店</view> -->
+    <view style="width: 100%;" bind:tap="take">
+      <view style="width: 630rpx;display: flex;align-items: center;justify-content: space-between;">
+        <view style="display: flex;align-items: center;">
+          <view class="adduser flex1">
+            <image src="/images/GPS.png" />
+          </view>
+          <view wx:if="{{shouAddress}}" style="font-size: 30rpx;color: #000;width: 360rpx;" class="txt1">
+            {{shouAddress.username}} {{shouAddress.phone}}
+          </view>
+          <view wx:else style="font-size: 30rpx;color: #999;">请添加收货人信息</view>
+        </view>
+        <view class="flex2">
+          <view class="addH1">{{shouAddress ? '其他收货地址':'添加收货人信息'}}</view>
+          <image class="yjt" src="/images/blackjiantou.png" />
+        </view>
+      </view>
+      <view style="font-size: 26rpx;color: #999;width: 630rpx;margin-top: 30rpx;word-wrap: break-word;" wx:if="{{shouAddress}}">
+        {{shouAddress.street}}{{shouAddress.address}}{{shouAddress.detail_address}}
+      </view>
+    </view>
+  </view>
+  <view style="width: 690rpx;background-color: white;margin: 0 0 30rpx;border-radius: 20rpx;padding-top: 30rpx;" wx:else>
+    <!-- <picker mode="selector" range="{{ztdianlist}}" range-key="zt_name" bindchange="changeziti"> -->
+    <view style="padding-bottom: 30rpx;border-bottom: 2rpx solid #eee;width: 630rpx;margin: 0 auto;" bind:tap="gogogocfl">
+      <view class="deliverstore">
+        <view class="addtop flex3">
+          <view class="flex2">
+            <image class="addimg1" src="https://qiniu.0315678.cn/{{ztdian.stall_logo}}" />
+            <view class="storename txt1">{{ztdian.name}}</view>
+          </view>
+          <view class="flex2">
+            <view class="addH1">查看位置</view>
+            <image class="yjt" src="/images/blackjiantou.png" />
+          </view>
+        </view>
+        <view wx:if="{{ztdian}}" class="addbottom">
+          距您{{ztdian.distance}}km | {{ztdian.store_area}}{{ztdian.address}}
+        </view>
+      </view>
+      <!-- <view class="titlehuo" style="margin-bottom: 0;">根据您当前所在位置，已为您自动推荐距离最近门店</view> -->
+    </view>
+    <!-- </picker> -->
+    <view style="width: 630rpx;display: flex;align-items: center;padding: 30rpx;justify-content: space-between;height: 30rpx;">
+      <view class="flex2">
+        <view class="adduser flex1">
+            <image src="/images/useradd.png" />
+        </view>
+        <view style="font-size: 30rpx;flex-shrink: 0;white-space: nowrap;">提货电话</view>
+      </view>
+      <input type="number" placeholder="请填写提货人手机号码" placeholder-style="font-size: 28rpx;color: #999;" value="{{userphone}}" bindinput="inuphone" style="font-size: 28rpx;color: #003300;text-align: right;" maxlength="11" />
+    </view>
+  </view>
+  <view style="width: 690rpx;background-color: white;margin: 30rpx 0;border-radius: 20rpx;padding: 0 30rpx;box-sizing: border-box;">
+    <view wx:for="{{cartlist}}" wx:key="id" style="display: flex;width: 630rpx;padding: 30rpx 0;{{index == cartlist.length-1 ? '' : 'border-bottom: 1rpx solid #eee;'}}">
+      <image src="{{item.goods_img}}" mode="aspectFill" class="tx"></image>
+      <view>
+        <view style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;width: 440rpx;">
+          {{item.goods_name}}
+        </view>
+        <view class="fbt" style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;width: 440rpx;">
+          {{item.small_title}}
+        </view>
+        <view style="display: flex;align-items: center;justify-content: space-between;width: 440rpx;">
+          <view class="money">¥ {{userinfo.user_level == 2 ? item.line_price : (userinfo.user_level == 1 ? item.memberprice : item.normalprice)}}</view>
+          <van-stepper value="{{item.number}}" max="{{item.goodsalist.num}}" bind:change="onChange" data-index="{{index}}"></van-stepper>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view style="width: 690rpx;background-color: white;margin: 30rpx 0;border-radius: 20rpx;">
+    <view style="width: 630rpx;display: flex;align-items: center;justify-content: space-between;margin: 30rpx;border-bottom: 2rpx solid #eee;padding: 30rpx 0;">
+      <view style="font-size: 30rpx;">商品小计</view>
+      <view style="display: flex;align-items: center;">
+        <text style="font-size:28rpx;color:#c30505;margin-right: 10rpx;">￥{{zongmoney}}</text>
+      </view>
+    </view>
+    <!-- <view style="width: 630rpx;display: flex;align-items: center;justify-content: space-between;margin: 30rpx;border-bottom: 2rpx solid #eee;padding-bottom: 30rpx;">
+      <view style="font-size: 30rpx;">使用卡券</view>
+      <view style="display: flex;align-items: center;" bind:tap="choosecard">
+        <text style="font-size:28rpx;color:#c30505;margin-right: 10rpx;" wx:if="{{coupons&&coupons.length>0}}">-￥{{coupon_money}} x {{coupons.length}}</text>
+        <text style="font-size:28rpx;color:{{have_quan >0 ? '#c30505':'#999'}};margin-right: 10rpx;" wx:else>{{have_quan >0?'您有'+have_quan+'张可用优惠券':'没有可使用的优惠券'}}</text>
+        <image src="/images/blackjiantou.png" mode="" class="yjt"></image>
+      </view>
+    </view> -->
+    <view class="underline flex3" style="margin-bottom: 30rpx;">
+      <view class="flex2">
+        <text class="orderH2">使用积分</text>
+      </view>
+      <view class="flex2" bind:tap="balanShow">
+        <view style="font-size: 28rpx;color: #999;margin-right: 20rpx;">{{'-'+reduce_balance}} 
+        <text style="color: #c30505;">{{'(' + (reduce_balance != 0 ? ('￥' + all_balance) : ('可用积分' + integral)) + ')'}}</text></view>
+        <image src="/images/blackjiantou.png" class="yjt" mode="" />
+      </view>
+    </view>
+    <!-- <view class="underline">
+      <view class="flex3">
+        <view class="flex2">
+          <text class="orderH2">使用余额</text>
+        </view>
+        <view class="flex2" bind:tap="remoneyShow">
+          <text style="font-size: 28rpx;color: #999;margin-right: 20rpx;">{{'-'+re_money}} <text style="color: #c30505;">(可用余额￥{{intremoney}})</text></text>
+          <image src="/images/blackjiantou.png" class="yjt" mode="" />
+        </view>
+      </view>
+      <scroll-view wx:if="{{czsonglist.length>0}}" class="money_scroll" scroll-x="true">
+        <view class="money_body flex2">
+          <block wx:for="{{czsonglist}}">
+            <view class="money_item flex1" bind:tap="chooseMoney" data-id="{{item.id}}">
+              <view class="item_c">充¥{{item.cz_pay}}</view>
+              <view class="item_s">送{{item.song_pay}}元</view>
+            </view>
+          </block>
+        </view>
+      </scroll-view>
+    </view> -->
+    <view style="width: 630rpx;margin: 30rpx;padding-bottom: 30rpx;border-bottom: 2rpx solid #eee;display: flex;align-items: center;justify-content: space-between;">
+      <view style="font-size: 30rpx;">配送费</view>
+      <view style="font-size: 28rpx;">￥{{express}}</view>
+    </view>
+    <view style="width: 630rpx;margin: 30rpx;padding-bottom: 30rpx;">
+      <view class="flex3">
+      <view style="font-size: 30rpx;">总计</view>
+      <view style="font-size: 28rpx;">
+        ￥{{zongprice}}
+        <text style="color: #999;">(已减 ¥{{all_money}})</text>
+      </view>
+      </view>
+    <view style="color: #c30505;font-size: 30rpx;margin-top: 10rpx;justify-content: flex-end;display: flex;" wx:if="{{mjtype}}">已享受门店满 ￥{{manjianinfo.man}} 减 ￥{{manjianinfo.jian}}</view>
+    </view>
+  </view>
+  
+  <view style="padding: 30rpx;background-color: #fff;border-radius: 20rpx;">
+    <view class="flex3">
+      <view class="flex2">
+        <view style="font-size: 30rpx;color: #000;">订单备注</view>
+      </view>
+      <view style="color: #ccc;">{{notexNum}}/30</view>
+    </view>
+    <textarea bindinput="notesValue" value="{{notesValue}}" style="padding: 30rpx 0 0;width: 100%;height: 50rpx;font-size: 28rpx;" type="text" maxlength="30" placeholder="输入留言" disable-default-padding="true" placeholder-style="color:#ccc;font-size: 28rpx;" />
+  </view>
+  <view style="height: 200rpx;"></view>
+</view>
+<view style="width: 100%;padding: 20rpx 30rpx 50rpx;box-sizing: border-box;background-color: #fff;position: fixed;bottom: 0;height: 180rpx;z-index: 999;">
+  <view class="flex3">
+    <view>
+      <view style="font-size: 36rpx;color: #c30505;font-weight: bold;">￥{{zongprice}}</view>
+      <view style="font-size: 24rpx;color: #999;">实付金额</view>
+    </view>
+    <view class="tjdd1 flex1" bindtap="back">提交订单</view>
+  </view>
+</view>
+
+
+<van-popup show="{{balancepayShow}}" custom-style="z-index: 999;" round position="bottom" bind:click-overlay="closePopup2">
+  <view style="width: 690rpx;padding: 30rpx;">
+    <view class="flex3" style="margin-bottom: 50rpx;">
+      <view class="flex2">
+        <text style="font-size: 40rpx;font-weight: bold;color: #333;">积分支付</text>
+      </view>
+      <image src="/images/del2.png" bind:tap="closePopup2" style="width: 30rpx;height: 30rpx;" mode="" />
+    </view>
+    <view class="flex3" style="padding-bottom: 30rpx;border-bottom: 1rpx solid #eee;">
+      <view class="flex2">
+        <!-- <text style="font-size: 46rpx;font-weight: bold;color: #333;margin-right: 30rpx;">￥</text> -->
+        <input type="number" value="{{balanMoney2}}" bindinput="balanValue" confirm-type="done" style="height: 70rpx;width: 400rpx;" />
+      </view>
+      <view class="flex1" bind:tap="balanValue2" style="font-size: 26rpx;border-radius: 40rpx;width: 160rpx;height: 70rpx;border: 1rpx solid #c30505;color: #c30505;">
+        <text>最多可用</text>
+      </view>
+    </view>
+    <view style="font-size: 24rpx;margin: 30rpx 0rpx;">
+      账户积分 {{integral}} , 订单金额 ￥{{all_zongprice}}
+    </view>
+    <view style="width: 630rpx;padding: 30rpx;background-color: #f8f8f8;border-radius: 20rpx;font-size: 24rpx;color: #999;">
+      <view>1. 退款后抵扣金额自动退回到余额</view>
+      <view>2. 积分与人民币的比例为 100 ： 1</view>
+    </view>
+    <view class="flex1" bind:tap="validated" style="font-size: 30rpx;color: #fff;width: 690rpx;height: 100rpx;border-radius: 20rpx;background-color: #c30505;margin: 60rpx 0rpx 0rpx;">
+      <text>确认使用</text>
+    </view>
+  </view>
+</van-popup>
+<van-popup show="{{remoneypayShow}}" custom-style="z-index: 999;" round position="bottom" bind:click-overlay="closePopup3">
+  <view style="width: 690rpx;padding: 30rpx;">
+    <view class="flex3" style="margin-bottom: 50rpx;">
+      <view class="flex2">
+        <text style="font-size: 40rpx;font-weight: bold;color: #333;">余额支付</text>
+      </view>
+      <image src="/images/del2.png" bind:tap="closePopup3" style="width: 30rpx;height: 30rpx;" mode="" />
+    </view>
+    <view class="flex3" style="padding-bottom: 30rpx;border-bottom: 1rpx solid #eee;">
+      <view class="flex2">
+        <text style="font-size: 46rpx;font-weight: bold;color: #333;margin-right: 30rpx;">￥</text>
+        <input type="number" value="{{remoney2}}" bindinput="remoneyValue" confirm-type="done" style="height: 70rpx;width: 400rpx;" />
+      </view>
+      <view class="flex1" bind:tap="remoneyValue2" style="font-size: 26rpx;border-radius: 40rpx;width: 160rpx;height: 70rpx;border: 1rpx solid #c30505;color: #c30505;">
+        <text>最多可用</text>
+      </view>
+    </view>
+    <view style="font-size: 24rpx;margin: 30rpx 0rpx;">
+      账户余额 ￥{{intremoney}} , 订单金额 ￥{{all_zongprice}}
+    </view>
+    <view style="width: 630rpx;padding: 30rpx;background-color: #f8f8f8;border-radius: 20rpx;font-size: 24rpx;color: #999;">
+      <view>1. 退款后抵扣金额自动退回到余额</view>
+      <view>2. 余额与人民币的比例为 1 ： 1</view>
+    </view>
+    <view class="flex1" bind:tap="validated2" style="font-size: 30rpx;color: #fff;width: 690rpx;height: 100rpx;border-radius: 20rpx;background-color: #c30505;margin: 60rpx 0rpx 0rpx;">
+      <text>确认使用</text>
+    </view>
+  </view>
+</van-popup>

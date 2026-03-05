@@ -1,0 +1,11 @@
+<!--pages/myyquser/myyquser.wxml-->
+<view style="width: 690rpx;margin: 30rpx;background-color: white;border-radius: 20rpx;display: flex;align-items: center;justify-content: space-between;" wx:for="{{userlist}}">
+  <view style="display: flex;align-items: center;margin: 30rpx;">
+    <image src="{{item.headimg}}" style="width: 100rpx;height: 100rpx;border-radius: 100%;" mode="aspectFill"/>
+    <view style="margin-left: 30rpx;">
+      <view style="font-size: 30rpx;font-weight: bold;">{{item.nickname}}</view>
+      <view style="font-size: 26rpx;color: #999;margin-top: 10rpx;">{{item.register_time}}</view>
+    </view>
+  </view>
+  <view class="phonebox" bind:tap="callphone" data-phone="{{item.phone}}">联系</view>
+</view>

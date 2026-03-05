@@ -1,0 +1,52 @@
+<!-- 新 -->
+<view wx:if="{{id==6}}">
+  <web-view src="{{path}}"></web-view>
+</view>
+<!-- 关于我们 -->
+<view wx:if="{{id==1}}">
+  <web-view src="{{url}}/Cydia.html"></web-view>
+</view>
+<!-- 用户协议 -->
+<view wx:if="{{id==2}}">
+  <web-view src="{{url}}/useragreement.html"></web-view>
+</view>
+<!-- 轮播文章 -->
+<view wx:if="{{id==3}}">
+  <web-view src="{{url}}/app/Article/index?_id={{infoid}}"></web-view>
+</view>
+<!-- 助力规则 -->
+<view class="guize" wx:if="{{id==4}}">
+  <Parser html="{{html}}" bindparser="parser" space="nbsp" />
+</view>
+<!-- 卡券说明 -->
+<view class="guize" wx:if="{{id==5}}">
+    <view>使用规则</view>
+    <view>新人专享券使用规则：</view>
+    <view>一、活动对象：</view>
+    <view>所有{{procedure.wxname}}平台新用户，即首次登陆{{procedure.wxname}}小程序且首次绑定微信的用户！</view>
+     
+    <view>二、规则介绍：</view>
+    <view>1、新用户首次登陆{{procedure.wxname}}小程序，可获得新人专享红包，具体金额及使用限制请参考新人专享页面；</view>
+    <view>2、新用户下完首单后即可获得{{procedure.wxname}}11张新人优惠大礼包，分别为10元2张（满188元减10元，7天有效） 5元4张（满88元减5元，3天有效） 2元5张（满18元减2元，1天有效）</view>
+    <view>3、随机无门槛优惠券为仅限购买{{procedure.wxname}}新人专享页面商品的通用红包，购买商品金额需优惠券金额加0.01元（例：8.8元面额优惠券，用户使用时商品实付金额应满8.81元！）</view>
+    <view>4、优惠券所在位置：{{procedure.wxname}}——我的——我的卡券</view>
+    <view>5、优惠券有效期：详见优惠券小字标注，领取当天即时生效。</view>
+    <view>6、使用优惠券的订单发生退款行为，可退金额及优惠券可退面额以用户退款页面信息为主，发生退款的订单优惠券有效期不变，逾期作废！</view>
+     
+    <view>其他：</view>
+    <view>{{procedure.wxname}}衷心希望所有用户能在平台获得满意的购物体验，在使用新人专享券的同时，{{procedure.wxname}}制定一种分享得佣金的鼓励机制，用户在平台下单商品并分享给好友，好友购买成功后本人可获得数额不定的佣金奖励，多分享多赚钱！另外，每一位对商品作出真实、用心评价的用户也有0.1元/赞的奖励哦！</view>
+</view>
+
+<!-- 邀请好友规则 -->
+<view class="guize" wx:if="{{id==7}}">
+  <Parser html="{{html}}" bindparser="parser" space="nbsp" />
+</view>
+<!-- 免单 -->
+<view class="guize" wx:if="{{id == 'miandan'}}">
+  <Parser html="{{html}}" bindparser="parser" space="nbsp" />
+</view>
+
+<!-- 签到 -->
+<view class="guize" wx:if="{{id == 'sign'}}">
+  <Parser html="{{html}}" bindparser="parser" space="nbsp" />
+</view>

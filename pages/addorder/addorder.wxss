@@ -1,0 +1,91 @@
+/* pages/addorder/addorder.wxss */
+.yjt {
+  width: 18rpx;
+  height: 24rpx;
+}
+.underline {
+  padding: 0 0 30rpx;
+  border-bottom: 1rpx solid #eee;
+  width: 630rpx;
+  box-sizing: border-box;
+  margin: 0 30rpx;
+}
+.orderH2 {
+  font-size: 26rpx;
+  color: #000;
+}
+.ztbody {
+  width: 560rpx;
+  height: 680rpx;
+  background-color: #fff;
+  border-radius: 20rpx;
+  flex-direction: column;
+}
+
+.ztH1 {
+  font-size: 30rpx;
+  color: #015637;
+  font-weight: bold;
+  margin: 0 10rpx;
+}
+
+.xian {
+  width: 130rpx;
+  height: 3rpx;
+  background-color: #015637;
+}
+
+.ztbut1 {
+  width: 450rpx;
+  height: 90rpx;
+  border-radius: 45rpx;
+  font-size: 30rpx;
+  border: 2rpx solid #015637;
+  color: #015637;
+}
+
+.listnone {
+  width: 100%;
+  padding: 100rpx 0 100rpx;
+  flex-direction: column;
+}
+
+.listnone image {
+  width: 340rpx;
+  height: 340rpx;
+}
+
+.mendianbut {
+  width: 400rpx;
+  height: 100rpx;
+  background-color: #015637;
+  border-radius: 50rpx;
+  font-size: 30rpx;
+  color: #fff;
+}
+
+.ztbut2 {
+  width: 450rpx;
+  height: 90rpx;
+  border-radius: 45rpx;
+  font-size: 30rpx;
+  color: #fff;
+  background-color: #015637;
+  margin-top: 30rpx;
+}
+.tjdd1 {
+  width: 420rpx;
+  height: 100rpx;
+  border-radius: 20rpx;
+  font-size: 30rpx;
+  color: #fff;
+  background-color: #015637;
+}
+.time_act {
+  color: #005832;
+}
+.day_act {
+  color: #fff;
+  background-color: #005832;
+  border-radius: 10rpx;
+}

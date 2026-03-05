@@ -1,0 +1,122 @@
+/* pages/addAddress/addAddress.wxss */
+page{
+  color: #000;
+  background: #eee;
+}
+.main{
+  margin:30rpx ;
+  background: #fff;
+  border-radius: 30rpx;
+  padding: 0 30rpx;
+  box-sizing: border-box;
+}
+.list{
+  border-bottom: 2rpx solid #eee;
+  padding:  38rpx 0;
+  display: flex;
+  align-items: flex-start;
+  font-size: 30rpx;
+  color: #000;
+}
+.input_pla{
+  font-size: 30rpx;
+  color: #999999;
+}
+.setSex{
+  margin-left: 120rpx;
+  display: flex;
+  align-items: center;
+  color: #999999;
+}
+.choose{
+  display: flex;
+  align-items: center;
+  margin-right: 70rpx;
+}
+.choose image{
+  width: 36rpx;
+  height: 36rpx;
+  margin-right: 24rpx;
+  
+}
+.address{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 78%;
+}
+.address_left{
+  color: #999999;
+  font-size: 30rpx;
+  width: 95%;
+}
+.address_left .view{
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.address_left image{
+  width: 32rpx;
+  height: 32rpx;
+  margin-right: 16rpx;
+}
+.jinru{
+  width: 18rpx;
+  height: 30rpx;
+}
+/* 底部按钮部分 */
+.footer{
+  width: 100%;
+  /* background: #ccc; */
+  /* color: #fff; */
+  /* position: fixed;
+  bottom: 0rpx;
+  left: 0rpx; */
+  padding-bottom: 16rpx;
+}
+.fix-iphonex-button {
+  bottom:68rpx!important;
+}
+.fix-iphonex-button::after {
+  content: ' ';
+  position: fixed;
+  bottom: 0!important;
+  height: 68rpx!important;
+  width: 100%;
+  background: #100C1A;
+}
+.btn{
+   font-size: 34rpx;
+   height: 98rpx;
+   line-height: 98rpx;
+   margin: 40rpx 30rpx 0 30rpx;
+   border-radius: 100rpx;
+   text-align: center;
+   color: #fff;
+   background: #cccccc;
+}
+.btn_bk{
+  background: linear-gradient(90deg,#FF9F00,#ff6600);
+}
+
+.one{
+  width: 168rpx;
+}
+
+/*swtich整体大小及背景色*/
+.wx-switch-input{
+  /* width:82rpx !important;
+  height:42rpx !important; */
+  /* background: #f60 !important; */
+  /* border: #f60 !important;  */
+}
+/*白色样式（false的样式）*/
+.wx-switch-input::before{
+  /* width:82rpx !important;
+  height: 42rpx !important; */
+}
+/*绿色样式（true的样式）*/
+.wx-switch-input::after{
+  /* width: 40rpx !important;
+  height: 42rpx !important; */
+}

@@ -1,0 +1,10 @@
+{
+  "usingComponents": {
+    "painter":"/component/painter/painter"
+  },
+  "navigationBarTitleText": "个人中心",
+  "navigationBarBackgroundColor": "#f8f8f8",
+  "navigationBarTextStyle": "black",
+  "backgroundColor": "#f8f8f8",
+  "backgroundColorBottom": "#f8f8f8"
+}

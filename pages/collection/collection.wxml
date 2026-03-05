@@ -1,0 +1,17 @@
+<!--packageB/pages/collection/collection.wxml-->
+<view style="width: 100%;min-height: 100vh;background:#f8f8f8">
+  <view class="comment_main" style="padding-top: 30rpx;">
+    <block wx:if="{{goods_info.length>0}}" wx:for="{{goods_info}}" wx:for-item="list" wx:key="k">
+      <view class="{{list.slide?'deleSpace':'hezi'}}" bindtouchstart="start" bindtouchend="end" data-gid='{{list.goods_id}}'>
+        <goods-card myProperty="{{list}}" catchtap='goGoodsInfo' data-gid='{{list.goods_id}}'></goods-card>
+        <!-- <view style="width:100%;height:240rpx;border:1rpx solid red">789465</view> -->
+        <!-- <view class="goumai">立即购买</view> -->
+        <view class="delete" catchtap="cancel" data-gid='{{list.goods_id}}'>
+          <image src="{{url}}/summer/cancalcollect.png{{version}}" mode='widthFix'></image>
+          <text>删除</text>
+        </view>
+      </view>
+    </block>
+    <view class='r_ping' wx:if="{{count_goods>0&&good_end&&loading}}">没有更多商品啦</view>
+  </view>
+</view>

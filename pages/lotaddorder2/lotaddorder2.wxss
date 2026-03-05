@@ -1,0 +1,142 @@
+/* pages/lotaddorder/lotaddorder.wxss */
+.yjt {
+  width: 12rpx;
+  height: 20rpx;
+  flex-shrink: 0;
+}
+
+.buybox {
+  width: 240rpx;
+  height: 100rpx;
+  border-radius: 50rpx;
+  background-color: #c30505;
+  color: white;
+  font-size: 30rpx;
+  text-align: center;
+  line-height: 100rpx;
+}
+
+.goodsbody {
+  width: 100%;
+  padding: 0 30rpx 30rpx;
+  box-sizing: border-box;
+  margin-top: 30rpx;
+}
+
+.tjdd1 {
+  width: 420rpx;
+  height: 100rpx;
+  border-radius: 20rpx;
+  font-size: 30rpx;
+  color: #fff;
+  background-color: #c30505;
+}
+
+.topbody {
+  width: 380rpx;
+  height: 100%;
+  margin-left: 30rpx;
+  background-color: #f8f8f8;
+  position: relative;
+}
+
+.deliverstore {}
+
+.addtop {
+  width: 100%;
+  margin-bottom: 30rpx;
+}
+
+.addbottom {
+  width: 100%;
+  font-size: 26rpx;
+  color: #999;
+  word-wrap: break-word;
+}
+
+.adduser {
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: 100%;
+  flex-shrink: 0;
+  /* border: 2rpx solid #999; */
+  box-sizing: border-box;
+  margin-right: 20rpx;
+}
+
+.adduser image {
+  width: 26rpx;
+  height: 30rpx;
+}
+
+.underline {
+  padding: 0 0 30rpx;
+  border-bottom: 2rpx solid #eee;
+  width: 630rpx;
+  box-sizing: border-box;
+  margin: 0 30rpx;
+}
+
+.orderH2 {
+  font-size: 30rpx;
+  color: #000;
+}
+
+.addimg1 {
+  width: 42rpx;
+  height: 42rpx;
+  margin-right: 20rpx;
+  border-radius: 100%;
+  background-color: #c30505;
+  flex-shrink: 0;
+}
+
+.addH1 {
+  font-size: 28rpx;
+  color: #333;
+  margin-right: 10rpx;
+}
+
+.storename {
+  font-size: 30rpx;
+  color: #333;
+  font-weight: bold;
+  width: 330rpx;
+}
+
+.titlehuo {
+  font-size: 24rpx;
+  color: #c30505;
+  width: 100%;
+  padding: 20rpx 30rpx;
+  box-sizing: border-box;
+  background-color: rgba(195, 5, 5, 0.1);
+  border-radius: 15rpx;
+  margin: 30rpx 0;
+}
+
+.money_scroll {
+  width: 100%;
+  margin-top: 30rpx;
+}
+
+.money_item {
+  width: 200rpx;
+  height: 140rpx;
+  background-color: #FFF0F0;
+  border-radius: 20rpx;
+  flex-direction: column;
+  margin-right: 14rpx;
+  color: #c30505;
+  flex-shrink: 0;
+}
+
+.item_c {
+  font-size: 30rpx;
+  font-weight: bold;
+}
+
+.item_s {
+  font-size: 26rpx;
+  margin-top: 10rpx;
+}

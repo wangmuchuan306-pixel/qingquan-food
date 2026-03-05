@@ -1,0 +1,10 @@
+<view class="wrapp">
+  <view class="load-1">
+    <view class="k-line k-line3-1"></view>
+    <view class="k-line k-line3-2"></view>
+    <view class="k-line k-line3-3"></view>
+    <view class="k-line k-line3-4"></view>
+    <view class="k-line k-line3-5"></view>
+  </view>
+  <text class="text" style="color:#eeeeee;">正在加载数据...</text>
+</view>

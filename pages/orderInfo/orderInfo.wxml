@@ -1,0 +1,360 @@
+<!--pages/orderinfo/orderinfo.wxml-->
+<view data-theme="{{theme}}" id="page" style="width: 100%;min-height: 100%;">
+  <view class="{{chooseSize?'indexFixed':''}}">
+    <!--头部-->
+    <view class="header">
+      <image src="{{url}}/summer/orderbg.png?{{veision}}"></image>
+      <view style="display: flex;justify-content: space-between;align-items: center;">
+        <view>
+          <view class="main">
+            <text class="main-text" wx:if="{{info.order_status == 3 && info.pdrece_sta == 0}}" data-theme="{{theme}}">取货码：<text style="font-size: 48rpx;">{{info.detail_view_txt_title}}</text>
+            </text>
+            <text class="main-text" data-theme="{{theme}}" wx:elif="{{info.order_status == 100}}">订单待提货</text>
+            <text class="main-text" wx:else data-theme="{{theme}}">{{info.detail_view_txt_title}}</text>
+          </view>
+          <view class="main-title" data-theme="{{theme}}">
+            <text class="main-title-left" wx:if="{{info.order_status == 100}}">请前往自提点提货</text>
+            <text class="main-title-left" wx:else>{{info.detail_view_txt_desc}}</text>
+            <!-- <text class="main-title-right">预计24小时内送达自提点</text> -->
+          </view>
+        </view>
+        <view style="width: 140rpx;padding-top: 30rpx;padding-right: 30rpx;">
+          <!-- 下单成功 -->
+          <image src="{{url}}/summer/orderinfoxd1.png" style="width:140rpx;height:140rpx;" wx:if="{{info.order_status == 1}}"></image>
+          <!-- 商家已经发货 -->
+          <image src="{{url}}/summer/partner_djh@2x.png" style="width:140rpx;height:140rpx;" wx:if="{{info.order_status == 2&&info.pdrece_sta ==0}}"></image>
+          <!-- 待提货 -->
+          <image src="{{url}}/summer/partner_yth@2x.png" style="width:140rpx;height:140rpx;" wx:if="{{info.order_status == 3}}"></image>
+          <!-- 已完成待评价 -->
+          <image src="{{url}}/summer/orderinfook.png" style="width:140rpx;height:140rpx;" wx:if="{{info.order_status == 4 &&info.iscomment == 0}}"></image>
+          <!-- 已评价带分享 -->
+          <image src="{{url}}/summer/orderinfofx.png" style="width:140rpx;height:140rpx;" wx:if="{{info.order_status == 4 && info.isshare == 0 && info.iscomment == 1}}"></image>
+          <!-- 订单已完成 -->
+          <image src="{{url}}/summer/orderinfowc.png" style="width:140rpx;height:140rpx;" wx:if="{{info.order_status == 5||info.order_status == 6}}"></image>
+          <!-- 订单已退款 -->
+          <image src="{{url}}/summer/partner_thds@2x.png" style="width:140rpx;height:140rpx;" wx:if="{{info.order_status == 9}}"></image>
+        </view>
+
+      </view>
+    </view>
+    <!--订单物流信息-->
+    <view class="orders" wx:if="{{info.ztdian_type<3}}" data-theme="{{theme}}">
+      <!-- <view class="order-top2s">
+      <view class="order-top2s_left">
+        <view class="vie">{{info.deliver_type==1?'收货人':'自提点'}}</view>
+        <text>{{info.deliver_type==1?info.username:info.partner_info.p_username}}</text>
+        <text wx:if="{{info.deliver_type==1}}">  {{info.userphone}}</text>
+      </view>
+      <image class="call" wx:if="{{info.deliver_type!=1}}" src="{{url}}/summer/order-call.png?{{veision}}"  bindtap="call_phone" data-phone="{{info.userphone}}"></image>
+    </view>
+    <view class="order-top2s" bindtap='getposition'>
+      <view class="order-top2s_left">
+        <view class="vie">{{info.deliver_type==1?'收货地址':'自提地址'}}</view>
+        <text>{{info.deliver_type==1?info.useraddress:info.partner_info.r_area+info.partner_info.p_address}}</text>
+      </view>
+      <image class="local-right" wx:if="{{info.deliver_type!=1}}"  src='{{url}}/summer/order-go.png?{{veision}}'></image>
+    </view>
+    <view class="order-top2s">
+      <view class="order-top2s_left">
+        <view class="vie">留言备注</view>
+        <text>{{info.orderremark!=''?info.orderremark:'您没有添加任何备注哦~'}}</text>
+      </view>
+    </view> -->
+      <view class="order-top2s" bindtap='getposition'>
+        <view class="addressinfo" data-theme="{{theme}}">
+          <view class="addressinfo_left1">
+            <view>{{info.ztdian_type==2?'收货地址':'自提点地址'}}</view>
+            <view class="publiccolor" data-theme="{{theme}}">{{info.ztdian_type==2?info.useraddress:ztdian.zt_address+ztdian.zt_addressxinagxi}}</view>
+          </view>
+          <!-- <view class="addressinfo_right" wx:if="{{address_id!=''}}">
+            <image wx:if="{{address_id!=''}}" src="{{url}}/summer/luxian.png?{{veision}}">
+            </image>
+            <view data-theme="{{theme}}" class="publiccolor2">{{store.elements?store.elements+'km':'未授权'}}</view>
+          </view> -->
+        </view>
+      </view>
+      <view class="order-top2s">
+        <view class="tabbar">
+          <view class="list">
+            <view>{{info.ztdian_type==2?'收货人':'自提点名称'}}</view>
+            <view>
+              <input type="text" value="{{info.ztdian_type==2?info.username:ztdian.zt_name}}" disabled="true" class="publiccolor" data-theme="{{theme}}"></input>
+            </view>
+          </view>
+          <view class="list">
+            <view>{{info.ztdian_type==1?'自提点电话':'联系电话'}}</view>
+            <view>
+              <input type="number" value="{{info.ztdian_type==1?ztdian.zt_phone:info.userphone}}" disabled="true" bindtap="call_phone" data-phone="{{info.ztdian_type==1?ztdian.zt_phone:info.userphone}}" class="publiccolor" data-theme="{{theme}}"></input>
+              <!-- <image class="call" style="width:50rpx;height:50rpx;" wx:if="{{info.ztdian_type!=2}}" src="{{url}}/summer/order-call.png?{{veision}}" bindtap="call_phone" data-phone="{{info.userphone}}"></image> -->
+            </view>
+          </view>
+        </view>
+      </view>
+      <!-- <view class="order-top2s">
+        <view class="list list_100">
+          <view>留言备注</view>
+          <view class="publiccolor" data-theme="{{theme}}">{{info.orderremark!=''?info.orderremark:'您没有添加任何备注哦~'}}</view>
+        </view>
+      </view> -->
+    </view>
+
+    <!--商品详情-->
+    <view class="goods_box" data-theme="{{theme}}">
+      <view class="goods_stores" data-theme="{{theme}}">
+        <view bindtap='goMerchantinfo' data-id="{{info.store_id}}">
+          <image src="{{url}}/summer/dianpu2.png?{{veision}}"></image>
+          <text class="store_name">{{info.store_name}}</text>
+        </view>
+        <view bindtap="call_phone" data-phone="{{info.store_phone}}">
+          <image src="{{url}}/summer/dadianhua.png?{{veision}}"></image>
+          <text style="color:#ff6600;">商家客服</text>
+        </view>
+      </view>
+      <!-- 
+      <view class="product" bindtap="goGoodsinfo" data-gid="{{info.goodsid}}">
+        <image-loader class="images" default-image='../images/noimg.png?{{veision}}' width="180rpx" height="180rpx" borderRadius="8rpx" original-image='{{info.goodsimg}}' mode="aspectFill" />
+        <view class="prduct-right">
+          <view class="name" data-theme="{{theme}}">{{info.goodsname}} {{info.smalltitle}}</view>
+          <view class="num">{{info.sku_id == 0?'[规格暂无]':'['+info.sku1 +' & '+info.sku2+']'}}</view>
+          <view class="price">
+            <view class="price-left">¥{{info.goodsprice}}</view>
+            <view class="price-right">x {{info.goodsnum}}</view>
+          </view>
+        </view>
+      </view>   -->
+      <view wx:for="{{info.goods}}">
+        <view style="padding: 30rpx 0;" bindtap="goGoodsinfo" data-gid="{{item.goodsid}}" class="pubborder" data-theme="{{theme}}">
+          <view style="display: flex;">
+            <image src="{{item.goodsimg}}" style="width: 180rpx;height: 180rpx;border-radius: 8rpx;" mode="aspectFill" />
+            <!-- 右 -->
+            <view style="margin-left: 30rpx;">
+              <view>
+                <view class="name" data-theme="{{theme}}">{{item.goodsname}} {{item.smalltitle}}</view>
+                <view class="num">{{item.sku_id == 0?'[规格暂无]':'['+item.sku1 +' & '+item.sku2+']'}}</view>
+              </view>
+              <view class="price">
+                <view class="price-left">¥{{item.goodsprice}}</view>
+                <view class="price-right">x {{item.goodsnum}}</view>
+              </view>
+            </view>
+          </view>
+        </view>
+        <!-- 下 -->
+        <view style="display: flex;justify-content: space-between;align-items: center;margin: 30rpx 0;">
+          <view style="font-size: 24rpx;color: #999;">实付款<text style="font-size: 30rpx;color: #f60;margin-left: 10rpx;">¥ {{item.goods_total_price}}</text></view>
+          <view style="display: flex;">
+            <view style="width: 160rpx;height: 56rpx;border: 2rpx solid #999;color: #999;font-size: 26rpx;border-radius: 100rpx;text-align: center;line-height: 56rpx;" bindtap="cancelOrderfy" data-id='{{info.orderno}}' wx:if="{{info.order_status==1}}">申请退款</view>
+            <!-- <view style="width: 160rpx;height: 56rpx;border: 2rpx solid #f60;color: #fff;font-size: 26rpx;border-radius: 100rpx;text-align: center;line-height: 56rpx;background-color: #f60;margin-left: 30rpx;">确认收货</view> -->
+
+            <view style="width: 160rpx;height: 56rpx;color: #fff;font-size: 26rpx;border-radius: 100rpx;text-align: center;line-height: 56rpx;margin-left: 30rpx;background-color: {{info.order_status==1?'#ccc':'#f60'}};" class="{{info.order_status==1?'fukuan1':''}}" bindtap="querenshouhuo" data-id="1" wx:if="{{info.order_status<=3&&info.ztdian_type==2}}">确认收货</view>
+            <view style="width: 160rpx;height: 56rpx;color: #fff;font-size: 26rpx;border-radius: 100rpx;text-align: center;line-height: 56rpx;margin-left: 30rpx;background-color: {{info.order_status==1?'#ccc':'#f60'}};" class="{{info.order_status==1?'fukuan1':''}}" bindtap="querentihuo" data-id="{{info.orderno}}" wx:if="{{info.order_status==100}}">确认提货</view>
+            <!-- <view style="width: 160rpx;height: 56rpx;color: #fff;font-size: 26rpx;border-radius: 100rpx;text-align: center;line-height: 56rpx;margin-left: 30rpx;background-color: #f60;" class="{{info.order_status<=2?'fukuan1':''}}" bindtap="querenshouhuo" data-id="1" wx:if="{{info.order_status<=3&&info.ztdian_type==1}}">确认收货</view> -->
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!--订单详情-->
+    <view class="orderid" data-theme="{{theme}}" style="padding-top: 30rpx;">
+      <view class="orderid-one">
+        <text class="orderid-text" class="publiccolor" data-theme="{{theme}}">订单编号</text>
+        <text class="orderid-text1" class="publiccolor" data-theme="{{theme}}" style="margin-left: 24rpx;">{{info.orderno}}</text>
+        <image src='{{url}}/summer/fuzhi.png?{{veision}}' bindtap="copy" data-ordernid='{{info.orderno}}'></image>
+        <!-- <view class="line"></view> -->
+      </view>
+      <view class="orderid-two">
+        <text class="orderid-text" class="publiccolor" data-theme="{{theme}}">下单时间</text>
+        <text class="orderid-text1" class="publiccolor" data-theme="{{theme}}" style="margin-left: 24rpx;">{{info.pay_time}}</text>
+        <!-- <view class="line"></view> -->
+      </view>
+      <view class="orderid-two">
+        <view class="orderid-twotext">
+          <text class="payway" class="publiccolor" data-theme="{{theme}}">支付方式</text>
+          <!-- <text class="payway-text">{{info.pay_type==1?'微信支付':'余额支付'}}</text> -->
+
+          <text class="payway-text" class="publiccolor" data-theme="{{theme}}" style="margin-left: 24rpx;">{{info.pay_type_txt}}</text>
+        </view>
+        <!-- <view class="line"></view> -->
+      </view>
+      <view class="orderid-two" wx:if="{{info.ztdian_type!=3}}">
+        <view class="orderid-distribution">
+          <text class="payway" class="publiccolor" data-theme="{{theme}}">订单类型</text>
+          <text class="payway-text" class="publiccolor" data-theme="{{theme}}" style="margin-left: 24rpx;">{{info.deliver_name}}</text>
+        </view>
+      </view>
+      <view class="orderid-two" wx:if="{{info.deliver_type==3}}">
+        <view class="orderid-distribution">
+          <text class="payway" class="publiccolor" data-theme="{{theme}}">使用方式</text>
+          <text class="payway-text" class="publiccolor" data-theme="{{theme}}" style="margin-left: 24rpx;">{{info.deliver_name}}</text>
+        </view>
+      </view>
+      <block wx:if="{{info.ztdian_type==2}}">
+        <view class="orderid-two">
+          <view class="orderid-distribution">
+            <text class="payway" class="publiccolor" data-theme="{{theme}}">送达时间</text>
+            <!-- <text class="payway-text">{{info.about_time}}【{{info.second_txt}}】</text> -->
+            <text class="payway-text" class="publiccolor" data-theme="{{theme}}" style="margin-left: 24rpx;">{{info.song_time}}</text>
+          </view>
+        </view>
+        <view class="orderid-two">
+          <view class="orderid-distribution">
+            <text class="payway" class="publiccolor" data-theme="{{theme}}">发货方式</text>
+            <!-- <text class="payway-text">{{info.about_time}}【{{info.second_txt}}】</text> -->
+            <text class="payway-text" class="publiccolor" data-theme="{{theme}}" style="margin-left: 24rpx;">{{info.fh_type==1?'司机发货':'快递发货'}}</text>
+          </view>
+        </view>
+        <view class="orderid-two" bind:tap="callsj" data-phone="{{info.siji.dirver_phone}}" wx:if="{{info.fh_type==1}}">
+          <view class="orderid-distribution" style="display: flex;">
+            <text class="payway" class="publiccolor" data-theme="{{theme}}">司机姓名</text>
+            <!-- <text class="payway-text">{{info.about_time}}【{{info.second_txt}}】</text> -->
+            <view class="payway-text" class="publiccolor" data-theme="{{theme}}" style="margin-left: 24rpx;">{{info.siji.dirver_name}} {{info.siji.dirver_phone}}</view>
+          </view>
+        </view>
+        <view class="orderid-two" wx:else>
+          <view class="orderid-distribution">
+            <text class="payway" class="publiccolor" data-theme="{{theme}}">{{info.kuaidi.kd_name}}</text>
+            <!-- <text class="payway-text">{{info.about_time}}【{{info.second_txt}}】</text> -->
+            <text class="payway-text" class="publiccolor" data-theme="{{theme}}" style="margin-left: 24rpx;">{{info.kd_order}}</text>
+          </view>
+        </view>
+      </block>
+
+      <view class="orderid-two" wx:if="{{info.ztdian_type==1}}">
+        <view class="orderid-distribution">
+          <text class="payway" class="publiccolor" data-theme="{{theme}}">自提时间</text>
+          <!-- <text class="payway-text">{{info.about_time}}</text> -->
+          <text class="payway-text" class="publiccolor" data-theme="{{theme}}" style="margin-left: 24rpx;">{{info.order_status>=3?info.about_time:'请等待商家通知'}}</text>
+        </view>
+      </view>
+      <view class="orderid-two" wx:if="{{info.deliver_type==3}}">
+        <view class="orderid-distribution">
+          <text class="payway" class="publiccolor" data-theme="{{theme}}">到店时间</text>
+          <text class="payway-text" class="publiccolor" data-theme="{{theme}}" style="margin-left: 24rpx;">{{info.pointtime?'请提前'+info.pointtime+'小时致电商家预约':'免预约|高峰时段需等位'}}</text>
+        </view>
+      </view>
+      <view class="orderid-two">
+        <view class="orderid-distribution">
+          <text class="payway" class="publiccolor" data-theme="{{theme}}">商品总价</text>
+          <text class="payway-text" class="publiccolor" data-theme="{{theme}}" style="margin-left: 24rpx;">¥ {{info.order_total_money}}</text>
+        </view>
+      </view>
+      <view class="orderid-two" wx:if="{{info.ztdian_type==2}}">
+        <view class="orderid-distribution">
+          <text class="payway" class="publiccolor" data-theme="{{theme}}">运费</text>
+          <text class="payway-text" class="publiccolor" data-theme="{{theme}}" style="margin-left: 24rpx;">¥ {{info.deliver_money}}</text>
+        </view>
+      </view>
+    </view>
+    <!--合计金额-->
+    <view class="amount" data-theme="{{theme}}">
+      <view class="liner" data-theme="{{theme}}"></view>
+      <view class="total">
+        <view class="total1">
+          <view class="total-text" data-theme="{{theme}}">实付款
+          </view>
+          <text class="total-text1">¥ {{info.pay_real_money}}</text>
+        </view>
+        <!-- <view class="tui" bindtap="showPopup" wx:if="{{info.order_status==1&&info.deliver_type!=3}}">申请退款</view>
+        <view class="tui" bindtap="showPopup" wx:if="{{info.order_status<=3&&info.deliver_type==3}}">取消订单</view>
+        <view class="tui" bindtap="delorder" data-id="4" wx:if="{{info.order_status==6||info.order_status==9}}">删除订单</view> -->
+
+      </view>
+    </view>
+    <!--按钮-->
+    <view wx:if="{{isIpx?'isIpxstyle':''}}" style="height:68rpx;"></view>
+    <!-- <view class="btn {{isIpx?'isIpxstyle':''}} {{info.order_status==1?'fukuan1':''}}" bindtap="querenshouhuo" data-id="1" wx:if="{{info.order_status<=3&&info.deliver_type==2}}">确认收货</view>
+    <view class="btn {{isIpx?'isIpxstyle':''}} {{info.order_status<=2?'fukuan1':''}}" bindtap="querenshouhuo" data-id="1" wx:if="{{info.order_status<=3&&info.deliver_type==1}}">确认收货</view>
+    <view class="btn {{isIpx?'isIpxstyle':''}} {{info.order_status==1?'fukuan1':''}}" bindtap="querenshouhuo" data-id="1" wx:if="{{info.order_status<=3&&info.deliver_type==3}}">确认使用</view> -->
+    <!-- <view class="bottom_footer {{isIpx?'isIpxstyle':''}}" wx:if="{{info.order_status>=4&&info.order_status!=9&&info.iscomment==0}}">
+      <button open-type="share" class="botbtn" data-id="3">分享给朋友</button>
+      <view class="botbtn1" bindtap="goAddComments">评价得奖励</view>
+    </view> -->
+    <!-- <button open-type="share" class="btn {{isIpx?'isIpxstyle':''}}" data-id="3" wx:if="{{info.order_status>=4&&info.iscomment==1}}">分享给朋友</button> -->
+    <!-- <button open-type="share" class="btn {{isIpx?'isIpxstyle':''}}" data-id="3">分享给朋友</button> -->
+
+
+
+    <!-- <view class="btn {{isIpx?'isIpxstyle':''}}" bindtap="showModal" data-id="4" wx:if="{{info.order_status.id==4}}">删除订单</view> -->
+
+    <!--屏幕背景变暗的背景  -->
+    <view class="commodity_screen" bindtap="hideModal" wx:if="{{chooseSize}}"></view>
+    <!-- 删除订单弹窗 -->
+    <view class="delete {{isIpx?'isIpxstyle':''}}" style="background:#ffffff;" wx:if="{{chooseSize&&order_statu==4}}" animation='{{animationData}}'>
+      <image src="{{url}}/summer/none_order.png?{{veision}}"></image>
+      <view>是否删除该订单，删除后不可找回。</view>
+      <button>立即删除</button>
+    </view>
+    <van-popup show="{{ show }}" round closeable position="bottom" bind:close="onClose">
+      <view class="van-title">
+        <!-- <view>{{info.deliver_type==3?'取消订单':'申请退款'}}</view> -->
+        <view>{{info.deliver_type==3?'确认取消':'确认退款'}}后即时到账，退款金额将原路返回</view>
+      </view>
+      <view class="van-good">
+        <view class="product" bindtap="goGoodsinfo" data-gid="{{infotui.goodsid}}">
+          <image src="{{infotui.goodsimg}}" style="width: 180rpx;height: 180rpx;border-radius: 8rpx;" mode="aspectFill" />
+          <view class="prduct-right">
+            <view class="name" style="color:#222222;font-weight:600;">{{infotui.goodsname}}</view>
+            <view class="num" wx:if="{{infotui.sku_id=='0'}}">[规格暂无]</view>
+            <view class="num" wx:else>[规格：{{infotui.sku_info.sku_desc}}]</view>
+            <view class="price">
+              <view class="price-left">¥{{infotui.goodsprice}}</view>
+              <view class="price-right">x {{infotui.goodsnum}}</view>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="refund">
+        <view class="refund-title">{{info.deliver_type==3?'取消':'退款'}}理由</view>
+        <van-radio-group class="liyou" value="{{ radio }}" bind:change="onChange">
+          <van-radio name="买错了" icon-size="44rpx" checked-color="#f60" checked>买错了</van-radio>
+          <van-radio name="买多了" icon-size="44rpx" checked-color="#f60">买多了</van-radio>
+          <van-radio name="过期了" icon-size="44rpx" checked-color="#f60">过期了</van-radio>
+          <van-radio name="其他" icon-size="44rpx" checked-color="#f60">其他</van-radio>
+        </van-radio-group>
+      </view>
+      <view class="van-bottom" style="{{isIpx?'padding-bottom:68rpx':''}}">
+        <view class="van-bottom-left">
+          <view>￥{{infotui.goods_total_price}}</view>
+          <view>(含配送费{{info.deliver_money}}元)</view>
+        </view>
+        <view class="van-bottom-right" bindtap="cancelOrder">
+          {{info.deliver_type==3?'确认取消':'确认退款'}}
+        </view>
+      </view>
+    </van-popup>
+  </view>
+
+</view>
+<view style="height: 180rpx;"></view>
+<view style="width: 100%;height: 180rpx;background-color: #fff;position: fixed;bottom: 0;">
+  <view class="btmbtn" bind:tap="tobuygoods">再来一单</view>
+</view>
+
+<van-popup show="{{ show }}" round position="bottom" bind:close="onClose" closeable>
+  <view style="font-size: 36rpx;font-weight: bold;margin: 30rpx;">核销码</view>
+  <view style="text-align: center;margin: 0 auto;">
+    <image src="{{qrcode}}" style="width: 400rpx;height: 400rpx;" />
+  </view>
+  <view class="list_center" style="margin: 30rpx;" data-theme="{{theme}}">
+    <!-- 商品图 -->
+    <image src="{{info.goods[0].goodsimg}}" style="width: 168rpx;height: 168rpx;" mode="aspectFill" />
+    <view class="list_center_right" bindtap="goOrderInfo" data-id="{{list.orderno}}">
+      <view data-theme="{{theme}}">{{info.goods[0].goodsname}} {{info.goods[0].smalltitle}}</view>
+      <view>{{info.goods[0].sku_id == 0?'[规格暂无]':'['+info.goods[0].sku1 +' & '+info.goods[0].sku2+']'}}</view>
+      <view>
+        <text style="font-size: 30rpx;color: #999;">￥{{info.goods[0].goodsprice}}</text>
+        <text class="num">x{{info.goods[0].goodsnum}}</text>
+      </view>
+    </view>
+  </view>
+  <view style="width: 690rpx;height: 100rpx;margin: 30rpx 30rpx 50rpx 30rpx;background-color: #f60;border-radius: 20rpx;font-size: 30rpx;font-weight: bold;color: white;text-align: center;line-height: 100rpx;" bind:tap="onClose">确定</view>
+</van-popup>
+
+<!-- 全民刮免单 -->
+<!-- <view wx:if="{{info.show_md != 0}}" class="freeActivities">
+    <view bindtap="toFreeActivities">
+      <image src="{{url}}/summer/freeBottom.png?{{veision}}" mode="widthFix"></image>
+	  	<image src="{{url}}/summer/freeText.png?{{veision}}" mode="widthFix"></image>
+    </view>
+</view> -->
+<!-- end -->

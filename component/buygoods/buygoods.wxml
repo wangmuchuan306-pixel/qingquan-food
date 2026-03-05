@@ -1,0 +1,90 @@
+<!--component/buygoods/buygoods.wxml-->
+<view style="padding: 30rpx;">
+  <view style="font-size: 30rpx;font-weight: bold;">
+    订购详情
+  </view>
+  <view style="width: 690rpx;height: 100rpx;border-radius: 20rpx;background-color: white;display: flex;margin-top: 30rpx;">
+    <view style="z-index: 1;width: 50%;line-height: 100rpx;text-align: center;font-size: 30rpx;{{chooseStyle==2?'color:white;font-weight: bold;':''}}" bind:tap="chooseStyle" data-id="2" wx:if="{{zttype!=1}}">同城配送</view>
+    <view style="z-index: 1;width: 50%;line-height: 100rpx;text-align: center;font-size: 30rpx;color: #999999;" bind:tap="nottap" data-type="2" wx:else>同城配送</view>
+    <view style="z-index: 1;width: 50%;line-height: 100rpx;text-align: center;font-size: 30rpx;{{chooseStyle==1?'color:white;font-weight: bold;':''}}" bind:tap="chooseStyle" data-id="1" wx:if="{{zttype!=2}}">线下自提</view>
+    <view style="z-index: 1;width: 50%;line-height: 100rpx;text-align: center;font-size: 30rpx;color: #999999;" bind:tap="nottap" data-type="1" wx:else>线下自提</view>
+    <view style="width: 334rpx;height: 94rpx;margin: 5rpx;position: absolute;background-color: #015637;border-radius: 20rpx;z-index: 0;transform: translate({{xdistance}}rpx);transition:transform 0.5s"></view>
+  </view>
+  <view style="width: 690rpx;background-color: white;margin: 30rpx 0;border-radius: 20rpx;padding-top: 30rpx;" wx:if="{{chooseStyle==2}}">
+    <view style="padding-bottom: 30rpx;border-bottom: 2rpx solid #eee;width: 630rpx;margin: 0 auto;" bind:tap="take">
+      <view style="width: 630rpx;display: flex;align-items: center;justify-content: space-between;">
+        <view style="font-size: 30rpx;">送货地址</view>
+        <view style="display: flex;align-items: center;">
+          <view wx:if="{{shouAddress}}" style="font-size: 30rpx;color: #015637;margin-right: 10rpx;">{{shouAddress.username}} {{shouAddress.phone}}</view>
+          <image src="/images/blackjiantou.png" mode="" class="yjt"></image>
+        </view>
+      </view>
+      <view style="font-size: 28rpx;color: #999;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;width: 630rpx;margin-top: 30rpx;" wx:if="{{shouAddress}}">{{shouAddress.street}}{{shouAddress.address}}</view>
+      <view style="width: 630rpx;margin: 30rpx;font-size: 28rpx;color: #999;" wx:else>请选择您的收货地址</view>
+    </view>
+    <view style="width: 630rpx;display: flex;align-items: center;padding: 30rpx;justify-content: space-between;">
+      <view style="font-size: 30rpx;">送货时间</view>
+      <picker mode="selector" range="{{timelist}}" bindchange="pickerchange" value="{{indexlist}}">
+        <view style="display: flex;align-items: center;">
+          <view wx:if="{{song_time}}" style="font-size: 28rpx;color: #003300;">{{song_time}}</view>
+          <view wx:else style="font-size: 28rpx;color: #999;">请选择送货时间</view>
+          <image src="/images/blackjiantou.png" mode="" class="yjt" style="margin-left: 10rpx;"></image>
+        </view>
+      </picker>
+    </view>
+  </view>
+  <view style="width: 690rpx;background-color: white;margin: 30rpx 0;border-radius: 20rpx;padding-top: 30rpx;" wx:else>
+    <view style="padding-bottom: 30rpx;border-bottom: 2rpx solid #eee;width: 630rpx;margin: 0 auto;" bind:tap="choztdian">
+      <view style="width: 630rpx;display: flex;align-items: center;justify-content: space-between;">
+        <view style="font-size: 30rpx;">自提地址</view>
+        <view style="display: flex;align-items: center;">
+          <view wx:if="{{ztdian}}" style="font-size: 30rpx;color: #015637;margin-right: 10rpx;">{{ztdian.zt_name}}</view>
+          <view wx:else style="font-size: 30rpx;color: #015637;margin-right: 10rpx;">请选择自提门店地址</view>
+          <image src="/images/blackjiantou.png" mode="" class="yjt"></image>
+        </view>
+      </view>
+      <view style="font-size: 28rpx;color: #999;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;width: 630rpx;margin-top: 30rpx;" wx:if="{{ztdian}}">{{ztdian.zt_address}}</view>
+      <view style="width: 630rpx;margin-top: 30rpx;font-size: 28rpx;color: #999;" wx:else>您还没有选择自提地址</view>
+    </view>
+    <view style="width: 630rpx;display: flex;align-items: center;padding: 30rpx;justify-content: space-between;">
+      <view style="font-size: 30rpx;">预留电话</view>
+      <input type="number" placeholder="请填写提货人手机号码" placeholder-style="font-size: 28rpx;color: #999;" value="{{userphone}}" bindinput="inuphone" style="font-size: 28rpx;color: #003300;text-align: right;" maxlength="11" />
+    </view>
+  </view>
+  <view style="width: 690rpx;background-color: white;margin: 30rpx 0;border-radius: 20rpx;padding-top: 30rpx;">
+    <view style="display: flex;width: 630rpx;margin: 0 auto;">
+      <image src="{{Detail.goods_img}}" mode="aspectFill" class="tx"></image>
+      <view>
+        <view style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;width: 440rpx;">{{Detail.goods_name}}</view>
+        <view class="fbt" style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;width: 440rpx;">
+          {{Detail.small_title}}
+        </view>
+        <view style="display: flex;align-items: center;justify-content: space-between;width: 440rpx;">
+          <view class="money">￥ {{userinfo.level==1?Detail.memberprice:Detail.normalprice}}</view>
+          <van-stepper value="{{num}}" bind:change="onChange"></van-stepper>
+        </view>
+      </view>
+    </view>
+    <view style="width: 630rpx;display: flex;align-items: center;justify-content: space-between;margin: 30rpx;border-bottom: 2rpx solid #eee;padding-bottom: 30rpx;">
+      <view style="font-size: 30rpx;">使用卡券</view>
+      <view style="display: flex;align-items: center;" bind:tap="choosecard">
+        <text style="font-size:28rpx;color:#030;margin-right: 10rpx;" wx:if="{{coupons&&coupons.length>0}}">-￥{{coupon_money}}</text>
+        <text style="font-size:28rpx;color:{{have_quan >0 ? '#030':'#999'}};margin-right: 10rpx;" wx:else>{{have_quan >0?'您有'+have_quan+'张可用优惠券':'没有可使用的优惠券'}}</text>
+        <image src="/images/blackjiantou.png" mode="" class="yjt"></image>
+      </view>
+    </view>
+    <view style="width: 630rpx;margin: 30rpx;padding-bottom: 30rpx;border-bottom: 2rpx solid #eee;display: flex;align-items: center;justify-content: space-between;">
+      <view style="font-size: 30rpx;">配送费</view>
+      <view style="font-size: 28rpx;">￥{{express}}</view>
+    </view>
+    <view style="width: 630rpx;margin: 30rpx;padding-bottom: 30rpx;display: flex;align-items: center;justify-content: space-between;">
+      <view style="font-size: 30rpx;">总计</view>
+      <view style="font-size: 28rpx;">￥{{zongprice}} <text style="color: #999;"> 已优惠 ¥{{coupon_money?coupon_money:0}}</text></view>
+    </view>
+  </view>
+  <view>
+    <view class="tjdd" bindtap="back">
+      提交订单
+    </view>
+  </view>
+</view>

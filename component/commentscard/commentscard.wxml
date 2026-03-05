@@ -1,0 +1,124 @@
+<view class='tab_list' data-theme="{{theme}}">
+	<view class='tab_list_header' bindtap="commentDetail">
+		<image-loader default-image='../images/headimg.png?{{veision}}' class="list_headimg" width="90rpx"
+			height="90rpx" borderRadius="100rpx" original-image='{{myProperty.headimg}}' mode="aspectFill" />
+		<image wx:if="{{myProperty.sex==1 || myProperty.sex==2}}"
+			src="{{url}}/summer/{{myProperty.sex==1?'sex_nan':'sex_nv'}}.png?{{veision}}" class='xingbiao'></image>
+		<view class='tab_list_header_right'>
+			<view style="width:100%;">
+				<view class='tab_list_name'>
+					<view class="tab_list_name_name">
+						<text
+							style="font-weight: bold;color:{{myProperty.ismember>=1?'#f60':'#999'}};" class="oneline">{{myProperty.nickname}}</text>
+						<image wx:if="{{myProperty.ismember>0}}" src='{{url}}/summer/vip@3x.png?{{veision}}'></image>
+					</view>
+
+					<!-- <view class='grade'>
+							<progress class='progress' stroke-width="16" active-mode="backwards" percent="{{myProperty.score*10}}" color="#cccccc" activeColor='#ff6600' style='border-radius:100px;overflow:hidden;width:82%;' />
+							<image src='{{url}}/summer/pingjia.png?{{veision}}' mode='widthFix'></image>
+						</view> -->
+					<van-rate readonly value="{{myProperty.score/2}}" size="24rpx" color="#ff6600" void-color="#ff6600"
+						bind:change="onChange" />
+				</view>
+				<view class="tab_list_header_right_dianz" style="text-align:left;margin-top:16rpx;">
+					<text wx:if="{{local}}" style="margin-right:5rpx">距你 {{myProperty.distance}}km · </text>
+					<text wx:if="{{!local}}" style="color:#ff6600;margin-right:5rpx;" catchtap="getLoaction">授权后显示距离 ·
+					</text> {{myProperty.add_time}} · 买了{{myProperty.buy_num}}{{myProperty.goodsunit}}
+				</view>
+
+			</view>
+			<!-- <view class='tab_list_header_right_dianz' bindtap="clickLike" data-cid="{{myProperty.id}}" data-index="{{index}}">
+					<text style="color:{{myProperty.islike?'#FDE0C3':''}};font-size:28rpx; ">{{myProperty.up_num}}</text>
+					<image src='{{url}}/summer/comment_like.png?{{veision}}' wx:if="{{myProperty.isself==0}}"></image>
+					<image src='{{url}}/summer/like_hover.png?{{veision}}' animation="{{myProperty.animationDatas}}" wx:if="{{myProperty.isself==1}}"></image>
+
+				</view> -->
+			<!-- <view class="tab_list_header_right_dianz">{{myProperty.inTime}}</view> -->
+		</view>
+	</view>
+	<view id="question_info" class="question_info" bindtap="commentDetail">
+		<!-- <text id="question_info_txt" class="question_info_txt {{isToggle && !requireAll?'elips':'strech'}}">{{questionInfo.describeInfo}}</text> -->
+		<text class="list_content {{myProperty.isnone&&!myProperty.isopen?'yincang':''}}" data-theme="{{theme}}">{{myProperty.content}}</text>
+	</view>
+
+	<view class="isopen" wx:if="{{myProperty.isnone}}" catchtap="zhankai">{{myProperty.isopen?'收起':'详情'}}</view>
+	<!-- <view class="info">详情</view> -->
+	<!-- 图片展示部分 -->
+	<view class="list_images" bindtap="commentDetail" wx:if="{{myProperty.c_img_path.length>0}}">
+		<!-- 只有一张图的时候 -->
+		<image-loader default-image='../images/noimg.png?{{veision}}' width="370rpx" height="320rpx"
+			borderRadius="10rpx" original-image='{{myProperty.c_img_path[0]}}' mode="aspectFill"
+			wx:if="{{myProperty.c_img_path.length==1}}" catchtap="imgYu" data-src="{{myProperty.c_img_path}}"
+			data-index="{{index}}" />
+		<!-- 多张图 -->
+		<block wx:if="{{myProperty.c_img_path.length>1}}" wx:for="{{myProperty.c_img_path}}" wx:key="k"
+			wx:for-item="imglist" wx:for-index="in">
+			<image-loader default-image='../images/noimg.png?{{veision}}' class="moreimage" width="220rpx"
+				height="190rpx" borderRadius="16rpx" original-image='{{imglist}}' mode="aspectFill" catchtap="imgYu"
+				data-src="{{imglist}}" data-index="{{index}}" />
+		</block>
+	</view>
+	<!-- 视频展示 -->
+	<view class="list_images" wx:if="{{myProperty.video_path}}" bindtap="commentDetail">
+		<video class="video1" src="{{myProperty.video_path}}" vslide-gesture-in-fullscreen="false" objectFit="cover"
+			controls id="mdcVideo" style="width:370rpx;height:320rpx"></video>
+	</view>
+	<!-- 商品及距离 -->
+	<!-- <view class='tab_list_name_bottom'>
+          <text class="tab_list_name_bottom_left">{{myProperty.goods.title}} </text>
+          <text wx:if="{{myProperty.elements}}"> ·  距我{{myProperty.store.jvli}}km </text>
+          <text wx:if="{{myProperty.elements_text}}" style="color:#ff6600;" catchtap="getLoaction"> · 授权后显示距离</text>
+          
+        </view> -->
+	<view class="goods_box" catchtap="goGoodsInfo" data-gid="{{myProperty.goodsid}}"
+		wx:if="{{myProperty.show_goods==1}}" data-theme='{{theme}}'>
+		<image-loader default-image='../images/noimg.png?{{veision}}' width="80rpx" height="80rpx" borderRadius="10rpx"
+			original-image='{{myProperty.goodsimg}}' mode="aspectFill" />
+		<view class="goods_box_center" data-theme="{{theme}}">
+			<view data-theme="{{theme}}">{{myProperty.goodsname}}{{myProperty.smalltitle}}</view>
+			<view><text class="content_">{{myProperty.store_name}}</text> <text wx:if="{{local}}"> · {{myProperty.store_distance}}km内</text>
+				<text wx:if="{{!local}}" style="color:#ff6600;" catchtap="getLoaction"> · 授权后显示距离</text>
+			</view>
+		</view>
+		<view class="goods_box_end" bindtap="goGoodsInfo">去看看</view>
+	</view>
+	<!-- 导航部分 -->
+	<view class="bottom_nav" wx:if="{{myProperty.show_goods==1}}">
+		<!-- <view	class="bottom_nav_left" bindtap="showadd" data-id="{{myProperty.id}}" data-goodsid="{{myProperty.goodsid}}">
+				<image class="touxiang" src="{{headimg?headimg:url+'/summer/mrheadimg.jpg'}}"></image>
+				<text>评论一下…</text>
+			</view> -->
+		<view class="bottom_nav_left" catchtap="showList" data-id="{{myProperty.id}}"
+			data-goodsid="{{myProperty.goodsid}}" data-theme="{{theme}}">
+			<image class="touxiang" src="{{headimg?headimg:url+'/summer/mrheadimg.jpg'}}"></image>
+			<text>评论一下…</text>
+		</view>
+		<view class="bottom_nav_right">
+			<view class="nav_list" catchtap="showList" data-id="{{myProperty.id}}"
+				data-goodsid="{{myProperty.goodsid}}">
+				<image src="{{url}}/summer/comment_add.png?{{veision}}"></image>
+				<text>{{myProperty.total_comment_num?myProperty.total_comment_num:'评论'}}</text>
+			</view>
+			<button class="nav_list" open-type="share" data-shareInfo="{{shareModel}}">
+				<image src="{{url}}/summer/comment_share.png?{{veision}}"></image>
+				<text>{{myProperty.share_num?myProperty.share_num:'分享'}}</text>
+			</button>
+			<!-- <view class="nav_list">			
+				</view>  -->
+			<view class="nav_list" catchtap="clickLike" data-cid="{{myProperty.id}}" data-index="{{index}}">
+				<image src="{{url}}/summer/comment_like.png?{{veision}}" wx:if="{{myProperty.isself==0}}"></image>
+				<image src='{{url}}/summer/like_hover.png?{{veision}}' animation="{{myProperty.animationDatas}}"
+					wx:if="{{myProperty.isself==1}}"></image>
+				<text
+					style="color:{{myProperty.isself==1?'#f60':''}};">{{myProperty.up_num?myProperty.up_num:'认可'}}</text>
+			</view>
+			<!-- <view class="nav_list">
+					<image src="{{url}}/summer/cai.png?{{veision}}"></image>
+					<text>踩</text>
+				</view> -->
+		</view>
+
+
+	</view>
+
+</view>

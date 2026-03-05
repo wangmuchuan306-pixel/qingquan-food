@@ -1,0 +1,33 @@
+<view class='retail_list' data-theme="{{theme}}">
+	<view class='retail_cover'>
+		<!-- <image-loader original-image='https://qiniu.0315678.cn/{{myProperty.goods_img}}' mode="aspectFill" /> -->
+    <image src="https://qiniu.0315678.cn/{{myProperty.goods_img}}" style="width: 240rpx;height: 240rpx;border-radius: 20rpx;" mode=""/>
+		<view class="sheng" wx:if="{{myProperty.is_activity}}">省{{myProperty.sheng}}元</view>
+	</view>
+	<view class="r_jiaobiao">
+		<image src="{{url}}/summer/beijingtu1.png?{{veision}}" ></image>
+		<view class="r_jiaobiao1">{{myProperty.label_name}}</view>
+	</view>
+	
+	<view class='retail_list_right'>
+		<view class='retail_list_right_title' data-theme="{{theme}}">
+			<text><text wx:if="{{myProperty.goods_store_name}}">[ {{myProperty.goods_store_name}} ] </text>{{myProperty.goods_name}} {{myProperty.small_title}}</text>
+		</view>
+		<view>
+			<view class='retail_list_right_center' data-theme="{{theme}}">
+				<text><text>评分 {{myProperty.score}}</text>
+				<text> · </text>销量 {{myProperty.volume+1000}} · 复购 {{myProperty.rebuy}}</text>
+			</view>
+			<view class="unPrice">{{myProperty.ismember>1?'门市价 ￥'+myProperty.line_price+' / 分享赚 ￥'+myProperty.fc_zhuan:'门市价 ￥'+myProperty.line_price}}</view>
+			<view class='retail_list_right_footer'>
+				<view class='r_price' data-theme="{{theme}}">{{myProperty.memberprice}}</view>
+				<!-- <view style='margin-right:30rpx;' wx:if='{{commodity.user.length>0}}'> -->
+				<view style='margin-right:30rpx;'>
+					<block wx:for="{{ myProperty.headimg_list }}" wx:for-item='userlist' wx:key='k'>
+						<image-loader default-image='/component/images/headimg.png?{{veision}}' class="visit" original-image='{{userlist}}' mode="aspectFill" />
+					</block>
+				</view>
+			</view>
+		</view>
+	</view>
+</view>

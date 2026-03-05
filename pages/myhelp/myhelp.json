@@ -1,0 +1,10 @@
+{
+  "usingComponents": {
+    "poster": "/component/poster/index",
+    "image-loader": "/component/image-loader/image-loader"
+  },
+  "navigationBarTitleText": "清泉食品",
+  "navigationBarTextStyle":"white",
+  "navigationBarBackgroundColor": "#015637",
+  "backgroundColor":"#015637"
+}

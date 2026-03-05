@@ -1,0 +1,69 @@
+/* pages/vipcenter/vipcenter.wxss */
+page{
+  background-color: #f4f7fe;
+}
+.vipbox{
+  width: 360rpx;
+  height: 240rpx;
+  border-radius: 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #015637;
+  color: white;
+  margin-right: 30rpx;
+}
+.borderbox{
+  width: 360rpx;
+  height: 240rpx;
+  border-radius: 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  border: 2rpx solid #015637;
+  color: #015637;
+  margin-right: 30rpx;
+}
+.gbtn{
+  width: 450rpx;
+  height: 90rpx;
+  margin: 50rpx auto;
+  background-color: #015637;
+  border-radius: 45rpx;
+  text-align: center;
+  line-height: 90rpx;
+  font-size: 30rpx;
+  color: white;
+}
+.linebox{
+  width: 630rpx;
+  height: 160rpx;
+  display: flex;
+  align-items: center;
+  font-size: 30rpx;
+  margin: 0 auto;
+  border-bottom: 2rpx solid #eee;
+}
+.btmbtn{
+  width: 630rpx;
+  height: 100rpx;
+  border-radius: 20rpx;
+  margin: 30rpx;
+  background-color: #015637;
+  font-size: 30rpx;
+  font-weight: bold;
+  text-align: center;
+  line-height: 100rpx;
+  color: white;
+}
+.smallbox{
+  width: 190rpx;
+  height: 60rpx;
+  border-radius: 30rpx;
+  background-color: #015637;
+  color: white;
+  font-size: 26rpx;
+  text-align: center;
+  line-height: 60rpx;
+}

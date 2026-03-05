@@ -1,0 +1,52 @@
+.scroll_box{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+.scroll_view{
+    flex: 1;
+    min-height: 0;
+}
+.loading_box{
+    width: 100%;
+    padding: 10rpx 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.none_box{
+    width: 100%;
+    padding: 10rpx 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.to_top_box{
+    position: absolute;
+    right: 30rpx;
+    bottom: calc(150rpx + var(--foot));
+    width: 80rpx;
+    height: 80rpx;
+}
+.to_top_icon{
+    width: 80rpx;
+    height: 80rpx;
+    border-radius: 50%;
+    box-shadow: 0 0 10rpx rgba(0, 0, 0, 0.3);
+}
+.page_loading{
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+}
+.fangLogo{
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}

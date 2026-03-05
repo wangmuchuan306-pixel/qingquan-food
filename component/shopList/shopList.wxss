@@ -1,0 +1,95 @@
+/* component/shopList/shopList.wxss */
+.jackitem {
+	display: flex;
+	align-items: center;
+	position: relative;
+	padding: 30rpx 30rpx 0 30rpx;
+	background: #fff;
+	width: 630rpx;
+	margin-left: 30rpx;
+	border-radius: 30rpx 30rpx 0 0;
+}
+.box_shadow {
+	width: 240rpx;
+	height: 240rpx;
+	border-radius: 34rpx;
+	position: absolute;
+	top: 0;
+	left: 0;
+	text-align: center;
+	line-height: 240rpx;
+	align-items: center;
+	background: rgba(0,0,0,.5);
+	
+}
+.jackbt1 {
+	font-size: 30rpx;
+	width: 360rpx;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	overflow: hidden;
+	width: 360rpx;
+	color: #333333;
+	
+	/* font-weight: bold; */
+}
+.jackbt2 {
+	width: 340rpx;
+	font-size: 24rpx;
+	color: #fff;
+	/* background: rgba(255, 102, 0, .6); */
+	background: #ff6600;
+	padding: 0 10rpx;
+	height: 40rpx;
+	line-height: 40rpx;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	border-radius: 8rpx;
+	margin-top: 10rpx;
+
+	justify-content: space-between;
+
+	/* padding-top: 10rpx */
+}
+.shangjia {
+	width: 300rpx;
+	height: 40rpx;
+	line-height: 40rpx;
+	overflow: hidden;
+	white-space: nowrap;
+	display: flex;
+	/* display: block; */
+	flex-direction: row;
+	align-items: center;
+}
+.name2 {
+	/* width: 240rpx; */
+	max-width: 240rpx;
+	/* display: inline-block; */
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	height: 40rpx;
+	color: #fff;
+}
+.jackbt3 {
+	font-size: 24rpx;
+	color: #ff6600;
+	/* background: rgba(255, 102, 0, .6); */
+	
+	padding-top: 10rpx
+}
+.jackbt4 {
+	font-size: 24rpx;
+	padding-top: 10rpx;
+	color: #000;
+
+}
+.all {
+	width: 690rpx;
+	margin: 30rpx;
+	/* height: 100vh; */
+	/* margin-top: 130rpx; */
+}

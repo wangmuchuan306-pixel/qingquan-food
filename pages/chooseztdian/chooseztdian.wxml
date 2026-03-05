@@ -1,0 +1,86 @@
+<!--pages/chooseztdian/chooseztdian.wxml-->
+<!--pages/chooseZTDian/chooseZTDian.wxml-->
+<view class="ztdianHead">
+  <!-- <view class="topBar flex3" style="position: fixed;">
+    <view class="{{zt == 1 ? 'choose' : ''}} flex1" bind:tap="choosezt" data-id="1"><text>我的自提点</text></view>
+    <view class="{{zt == 2 ? 'choose' : ''}} flex1" bind:tap="choosezt" data-id="2"><text>其他自提点</text></view>
+    <view class="{{zt == 1 ? 'border_bottom' : 'border_bottom_act'}} choose_bottom"></view>
+  </view> -->
+  <!-- <view style="height: 100rpx;"></view> -->
+  <view class="search">
+    <view class="seaInput flex2" bind:tap="chooseLocation">
+      <icon type="search" size="15" style="margin-right: 20rpx;" />
+      <input type="text" value="{{search}}" bindinput="searchValue" confirm-type="search" placeholder="输入地址查找自提点" placeholder-style="font-size: 26rpx;color: #ccc;" bindconfirm="tosearch" disabled />
+    </view>
+    <view class="ztGPS flex3">
+      <view class="flex2 textGPS" bind:tap="chooseLocation">
+        <image src="/images/GPS.png" mode="" />
+        <text class="txt1">{{locationName}}</text>
+      </view>
+      <image class="refresh" bind:tap="getUserLocation" src="/images/brefresh.png" mode="" />
+    </view>
+  </view>
+</view>
+<scroll-view class="ztBody" scroll-y="true" style="height: {{scrollHeight}}rpx;width: 100%;box-sizing: border-box;">
+  <!-- <block wx:if="{{zt == 1}}">
+    <view>
+      <view class="recom">推荐自提点</view>
+      <view class="ztitem flex2" bind:tap="choztdian" style="border-bottom: 1rpx solid #eee;" data-type="1">
+        <view class="imagetag">
+          <image src="{{myztdList.user.headimg}}" mode="aspectFill" />
+          <view class="tag flex1" style="width: 110rpx;">距离最近</view>
+        </view>
+        <view class="item_rigth">
+          <view class="item_H1 txt1">{{myztdList.zt_name}}</view>
+          <view class="item_H2 txt2">{{myztdList.zt_address + myztdList.zt_addressxinagxi}}</view>
+          <view class="flex3">
+            <text class="item_H3">直线距离{{myztdList.distance}}km</text>
+            <view class="item_button flex1"><text>选这里</text></view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <block wx:if="{{historyztdList.length > 0}}" wx:for="{{historyztdList}}" wx:key="id">
+      <view class="ztitem flex2" bind:tap="choztdian" data-type="2" data-info="{{item}}" style="{{index+1 != historyztdList.length ? 'border-bottom: 1rpx solid #eee;' : ''}}">
+        <view class="imagetag">
+          <image src="{{item.user.headimg}}" mode="aspectFill" />
+          <view class="tag flex1" style="width: 110rpx;">以前选过</view>
+        </view>
+        <view class="item_rigth">
+          <view class="item_H1 txt1">{{item.zt_name}}</view>
+          <view class="item_H2 txt2">{{item.zt_address + item.zt_addressxinagxi}}</view>
+          <view class="flex3">
+            <text class="item_H3">直线距离{{item.distance}}km</text>
+            <view class="item_button flex1"><text>选这里</text></view>
+          </view>
+        </view>
+      </view>
+    </block>
+    <view style="display: flex;align-items: center;margin: 30rpx auto;justify-content: center;" bind:tap="choosezt" data-id="2">
+      <view style="font-size: 26rpx;">没找到合适的，查找更多自提点</view>
+      <image src="/images/blackjiantou.png" style="width: 14rpx;height: 24rpx;margin-left: 10rpx;" mode="" />
+    </view>
+  </block> -->
+
+  <!-- <block wx:if="{{zt == 2}}"> -->
+    <view style="margin-top: 30rpx;">
+      <block wx:for="{{ztdianList}}" wx:key="id">
+        <view class="ztitem flex2" bind:tap="choztdian" data-type="2" data-info="{{item}}" style="{{index+1 != ztdianList.length ? 'border-bottom: 1rpx solid #eee;' : ''}}">
+          <view class="imagetag">
+            <image src="{{item.zt_headimg != null ? item.zt_headimg:item.user.headimg}}" mode="aspectFill" />
+            <view class="tag flex1">营业中</view>
+          </view>
+          <view class="item_rigth">
+            <view class="item_H1 txt1">{{item.zt_name}}</view>
+            <view class="item_H2 txt2">{{item.zt_address + item.zt_addressxinagxi}}</view>
+            <view class="flex3">
+              <text class="item_H3">直线距离{{item.distance}}km</text>
+              <view class="item_button flex1"><text>选这里</text></view>
+            </view>
+          </view>
+        </view>
+      </block>
+    </view>
+  <!-- </block> -->
+  <view style="height: 100rpx;"></view>
+</scroll-view>

@@ -1,0 +1,75 @@
+<!--pages/myztdian/myztdian.wxml-->
+<view style="width: 100%;height: 400rpx;position: absolute;z-index: -1;top: 0;background-color: #015637;"></view>
+<view style="width: 690rpx;padding: 30rpx;display: flex;align-items: center;justify-content: space-between;">
+  <view style="font-size: 26rpx;font-weight: bold;color: white;">累计服务费</view>
+  <image src="/images/Refresh.png" style="width: 30rpx;height: 30rpx;" bind:tap="myztdian"/>
+</view>
+<view style="width: 690rpx;margin: 0 auto;display: flex;align-items: center;justify-content: space-between;">
+  <view style="font-size: 60rpx;font-weight: bold;color: white;">{{ztinfo.allmoney}}</view>
+  <view class="borbox" bind:tap="tomoney">流水明细</view>
+</view>
+<view style="width: 690rpx;margin: 30rpx;display: flex;align-items: center;justify-content: space-between;">
+  <view style="text-align: left;">
+    <view style="color: #ccc;font-size: 24rpx;margin-bottom: 10rpx;">已结算金额</view>
+    <view style="font-size: 34rpx;font-weight: bold;color: white;">{{ztinfo.data.yjsmoney}}</view>
+  </view>
+  <view style="text-align: center;">
+    <view style="color: #ccc;font-size: 24rpx;margin-bottom: 10rpx;">待结算金额</view>
+    <view style="font-size: 34rpx;font-weight: bold;color: white;">{{ztinfo.data.djsmoney}}</view>
+  </view>
+  <view style="text-align: right;">
+    <view style="color: #ccc;font-size: 24rpx;margin-bottom: 10rpx;">待到账金额</view>
+    <view style="font-size: 34rpx;font-weight: bold;color: white;">{{ztinfo.data.ddzmoney}}</view>
+  </view>
+</view>
+<view style="width: 690rpx;margin: 30rpx;background-color: white;border-radius: 20rpx;">
+  <view style="width: 630rpx;padding: 30rpx;display: flex;align-items: center;justify-content: space-between;">
+    <view style="font-size: 30rpx;">待处理订单</view>
+    <view style="display: flex;align-items: center;" bind:tap="toztorderlist" data-status="0">
+      <view style="font-size: 30rpx;margin-right: 10rpx;">全部订单</view>
+      <image src="/images/blackjiantou.png" style="width: 14rpx;height: 24rpx;" />
+    </view>
+  </view>
+  <view style="width: 100%;padding-bottom: 30rpx;display: flex;align-items: center;justify-content: space-between;">
+    <view style="text-align: center;width: 50%;" bind:tap="todeliveryGoods">
+      <view style="font-size: 36rpx;font-weight: bold;">{{ztinfo.order.dfh}}</view>
+      <view style="font-size: 24rpx;color: #666;">待发货</view>
+    </view>
+    <!-- <view style="width: 2rpx;height: 80rpx;background-color: #eee;" bind:tap="toztorderlist" data-status="2"></view>
+    <view style="text-align: center;width: 230rpx;">
+      <view style="font-size: 36rpx;font-weight: bold;">{{ztinfo.order.djh}}</view>
+      <view style="font-size: 24rpx;color: #666;">待接货</view>
+    </view> -->
+    <view style="width: 2rpx;height: 80rpx;background-color: #eee;"></view>
+    <view style="text-align: center;width: 50%;" bind:tap="toztorderlist" data-status="2">
+      <view style="font-size: 36rpx;font-weight: bold;">{{ztinfo.order.dth}}</view>
+      <view style="font-size: 24rpx;color: #666;">待接货</view>
+    </view>
+  </view>
+</view>
+<block wx:for="{{orderlist}}" wx:key="orderno">
+  <view style="width: 690rpx;margin: 30rpx;display: flex;align-items: center;justify-content: space-between;" >
+    <view style="display: flex;align-items: center;">
+      <view style="font-size: 24rpx;font-weight: bold;">{{item.time}}</view>
+      <view style="color: #999;font-size: 24rpx;margin-left: 10rpx;">{{week[item.weekday]}}</view>
+    </view>
+    <view style="font-size: 24rpx;">收入 ¥{{item.money}}</view>
+  </view>
+  <view style="width: 690rpx;margin: 30rpx;background-color: white;border-radius: 20rpx;display: flex;align-items: center;" wx:for="{{item.goods}}" wx:for-item="goods">
+    <view style="width: 120rpx;height: 120rpx;position: relative;margin: 30rpx;">
+      <image src="https://qiniu.0315678.cn/{{goods.goodsimg}}" style="width: 120rpx;height: 120rpx;border-radius: 20rpx;" mode="aspectFill" />
+    </view>
+    <view style="width: 480rpx;">
+      <view style="width: 100%;display: flex;align-items: center;justify-content: space-between;">
+        <view style="width: 310rpx;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;font-size: 30rpx;">{{goods.goodsname}}</view>
+        <view style="font-size: 30rpx;font-weight: bold;">+{{goods.partner_ser_price}}</view>
+      </view>
+      <view style="font-size: 24rpx;color: #999;margin: 14rpx 0;">{{goods.username}} {{goods.add_timeymd}}</view>
+      <view style="font-size: 24rpx;">￥{{goods.order_total_money}} x{{goods.goodsnum}}</view>
+    </view>
+  </view>
+</block>
+<view style="width: 180rpx;"></view>
+<view style="width: 100%;height: 180rpx;position: fixed;bottom: 0;background-color: white;">
+  <view class="btmbtn" bind:tap="scanCode">扫码核销</view>
+</view>

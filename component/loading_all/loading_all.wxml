@@ -1,0 +1,23 @@
+<view id='page' data-theme='{{theme}}'>
+  <view class="yuna1 blips1">
+  <image src="{{url}}/summer/xin.png" style="width:100%;" mode="widthFix"></image>
+</view>
+<view class="yuna2 blips2">
+   <image src="{{url}}/summer/xin.png" style="width:100%;" mode="widthFix"></image>
+</view>
+<view class="yuna3 blips3">
+   <image src="{{url}}/summer/xin.png" style="width:100%;" mode="widthFix"></image>
+</view>
+<view class="imgBox">
+  <view style="position: relative;">
+    <image wx:if="{{theme == 'dark'}}" class="bgImg" src="{{url}}/summer/demo1.png" style="width:100%;" ></image>
+    <image wx:else class="bgImg" src="{{url}}/summer/demo.png" style="width:100%;" ></image>
+    <view class="mask fly">
+      <image src="{{url}}/summer/demo-mask.png"></image>
+    </view>
+    <view class="mask1 fly1">
+      <image src="{{url}}/summer/demo-mask.png"></image>
+    </view>
+  </view>
+</view>
+</view>

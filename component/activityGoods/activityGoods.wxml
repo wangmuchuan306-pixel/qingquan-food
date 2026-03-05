@@ -1,0 +1,33 @@
+<!--component/activityGoods/activityGoods.wxml-->
+<block wx:for="{{list}}" wx:key="item">
+	<view class="activityItem {{type=='ended'?'endedItem':''}}" bindtap="goGoodinfo" data-id="{{item.goods_id}}" >
+		<view class="imageArea">
+			<image src="{{item.goods_img}}" mode="aspectFill" style="opacity:{{type =='ended'?'0.8':'1'}}"></image>
+			<view class="discount" wx:if="{{types==1}}"><text >{{index<9?'0':''}}{{index+1}}</text> </view>
+			<view class="discount" wx:else><text>{{item.zhekou}}</text> 折</view>
+		</view>
+		<view class="details">
+			<view class="goodTitle">{{item.goods_name}} 	{{item.small_title}}</view>
+			<view class="priceArea">
+				<view class="left">
+					<text class="aPrice"><text>{{item.pointBefore}}</text><text>.{{item.pointAfter}}</text></text>
+					<text class="oPrice">门市价{{item.line_price}}</text>
+				</view>
+				<view class="right" wx:if="{{type=='ongoing'}}">
+					<text class="inventory">剩余 <text>{{item.goodsstock}}</text> {{item.unit}}</text>
+					<!-- <text class="inventory" wx:if="{{types!=1}}">剩余 <text>{{item.goodsstock}}</text> 份</text> -->
+					<!-- <text class="inventory" wx:else>销量 <text>{{item.volume}} 份</text> </text> -->
+					<text class="btn" data-id="{{item.goods_id}}">立即抢购</text>
+				</view>
+				<view class="right" wx:elif="{{type=='preheat'}}">
+					<text class="inventory">共 <text>{{item.goodsstock}}</text> {{item.unit}}</text>
+					<text class="btn" >提醒我</text>
+				</view>
+				<view class="right" wx:elif="{{type=='ended'}}">
+					<text class="inventory">剩余 <text>{{item.goodsstock}}</text> {{item.unit}}</text>
+					<text class="btn" >秒杀结束</text>
+				</view>
+			</view>
+		</view>
+	</view>
+</block>

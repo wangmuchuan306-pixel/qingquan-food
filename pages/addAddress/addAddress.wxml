@@ -1,0 +1,39 @@
+<block>
+  <view class='main'>
+     <view class='list'>
+      <view class="one">收货地址：</view> 
+      <!-- bindtap='getposition' -->
+      <view class='address' bindtap="mapView">
+        <view class='address_left'>
+          <view wx:if="{{address==''}}">请点击选择位置</view>
+          <view class="view" wx:if="{{address}}" style='color:#000;'>{{address}}</view>
+          <view class="view" wx:if="{{addressstreet}}" style='color:#999999;font-size:24rpx;margin-top:10rpx;'>{{addressstreet}}</view>
+        </view>
+        <image src='{{url}}/summer/jinru02.png?{{veision}}'  mode="aspectFit" class='jinru'></image>
+      </view>
+    </view>
+     <view class='list' >
+      <view  class="one">详细地址：</view>
+      <input style='width:77%;' placeholder='门牌号，如5号楼4单元301室' placeholder-class='input_pla' bindinput='getInput' data-type='addressInfo' value='{{addressInfo}}'></input>
+    </view>
+    <view class='list'>
+      <view  class="one">联系人：</view>
+      <input style='width:77%;' placeholder='请填写收货人的姓名' placeholder-class='input_pla' bindinput='getInput' data-type='name' value='{{username}}' ></input>
+    </view>
+     <view class='list' >
+      <view  class="one" for="phone">手机号：</view>
+      <input style='width:77%;'  id="phone" placeholder='请填写收货手机号' placeholder-class='input_pla' bindinput='getInput' data-type='tel' type="number" value='{{tel}}' maxlength="11"></input>
+      <!-- <button style="width:98rpx;height:44rpx;background:#ff6600;color:#fff;padding:0;border:none;border-radius:22rpx;text-align:center;line-height:44rpx;font-size:24rpx" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">获取</button> -->
+    </view>
+    <view class='list' style="display:flex;align-items:center;justify-content:space-between;" >
+      <view  class="one" for="phone">默认地址：</view>
+      <switch checked="{{check}}" bindchange="switch1Change"/>
+    </view>
+  </view>
+  <!-- 底部提交按钮 -->
+  <view class="footer  ">
+  <!-- {{isIpx?'fix-iphonex-button':''}} -->
+    <view class="btn" wx:if="{{ address=='' || !username || !tel || !addressInfo}}">保存地址</view>
+    <view bindtap='addAddress' class="btn" style="background: #000;" wx:if="{{ address!='' && username && tel && addressInfo}}">保存地址</view>
+  </view>
+</block>

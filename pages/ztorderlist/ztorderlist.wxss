@@ -1,0 +1,48 @@
+/* pages/ztorderlist/ztorderlist.wxss */
+page{
+  background-color: #f8f8f8;
+}
+.istatus{
+  font-size: 30rpx;
+  color: #015637;
+  font-weight: bold;
+  border-bottom: 6rpx solid #015637;
+  padding-bottom: 4rpx;
+}
+.status{
+  font-size: 26rpx;
+  color: #999;
+}
+.smallbtn{
+  width: 120rpx;
+  height: 60rpx;
+  background-color: #ccc;
+  border-radius: 30rpx;
+  font-size: 26rpx;
+  color: white;
+  text-align: center;
+  line-height: 60rpx;
+  margin-right: 30rpx;
+}
+.bigbtn{
+  width: 160rpx;
+  height: 60rpx;
+  background-color: #015637;
+  border-radius: 30rpx;
+  font-size: 26rpx;
+  color: white;
+  text-align: center;
+  line-height: 60rpx;
+}
+.btmbtn{
+  width: 690rpx;
+  height: 100rpx;
+  background-color: #015637;
+  margin: 30rpx;
+  border-radius: 20rpx;
+  color: white;
+  font-size: 30rpx;
+  font-weight: bold;
+  text-align: center;
+  line-height: 100rpx;
+}

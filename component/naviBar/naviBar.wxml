@@ -1,0 +1,13 @@
+
+<view class="navibat flex_center" style="--menu-h:{{menu.height}}px;--menu-w:{{menu.width}}px;--menu-t:{{menu.top}}px;--menu-l:{{menu.left}}px;--position: relative;--back-color:{{backColor}};--title-color: {{titleColor}};--shadow:{{shadow ? '0 0 10rpx rgba(0,0,0,0.1)' : 'none'}};">
+</view>
+<view class="navibat flex_center" style="--menu-h:{{menu.height}}px;--menu-w:{{menu.width}}px;--menu-t:{{menu.top}}px;--menu-l:{{menu.left}}px;--position:{{position}};--back-color:{{backColor}};--title-color: {{titleColor}};--shadow:{{shadow ? '0 0 10rpx rgba(0,0,0,0.1)' : 'none'}};">
+    <view wx:if="{{!tabBar}}" style="position: absolute;left: 20rpx;">
+        <van-icon wx:if="{{showBack}}" name="arrow-left" bindtap="toBack" style="font-size: 48rpx;color: {{titleColor}};margin-left: -10rpx;"></van-icon>
+        <view wx:else class="wap-home-o flex_center" bindtap="toHome">
+            <van-icon name="wap-home-o" style="font-size: 40rpx;color: {{titleColor}};" />
+        </view>
+    </view>
+    <view wx:if="{{!empty}}" class="title txt_line">{{title}}</view>
+    <slot></slot>
+</view>

@@ -1,0 +1,100 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/orderlist/orderlist",
+    "pages/mypage/mypage",
+    "pages/logs/logs",
+    "pages/goodsinfo/goodsinfo",
+    "pages/login/login",
+    "pages/editAddress/editAddress",
+    "pages/addAddress/addAddress",
+    "pages/mycard/mycard",
+    "pages/collection/collection",
+    "pages/webView/webView",
+    "pages/myWallet/myWallet",
+    "pages/choosecard/choosecard",
+    "pages/exchangeCDK/exchangeCDK",
+    "pages/cdkReslute/cdkReslute",
+    "pages/setpage/setpage",
+    "pages/vipcenter/vipcenter",
+    "pages/orderInfo/orderInfo",
+    "pages/reward/receivereward",
+    "pages/jianjie/jianjie",
+    "pages/goodslist/goodslist",
+    "pages/buysuccess/buysuccess",
+    "pages/abc/abc",
+    "pages/template/template",
+    "pages/paysuccess/paysuccess",
+    "pages/myztdian/myztdian",
+    "pages/myhhr/myhhr",
+    "pages/lotgoodslist/lotgoodslist",
+    "pages/preparegoods/preparegoods",
+    "pages/ztorderlist/ztorderlist",
+    "pages/chooseztdian/chooseztdian",
+    "pages/lotaddorder/lotaddorder",
+    "pages/lotaddorder2/lotaddorder2",
+    "pages/myMoney1/myMoney1",
+    "pages/myMoney2/myMoney2",
+    "pages/deliveryGoods/deliveryGoods",
+    "pages/myyquser/myyquser",
+    "pages/search/search",
+    "pages/receivequan/receivequan",
+    "pages/setyearcard/setyearcard",
+    "pages/mypoints/mypoints",
+    "pages/myhelp/myhelp",
+    "pages/addorder/addorder",
+    "pages/activity/activity",
+    "pages/activitydetail/activitydetail",
+    "pages/rankingList/rankingList"
+  ],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "清泉食品",
+    "navigationBarBackgroundColor": "#ffffff"
+  },
+  "componentFramework": "glass-easel",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents",
+  "tabBar": {
+    "color": "#cccccc",
+    "selectedColor": "#015637",
+    "list": [{
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "/images/home.png",
+        "selectedIconPath": "/images/home-act.png"
+      },{
+        "pagePath": "pages/lotgoodslist/lotgoodslist",
+        "text": "分类",
+        "iconPath": "/images/cart.png",
+        "selectedIconPath": "/images/cart-act.png"
+      },{
+        "pagePath": "pages/orderlist/orderlist",
+        "text": "订单",
+        "iconPath": "/images/order.png",
+        "selectedIconPath": "/images/order-act.png"
+      },
+      {
+        "pagePath": "pages/mypage/mypage",
+        "text": "我的",
+        "iconPath": "/images/my.png",
+        "selectedIconPath": "/images/my-act.png"
+      }
+    ]
+  },
+  "usingComponents": {
+    "van-stepper": "@vant/weapp/stepper/index",
+    "van-popup": "@vant/weapp/popup/index",
+    "van-switch": "@vant/weapp/switch/index"
+  },
+  "requiredPrivateInfos": [
+    "chooseLocation",
+    "getLocation",
+    "chooseAddress"
+  ],
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于小程序位置接口的效果展示"
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "me-waterfall": "me-waterfall/waterfall/index",
+    "me-waterfall-item": "me-waterfall/waterfall-item/index"
+  },
+  "navigationBarTitleText": "购买年卡",
+  "backgroundColor": "#f8f8f8"
+}

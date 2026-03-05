@@ -1,0 +1,27 @@
+<view>
+<view style="width: 100%;height: 100rpx;display: flex;align-items: center;position: fixed;top: 0;background-color: white;z-index: 999;justify-content: space-around;">
+  <view class="titlebox" style="{{type == 1?'color: #015637;font-weight: bold;border-bottom: 6rpx solid #015637;':''}}" bind:tap="changetype" data-type="1">全部 {{yznum+dsnum+ysnum+nousenum}}</view>
+  <view class="titlebox" style="{{type == 2?'color: #015637;font-weight: bold;border-bottom: 6rpx solid #015637;':''}}" bind:tap="changetype" data-type="2">待使用 {{dsnum}}</view>
+  <view class="titlebox" style="{{type == 3?'color: #015637;font-weight: bold;border-bottom: 6rpx solid #015637;':''}}" bind:tap="changetype" data-type="3">已使用 {{ysnum}}</view>
+  <view class="titlebox" style="{{type == 4?'color: #015637;font-weight: bold;border-bottom: 6rpx solid #015637;':''}}" bind:tap="changetype" data-type="4">已转赠 {{yznum}}</view>
+</view>
+  <view style="height: 130rpx;background-color: #f8f8f8;"></view>
+  <coupons couponsList="{{couponsList}}" usedCouponsList="{{usedCouponsList}}" permissions="{{permissions}}" type="{{type}}">
+  </coupons>
+  <view style="height: 30rpx;background-color: #f8f8f8;"></view>
+  <!-- <view class="instruction" bindtap="goWebView">卡券说明</view> -->
+  <!-- <view class="instruction" bindtap="goWebView1" style="margin-top: 30rpx;">查看已过期卡券</view> -->
+</view>
+<view style="height:180rpx"></view>
+<view style="width: 100%;height: 180rpx;position: fixed;bottom: 0;z-index: 999;background-color: white;">
+  <view class="goCDK" bindtap="goCDK">兑换卡券</view>
+</view>
+<van-popup show="{{ show }}" bind:close="onClose" z-index="999" round>
+  <view style="width: 600rpx;">
+    <view style="font-size: 36rpx;font-weight: bold;text-align: center;margin: 30rpx auto;">兑换卡券</view>
+    <view style="width: 540rpx;height: 120rpx;background-color: #eee;margin: 30rpx;border-radius: 20rpx;">
+      <input type="text" style="font-size: 30rpx;height: 120rpx;margin-left: 30rpx;" placeholder="请输入16位兑换码" bindinput="incdk" />
+    </view>
+    <view class="btmbtn" style="width: 540rpx;" bind:tap="getcdkvi">确定</view>
+  </view>
+</van-popup>

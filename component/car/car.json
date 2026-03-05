@@ -1,0 +1,7 @@
+{
+  "component": true,
+  "usingComponents": {
+    "i-input-number": "/component/iview/input-number/index",
+    "image-loader": "/component/image-loader/image-loader"
+  }
+ }

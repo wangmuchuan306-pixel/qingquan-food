@@ -1,0 +1,115 @@
+<!--pages/reward/receivereward.wxml-->
+<!--pages/reward/reward.wxml-->
+<!-- 顶部头像部分 -->
+<view class="header">
+  <view class="touxiang">
+    <image src="{{imgsrc}}" class="touxiang"></image>
+  </view>
+  <view style="margin-top:30rpx">您的好友{{username}}赠送您一张优惠券</view>
+</view>
+
+<!-- 赠送优惠券部分 -->
+<view>
+
+  <!-- <view style="height:100rpx;background:#eeeeee"></view> -->
+  <view class="all">
+    <view style="margin-top:20rpx">
+      <view class="jackitem" data-id="{{commodity.c_goods_id}}" bindtap="go">
+        <view wx:if="{{select==1}}" style="width:240rpx;height:240rpx;border-radius:34rpx;position:relative">
+          <image style="width:240rpx;height:240rpx;border-radius:34rpx;" src="{{commodity.goods_img?commodity.goods_img:'/images/logo.jpg'}}">
+          </image>
+          <view class="box_shadow">
+            <image style="width:144rpx;height:144rpx;border-radius:34rpx;margin-top:48rpx" src="/images/pass.png">
+            </image>
+          </view>
+        </view>
+        <view wx:else style="width:240rpx;height:240rpx;border-radius:34rpx;">
+          <image style="width:240rpx;height:240rpx;border-radius:34rpx;" src="{{commodity.goods_img?commodity.goods_img:'/images/logo.jpg'}}" mode="aspectFill">
+          </image>
+        </view>
+        <view style="width:360rpx;margin-left:30rpx;">
+          <view class="jackbt1" wx:if="{{commodity.goods_name}}">{{commodity.goods_name}}{{commodity.small_title}}</view>
+          <view class="jackbt1">全场通用</view>
+          <view class="jackbt2">
+            <!-- <view class="shangjia"> -->
+            <!-- <view class="name2">{{item.coupon_title}}</view> -->
+            <scroll-view scroll-x="true" style="width: 340rpx;white-space:nowrap;height:70rpx;">
+              <view wx:if="{{commodity.is_discount==1}}" style="display:inline-block;height:40rpx;line-height:40rpx;background:#f60;color:#fff;vertical-align:middle;border-radius:10rpx 0 0 10rpx; padding-left:10rpx">
+                {{commodity.zhekou_num == 0?'免单券':commodity.zhekou_num+'折 折扣券'}}
+              </view>
+              <view wx:else style="display:inline-block;height:40rpx;line-height:42rpx;background:#015637;color:#fff;vertical-align:middle; border-radius:10rpx 0 0 10rpx;padding-left:10rpx">
+                ￥{{commodity.used_amount}} 代金券
+              </view>
+              <image style="width:30rpx;height:40rpx;display:inline-block;vertical-align:middle;" src="{{url}}/summer/quanright.png"></image>
+              <view class="jsMoney" style="display:inline-block">共减 {{commodity.reduce}} 元
+              </view>
+            </scroll-view>
+            <!-- <view class="name1">提供</view> -->
+            <!-- </view> -->
+            <!-- <image class="jackbt2Img" mode='heightFix' src="/images/right.png"></image> -->
+          </view>
+          <view class="jackbt3">券后价￥{{commodity.quan_price}} <text class="delPrice">￥{{commodity.line_price}}</text>
+          </view>
+          <!-- <view class="jackbt4" data-id="{{commodity.store_id}}" catchtap="dianpu">{{commodity.store_name}} 提供
+					</view> -->
+        </view>
+      </view>
+      <view class="bot" style="background-image:url('{{url}}/summer/treasure_bottom.png');background-size: 100% 100%;">
+        <view class="jindu">
+          <view class="timer">有效期至 <text style="color:#333333">{{commodity.end_time}}</text></view>
+          <!-- <view class="guoqi" wx:if="{{commodity.end_day==1}}">明天过期</view> -->
+          <view class="guoqi" wx:if="{{!commodity.end_day}}">已过期</view>
+          <view class="guoqi" wx:else>{{commodity.end_day==1?'今天过期':commodity.end_day==2?'明天过期':commodity.end_day-1+'天后过期'}}</view>
+        </view>
+        <!-- 立即使用 -->
+        <view class="btn3" style="background:{{treasurelog_type==2?'#015637':'#ccc'}};" wx:if="{{userinfo.user_id!=fromuid}}" data-index="{{index}}" bindtap="tousecoupon">
+          立即使用
+        </view>
+      </view>
+    </view>
+    <view style="position: absolute;width: 200rpx;height: 200rpx;top: -20rpx;left: -20rpx;">
+      <image src="https://icon.0315678.cn/{{treasurelog_type==1?'dlq':treasurelog_type==2?'ylq':'ysx'}}.png" style="width: 100%;height: 100%;" mode="" />
+    </view>
+  </view>
+</view>
+<view class="yestext flex1">
+  <text wx:if="{{treasurelog_type==1 && userinfo.user_id!=fromuid}}">请在以下时间内领取，超时将自动失效</text>
+  <text wx:if="{{treasurelog_type==1 && userinfo.user_id==fromuid}}">礼券将在以下时间内失效，请通知好友尽快领取</text>
+  <text wx:if="{{treasurelog_type==2 && userinfo.user_id!=fromuid}}">恭喜您已在有效期内领取成功，快去看看吧</text>
+  <text wx:if="{{treasurelog_type==2 && userinfo.user_id==fromuid}}">礼券已被好友{{commodity.receiver_nickname}}领取</text>
+  <text wx:if="{{treasurelog_type==3 && userinfo.user_id!=fromuid}}">由于好友未在有效时间内领取，礼券已失效</text>
+  <text wx:if="{{treasurelog_type==3 && userinfo.user_id==fromuid}}">由于您未在有效时间内领取，礼券已失效</text>
+</view>
+<view class="yes flex1" style="font-weight: bold;color: {{treasurelog_type==1?'#f60':'#ccc'}};">{{h}}:{{m}}:{{s}}</view>
+<!-- 开心收下部分 -->
+<!-- <view class="receive" bindtap="accept" wx:if="{{commodity[0].treasurelog_type==1}}">
+	开心收下
+</view> -->
+<!-- // treasurelog_type   0正常  1已发送  2 已领取的  3已过期的-->
+
+<view class="receive receive2" bindtap="accept" style="background:{{bg}}" wx:if="{{treasurelog_type==1 && userinfo.user_id!=fromuid}}">
+  开心收下
+</view>
+<view class="receive" bindtap="accept3" wx:if="{{treasurelog_type==1 && userinfo.user_id==fromuid}}">
+  查看我的卡券
+</view>
+<view class="receive" bindtap="accept3" wx:if="{{treasurelog_type==2}}">
+  {{userinfo.user_id==fromuid?'返回我的卡券':'查看我的礼券'}}
+</view>
+<view class="receive" bindtap="accept2" style="background:#ccc" wx:if="{{treasurelog_type==3&&userinfo.user_id!=fromuid}}">
+  礼券已过期
+</view>
+<view class="receive" bindtap="accept3" wx:if="{{treasurelog_type==3&&userinfo.user_id==fromuid}}">
+  查看我的卡券
+</view>
+<!-- <view class="receive" bindtap="accept" style="background:#ccc" wx:if="{{type==2 && from_user_id ==user_id }}">
+  6小时内无人领取，已被退回
+</view> -->
+<view class="shopping" bindtap="goHome" style="font-weight: bold;">返回{{procedure.wxname}}商城</view>
+<!-- <view class="jishi">优惠券将在{{h+':'+ m +':'+s}}后自动撤回</view> -->
+
+
+<!-- 底部部分 -->
+<!-- <view style="text-align:center;padding-top:30rpx;margin-bottom:80rpx;" bindtap="goindex">
+	<image src="{{url}}/xunbao/homeact.png" style="width:690rpx;border-radius:20rpx;height:160rpx"></image>
+</view> -->

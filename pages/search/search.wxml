@@ -1,0 +1,75 @@
+<!--pages/search/search.wxml-->
+<!-- lty -->
+<!-- 搜索框 -->
+<view class="flex3" style="width: 100%;padding: 10rpx 30rpx 15rpx;background-color: var(--theme-color);box-sizing: border-box;position: fixed;top: 0;">
+  <view class="flex3" style="width: 540rpx;height: 64rpx;background-color: white;border-radius: 30rpx;padding: 0rpx 30rpx;">
+    <view class="flex2">
+      <!-- <image src="/images/sousousou.png" style="width: 30rpx;height: 30rpx;margin-right: 20rpx;" mode="" /> -->
+      <icon type="search" size="15" style="margin-right: 20rpx;"/>
+      <input value="{{inputValue}}" placeholder="请输入商品关键字" placeholder-style="color:#999"	focus="true" style="width: 400rpx;"	bindblur="search" type="text" confirm-type="search" bindinput="searchChenga" />
+    </view>
+    <image hidden="{{searchDel}}" src="/images/del.png" bind:tap="searchEmpty" style="width: 30rpx;height: 30rpx;" mode="" />
+  </view>
+  <view style="color:white;" bind:tap="search">搜索</view>
+</view>
+<view style="height: 100rpx;"></view>
+<view hidden="{{pageShow}}">
+  <!-- 搜索历史 -->
+  <view style="width: 690rpx;padding: 30rpx;">
+    <view class="flex3">
+      <view style="font-size: 34rpx;">搜索历史</view>
+      <view style="color: gray;font-size: 28rpx;" bind:tap="allhistoryEmpty">清空</view>
+    </view>
+    <view class="flex2" style="flex-wrap: wrap;">
+      <view wx:for="{{locaValue}}" wx:for-item="locaA" style="padding: 10rpx 20rpx;margin: 30rpx 30rpx 0rpx 0px;background-color: white;border-radius: 10rpx;display: table;">
+        <view class="flex2">
+          <view bind:tap="hotValue" data-value="{{locaA}}" style="border-right: 1rpx solid #eee;padding-left: 10rpx;padding-right: 10rpx;">{{locaA}}</view>
+          <image src="/images/del2.png" bind:tap="onehistoryEmpty" data-index="{{index}}" mode="" style="width: 30rpx;height: 30rpx;margin-left: 10rpx" />
+        </view>
+      </view>
+    </view>
+  </view>
+  <view hidden="{{locaValue.length>0}}" class="flex1" style="width: 750rpx;color: #999;font-size: 28rpx;"><text>暂无历史搜索记录~</text></view>
+  <!-- 热门搜索 -->
+  <!-- <view style="width: 690rpx;padding: 30rpx;">
+    <view class="flex3">
+      <text style="font-size: 34rpx;">热门搜索</text>
+      <image src="https://yhtapi.ehetuan.cn/summer/34478F57ADAE-70D.png" bind:tap="ishotRefresh" style="width: 40rpx;height: 40rpx;" mode=""/>
+    </view>
+    <view class="flex2" style="flex-wrap: wrap;">
+      <view wx:for="{{ishotList[hotIndex]}}" wx:for-item="hotA">
+        <view bind:tap="hotValue" data-value="{{hotA.search_name}}" style="padding: 10rpx 20rpx;margin: 30rpx 30rpx 0rpx 0px;background-color: white;border-radius: 10rpx;display: table;display: flex;align-items: center;">
+          <image wx:if="{{hotA.ishot}}" src="https://yhtapi.ehetuan.cn/summer/remen.png" style="width: 40rpx;height: 40rpx;" mode=""/>
+          <text style="font-size: 30rpx;margin-left: 10rpx;">{{hotA.search_name}}</text>
+        </view>
+      </view>
+    </view>
+  </view> -->
+</view>
+<!-- 搜索后显示商品列表 -->
+<view hidden="{{!pageShow}}" style="width: 690rpx;padding: 30rpx;">
+  <block wx:for="{{goodsList}}" wx:key="car">
+    <view class="flex2 goodsFor" bind:tap="gotodetails" data-id="{{item.goods_id}}">
+      <image class="goodsImage" src="{{item.goods_img}}" mode="aspectFill" />
+      <view class="goodsDetails">
+        <view class="goodsH1">{{item.goods_name}}</view>
+        <view class="goodsH2">市场价 ￥{{item.line_price}} / 已拼 {{item.volume}}</view>
+        <view class="flex2 goodsLabel">
+          <view class="goodsLabel1 txt1">{{item.zttype == 1 ? '仅自提' : item.zttype == 2 ? '仅配送' : '配送/自提'}}</view>
+          <view class="goodsLabel1 txt1">{{item.xg_num==0 ? '不限购' : '限购 '+ item.xg_num}}</view>
+        </view>
+        <view class="goodsH3 flex3">
+          <text>￥ {{userinfo && userinfo.level>0 ? item.memberprice : item.normalprice}}</text>
+          <!-- 加号/减号 -->
+          <!-- <view class="SurvivalOrDeath flex2">
+              <image wx:if="" src="/images/minusSign.png" mode=""/>
+              <input wx:if="" type="text"/>
+              <image src="/images/plusSign.png" mode=""/>
+            </view> -->
+        </view>
+      </view>
+    </view>
+  </block>
+</view>
+<import src="/pages/template/template" />
+<template is="publicFooter" data="{{pageSet}}"></template>

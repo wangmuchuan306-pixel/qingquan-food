@@ -1,0 +1,30 @@
+<view class='retail_list' data-theme="{{theme}}">
+	<view class='retail_cover'>
+		<image-loader default-image='/component/images/noimg.png?{{veision}}' original-image='{{myProperty.goods_img}}' mode="aspectFill" />
+		<view class="sheng" wx:if="{{myProperty.is_activity}}">省{{myProperty.sheng}}元</view>
+	</view>
+	<view class="r_jiaobiao">
+		<image src="{{url}}/summer/beijingtu1.png?{{veision}}" ></image>
+		<view class="r_jiaobiao1">{{myProperty.label_name}}</view>
+	</view>
+	
+	<view class='retail_list_right'>
+		<view class='retail_list_right_title' data-theme="{{theme}}">
+			<text><text wx:if="{{myProperty.goods_store_name}}">[ {{myProperty.goods_store_name}} ] </text>{{myProperty.goods_name}} {{myProperty.small_title}}</text>
+		</view>
+		<view>
+			<view class='retail_list_right_center' data-theme="{{theme}}">
+				<text><text>推荐 {{myProperty.score}}</text>
+				<text> · </text>销量 {{myProperty.volume+1000}}</text>
+			</view>
+			<view class='retail_list_right_footer' style="display: flex;justify-content: space-between;">
+				<view class='r_price' style="font-size: 30rpx;color: #f60;" data-theme="{{theme}}">{{myProperty.memberprice}}</view>
+        <view style="display: flex;align-items: center;">
+          <image src="https://usd.0315678.cn/summer/huijian.jpg" style="width: 38rpx;height: 38rpx;border-radius: 100rpx;"></image>
+          <input value="1" style="width: 40rpx;text-align: center;font-size: 24rpx;color: #fff;margin: 0 10rpx;" ></input>
+          <image src="https://usd.0315678.cn/summer/redjia.jpg" style="width: 38rpx;height: 38rpx;border-radius: 100rpx;"></image>
+        </view>
+			</view>
+		</view>
+	</view>
+</view>

@@ -1,0 +1,9 @@
+/* pages/webView/webView.wxss */
+.guize{
+  font-size: 30rpx;
+  color: #111111;
+  padding: 30rpx;
+}
+page{
+  background:#fff;
+}

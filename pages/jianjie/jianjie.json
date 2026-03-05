@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "Parser":"/component/parser/parser",
+    "mp-html": "mp-html"
+  }
+}

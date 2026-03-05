@@ -1,0 +1,48 @@
+<!--pages/activity/activity.wxml-->
+<view style="width: 100%;position: fixed;top: 0;padding: 10rpx 30rpx 20rpx;background-color: #fff;box-sizing: border-box;">
+  <view class="flex2" style="width: 100%;height: 70rpx;border-radius: 35rpx;background-color: #f8f8f8;padding: 0 20rpx;box-sizing: border-box;">
+    <image src="/images/search_005832.png" style="width: 30rpx;height: 30rpx;margin-right: 20rpx;" mode=""/>
+    <input type="text" value="{{search_str}}" bindinput="searchinput" style="font-size: 30rpx;flex: 1;min-width: 0;" placeholder="请输入活动名称"/>
+    <image src="/images/close.png" bind:tap="close" wx:if="{{search_str}}" style="width: 40rpx;height: 40rpx;margin-left: 30rpx;" mode=""/>
+  </view>
+</view>
+<view style="height: 100rpx;"></view>
+<view style="padding: 30rpx;width: 100%;box-sizing: border-box;">
+  <block wx:for="{{activitylist}}" wx:key="id">
+    <view class="activity_box">
+      <view class="title txt1">{{item.act_title}}</view>
+      <view class="desc">{{item.act_desc}}</view>
+      <view class="tiem">{{item.act_start_time + ' 至 ' + item.act_end_time}}</view>
+      <view class="goods_box flex2">
+        <view style="position: relative;width: 100%;height: 360rpx;flex-shrink: 0;margin-right: 30rpx;">
+          <image class="activity_img" src="{{qiniuUrl + item.bgimg}}" mode=""/>
+          <view class="activity_type">活动{{item.act_status_text}}</view>
+        </view>
+        <!-- <view class="flex3" style="flex: 1;min-width: 0;flex-direction: column;height: 100%;">
+          <block wx:for="{{item.act_goods}}" wx:for-item="goods" wx:key="index">
+            <view class="goods flex2" bind:tap="toinfo" data-id="{{goods.goods_id}}">
+              <image class="goods_img" src="{{qiniuUrl + goods.goods_img}}" mode=""/>
+              <view style="flex: 1;min-width: 0;">
+                <view class="twolinetext f26_c000">{{goods.goods_name}}</view>
+                <view class="f26_c005832_b">¥ {{goods.active_price}} <text class="f24_c999_tdlt">¥ {{goods.line_price}}</text></view>
+              </view>
+            </view>
+          </block>
+        </view> -->
+      </view>
+      <view class="flex3" style="width: 100%;margin-top: 30rpx;">
+        <view style="font-size: 26rpx;color: #999;">{{item.seeallnum}}人次浏览</view>
+        <view class="flex2">
+          <view class="flex1 but1">
+            <image style="width: 30rpx;height: 30rpx;" src="/images/share_005832.png" mode=""/>
+            <view style="margin-left:10rpx;">分享</view>
+            <button plain="{{true}}" open-type="share" data-index="{{index}}" style="width: 100%;height: 100%;padding: 0;margin: 0;border: 0;position: absolute;top: 0;left: 0;"></button>
+          </view>
+          <view bind:tap="goDetail" data-index="{{index}}" class="flex1 but2">
+            <view>进入专区</view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </block>
+</view>

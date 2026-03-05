@@ -1,0 +1,46 @@
+<!--pages/receivequan/receivequan.wxml-->
+<view style="text-align: center;margin: 100rpx auto;" wx:if="{{quanlist.length==0}}">
+  <image src="{{url}}/summer/order_none.png?{{veision}}" mode="widthFix"></image>
+  <view>暂无卡券领取</view>
+</view>
+<view style="width: 690rpx;margin: 30rpx;background-color: white;border-radius: 20rpx;" wx:for="{{quanlist}}" wx:key="id">
+  <view style="font-size: 40rpx;font-weight: bold;padding: 30rpx;padding-bottom: 0;">
+    {{item.title}}
+  </view>
+  <view style="width: 630rpx;padding:15rpx 30rpx;display: flex;align-items: center;justify-content: space-between;">
+    <view>
+      <view style="display: flex;align-items: center;">
+        <view style="font-size: 42rpx;font-weight: bold;color: {{item.is_lingqu==0?'#015637':'#ccc'}};">￥{{item.used_amount}}</view>
+        <view class="borbox" style="color: {{item.is_lingqu==0?'#015637':'#ccc'}};border-color: {{item.is_lingqu==0?'#015637':'#ccc'}};" wx:if="{{item.cat_id == 2}}">新人券</view>
+        <view class="borbox" style="color: {{item.is_lingqu==0?'#015637':'#ccc'}};border-color: {{item.is_lingqu==0?'#015637':'#ccc'}};" wx:if="{{item.cat_id == 6}}">复购券</view>
+        <view class="borbox" style="color: {{item.is_lingqu==0?'#015637':'#ccc'}};border-color: {{item.is_lingqu==0?'#015637':'#ccc'}};" wx:if="{{item.cat_id == 8}}">活动券</view>
+      </view>
+      <view style="font-size: 26rpx;margin-top: 10rpx;">
+        <text wx:if="{{item.cat_id == 2}}">仅限新人领取</text>
+        <text wx:if="{{item.cat_id == 6}}">仅限下单用户领取</text>
+        <text wx:if="{{item.cat_id == 8}}">仅限活动领取</text>
+        · {{item.isgoods==1?'全场通用':'指定商品'}}
+      </view>
+    </view>
+    <view class="rightbtn" style="background-color: {{item.is_lingqu==0?'#015637':'#ccc'}};" bind:tap="receive_coupon" data-index="{{index}}">立即领取</view>
+  </view>
+  <view style="width: 720rpx;display: flex;align-items: center;justify-content: space-between;margin-left: -15rpx;">
+    <view style="width: 30rpx;height: 30rpx;background-color: #f8f8f8;border-radius: 100%;"></view>
+    <view style="width: 630rpx;height: 2rpx;background-color: #eee;"></view>
+    <view style="width: 30rpx;height: 30rpx;background-color: #f8f8f8;border-radius: 100%;"></view>
+  </view>
+  <view style="width: 630rpx;padding: 30rpx;padding-top: 15rpx;display: flex;align-items: center;justify-content: space-between;">
+    <view style="font-size: 24rpx;color: #999;">
+      <!-- <text></text> -->
+      有效期 {{item.valid_type==2&&item.is_lingqu==0?'领取后'+item.valid_days+'天':item.end_time_ymd}}
+    </view>
+    <view style="font-size: 26rpx;color: #015637;" bind:tap="gomycard" wx:if="{{item.is_lingqu==1}}">查看已领卡券</view>
+    <view wx:else style="font-size: 26rpx;color: #015637;" bind:tap="showcontent" data-index="{{index}}">使用说明</view>
+  </view>
+</view>
+<view style="height: 30rpx;"></view>
+<van-popup show="{{ show }}" bind:close="onClose" round>
+  <view style="font-size: 36rpx;font-weight: bold;text-align: center;margin: 30rpx auto;">使用说明</view>
+  <view style="font-size: 30rpx;margin: 30rpx;width: 450rpx;">{{quanlist[quanindex].c_content}}</view>
+  <view class="btn" bind:tap="onClose">确认</view>
+</van-popup>

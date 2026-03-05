@@ -1,0 +1,8 @@
+{
+  "usingComponents": {},
+  "navigationBarTitleText": "流水明细",
+  "navigationBarBackgroundColor": "#015637",
+  "navigationBarTextStyle": "white",
+  "backgroundColorTop": "#015637",
+  "backgroundColorBottom": "#f8f8f8"
+}

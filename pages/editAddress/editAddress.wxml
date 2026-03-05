@@ -1,0 +1,67 @@
+<block>
+	<!-- 没有收货地址 -->
+	<view class='noneAddress' wx:if="{{addressList.length==0}}">
+		<image src="{{url}}/summer/noneAddress.png?{{veision}}" mode='widthFix'></image>
+		<view>一个地址都没有哦~</view>
+	</view>
+	<view class='Address' wx:if="{{addressList}}">
+		<block wx:for="{{addressList}}" wx:for-item="list" wx:key="this">
+			<view class='AddressList'>
+				<!-- 从下单进入 -->
+				<view wx:if="{{pageType=='order'}}" class="listItem" data-id="{{list.id}}">
+					<view class="address_content">
+						<view class='addressInfo' style="font-size:26rpx;color:#999">
+							<!-- <text>{{list.address}} {{list.detail_address}}</text> -->
+							<text style='margin-right:10rpx;'>{{list.username}}</text>
+							<text>{{list.phone}}</text>
+						</view>
+						<view class='AddressListName' style="color:#000;font-size:34rpx;">
+							<!-- <text style='margin-right:10rpx;'>{{list.username}}</text>
+							<text>{{list.phone}}</text> -->
+							<text>{{list.address}} {{list.detail_address}}</text>
+
+						</view>
+					</view>
+					<view class="address_check">
+						<image wx:if="{{list.check &&addressList.length>1}}" src="{{url}}/summer/select3x_xuanzhong.png?{{veision}}" mode="widthFix"></image>
+						<view wx:else class="useThis" bindtap="useThis" data-index="{{index}}">使用</view>
+					</view>
+				</view>
+				<!-- 从个人主页进入 -->
+				<view wx:if="{{pageType==''}}">
+					<view class='addressInfo'>
+						<text>{{list.address}} {{list.detail_address}}</text>
+					</view>
+					<view class='AddressListName'>
+						<text style='margin-right:10rpx;'>{{list.username}}</text>
+						<text>{{list.phone}}</text>
+					</view>
+
+				</view>
+				<view class='addressFooter'>
+					<view class='addressFooter_left' bindtap='setDefault' data-type='1' data-id='{{list.id}}'>
+						<image src='{{url}}/summer/duigou02.png?{{veision}}' wx:if="{{list.default==1}}"></image>
+						<image src='{{url}}/summer/choose.png?{{veision}}' wx:if="{{list.default==2}}"></image>
+						<view>默认地址</view>
+					</view>
+					<view class='addressFooter_right'>
+						<view bindtap='addAddress' data-id='{{list.id}}'>
+							<image src="{{url}}/summer/address_edit3x.png" mode="aspectFill"></image>
+							编辑	
+						</view>
+						<view bindtap='delAddress' data-id='{{list.id}}'>
+							<image src="{{url}}/summer/address_dele3x.png" mode="aspectFill"></image>
+							删除	
+							</view>
+					</view>
+				</view>
+			</view>
+		</block>
+	</view>
+	<!-- 底部按钮 -->
+	<view style="height:{{isIpx?'292':'224'}}rpx;"></view>
+	<view class="footer {{isIpx?'fix-iphonex-button':''}}">
+		<view class="weixin" bindtap="getWxAddress">一键获取微信地址</view>
+		<view class='add' bindtap='addAddress'>新建地址</view>
+	</view>
+</block>

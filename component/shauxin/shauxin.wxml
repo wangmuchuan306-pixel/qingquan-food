@@ -1,0 +1,35 @@
+<block wx:if="{{is == 'shuaxin'}}">
+  <view class="shuaxin2 flex1">
+    <!-- <view class="{{triggered ? 'imageani2_1' : ''}}" style="margin-right: 30rpx;"></view> -->
+    <view class="{{triggered ? 'imageani2_2' : ''}}" style="margin-right: 30rpx;"></view>
+    <view class="{{triggered ? 'imageani2_1' : ''}}" style="margin-right: 30rpx;"></view>
+    <view class="{{triggered ? 'imageani2_2' : ''}}" style="margin-right: 30rpx;"></view>
+    <!-- <view class="{{triggered ? 'imageani2_1' : ''}}"></view> -->
+  </view>
+</block>
+
+<block wx:if="{{is == 'shuaxin_if'}}">
+  <view class="shuaxin flex1">
+    <!-- <view class="{{triggered ? 'imageani2_1' : ''}}" style="margin-right: 30rpx;"></view> -->
+    <view class="{{triggered ? 'imageani2_2' : ''}}" style="margin-right: 30rpx;"></view>
+    <view class="{{triggered ? 'imageani2_1' : ''}}" style="margin-right: 30rpx;"></view>
+    <view class="{{triggered ? 'imageani2_2' : ''}}" style="margin-right: 30rpx;"></view>
+    <!-- <view class="{{triggered ? 'imageani2_1' : ''}}"></view> -->
+  </view>
+</block>
+
+
+<!-- fangLogo -->
+<block wx:if="{{is == 'fangLogo'}}">
+  <view class="sk-cube-grid">
+    <view class="sk-cube sk-cube-1"></view>
+    <view class="sk-cube sk-cube-2"></view>
+    <view class="sk-cube sk-cube-3"></view>
+    <view class="sk-cube sk-cube-4"></view>
+    <view class="sk-cube sk-cube-5"></view>
+    <view class="sk-cube sk-cube-6"></view>
+    <view class="sk-cube sk-cube-7"></view>
+    <view class="sk-cube sk-cube-8"></view>
+    <view class="sk-cube sk-cube-9"></view>
+  </view>
+</block>

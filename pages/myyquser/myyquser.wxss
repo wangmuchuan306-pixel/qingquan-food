@@ -1,0 +1,17 @@
+/* pages/myyquser/myyquser.wxss */
+page {
+  background-color: #f8f8f8;
+}
+
+.phonebox {
+  width: 120rpx;
+  height: 60rpx;
+  font-size: 30rpx;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+  line-height: 60rpx;
+  background-color: #015637;
+  border-radius: 30rpx;
+  margin-right: 30rpx;
+}

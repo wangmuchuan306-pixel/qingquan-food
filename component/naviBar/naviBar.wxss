@@ -1,0 +1,32 @@
+@import '/app.wxss';
+
+.navibat {
+    position: var(--position);
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 999;
+    background-color: var(--back-color);
+    box-sizing: border-box;
+    box-shadow: var(--shadow);
+    height: calc(var(--menu-h) + var(--menu-t) + 16rpx);
+    padding: var(--menu-t) 30rpx 16rpx 30rpx;
+}
+
+.title {
+    width: calc(100% - 2 * var(--menu-w));
+    text-align: center;
+    color: var(--title-color);
+    font-size: 32rpx;
+    font-weight: bold;
+}
+
+.wap-home-o {
+    --size: 66rpx;
+    width: var(--size);
+    height: var(--size);
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 2rpx solid #999;
+    box-sizing: border-box;
+    border-radius: 50%;
+}

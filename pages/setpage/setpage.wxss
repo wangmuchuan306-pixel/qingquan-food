@@ -1,0 +1,26 @@
+/* pages/setpage/setpage.wxss */
+page{
+  background-color: #f4f7fe;
+}
+.linebox{
+  width: 630rpx;
+  height: 120rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 30rpx;
+  margin: 0 auto;
+  border-bottom: 2rpx solid #eee;
+}
+.btmbtn{
+  width: 690rpx;
+  height: 100rpx;
+  border-radius: 20rpx;
+  margin: 30rpx;
+  background-color: #015637;
+  font-size: 30rpx;
+  font-weight: bold;
+  text-align: center;
+  line-height: 100rpx;
+  color: white;
+}

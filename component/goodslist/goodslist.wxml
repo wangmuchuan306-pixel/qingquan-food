@@ -1,0 +1,28 @@
+<scroll-view class="body" type="custom">
+  <grid-view type="masonry" cross-axis-count="{{2}}" cross-axis-gap="{{8}}" main-axis-gap="{{8}}">
+    <block wx:for="{{goodslist}}" wx:key="index">
+      <view class="item_box" bind:tap="gotoDetail" data-id="{{item.goods_id}}">
+        <view class="item_img_box">
+            <image class="item_img" src="{{item.goods_img}}" mode="widthFix" />
+            <!-- <image wx:if="{{item.goodsvideo}}" class="item_img_tag" src="{{iconurl}}c_playvoide.png" />
+            <view wx:if="{{item.label_info.length>0}}" class="item_img_tip" style="background-color: {{item.label_info[0].color}};">{{item.label_info[0].label_name}}</view> -->
+        </view>
+        <view class="item_info">
+            <view class="item_name txt2">{{item.goods_name}}</view>
+            <view class="item_desc">已售 {{item.volume + 1000}} 库存 {{item.goodsstock}}</view>
+            <view wx:if="{{item.paihang<=30}}" class="item_price flex_align" style="background-color: #FDF4E4;">
+                <image class="item_price_icon" src="https://icon.0315678.cn/c_shopcup.png" />
+                <block>
+                    <view catch:tap="goranking" class="item_price_text" style="color: #B79264;">热销排行榜第<text style="color: #f60;font-weight: bold;">{{item.paihang}}</text>名</view>
+                </block>
+                <image class="item_price_right" src="https://icon.0315678.cn/c_right_b79264.png" />
+            </view>
+            <view class="item_count flex_sb">
+                <view class="item_count_text">¥ {{userinfo.user_level == 2 ? item.line_price : (userinfo.user_level == 1 ? item.memberprice : item.normalprice)}}</view>
+                <!-- <image class="item_count_add" src="{{iconurl}}greenjia_c.png" /> -->
+            </view>
+        </view>
+      </view>
+    </block>
+  </grid-view>
+</scroll-view>

@@ -1,0 +1,84 @@
+/* packageA/pages/exchangeCDK/exchangeCDK.wxss */
+page{
+ background: #eee;
+}
+.duihuan{
+ width: 690rpx;
+ height:256rpx;
+ background: #fff;
+ margin-left: 30rpx;
+ margin-top: 30rpx;
+ border-radius: 30rpx;
+ padding-top: 30rpx;
+}
+.shuru{
+ width: 600rpx;
+ height: 98rpx;
+ background: #eee;
+ margin-left: 30rpx;
+ border-radius: 20rpx;
+ line-height: 98rpx;
+ padding-left: 30rpx;
+
+}
+.shuru1{
+ width: 630rpx;
+ height: 98rpx;
+ text-align: center;
+ border-radius: 20rpx;
+ margin-top: 30rpx;
+ line-height: 98rpx;
+ color: #fff;
+ background: #f60;
+ margin-left: 30rpx;
+}
+.shuru2{
+ width: 630rpx;
+ height: 98rpx;
+ text-align: center;
+ border-radius: 20rpx;
+ margin-top: 30rpx;
+ line-height: 98rpx;
+ color: #fff;
+ background: #ccc;
+ margin-left: 30rpx;
+}
+.bot{
+ width: 690rpx;
+ line-height: 40rpx;
+ margin-left: 30rpx;
+ margin-top: 50rpx;
+ font-size: 24rpx;
+ color: #999;
+}
+.bot1{
+ font-size: 24rpx;
+ color: #999;
+ margin-left: 18rpx;
+}
+.footer1 {
+ text-align: center;
+ margin-top: 30rpx;
+ /* padding-bottom: 180rpx; */
+}
+.footer1 image{
+ width: 340rpx;
+ margin: 20rpx 0;
+ opacity: .5;
+}
+.guding{
+ /* padding-bottom: 100rpx; */
+ padding-top: 100rpx;
+}
+.footer {
+	text-align: center;
+	margin-top: 30rpx;
+	padding-bottom: 300rpx;
+	opacity: .6;
+}
+
+.footer image {
+	width: 340rpx;
+	height: 340rpx;
+	/* border-radius: 50%; */
+}

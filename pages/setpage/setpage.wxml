@@ -1,0 +1,29 @@
+<!--pages/setpage/setpage.wxml-->
+<view style="width: 690rpx;margin: 30rpx;border-radius: 20rpx;background-color: white;">
+  <view class="linebox">
+    <view>头像</view>
+    <button open-type="chooseAvatar" style="width: 80rpx;height: 80rpx;margin: 0;padding: 0;border: none;" plain bindchooseavatar="chooseimg">
+      <image src="{{headimg}}" style="width: 80rpx;height: 80rpx;border-radius: 100%;" mode="aspectFill" />
+    </button>
+  </view>
+  <view class="linebox">
+    <view>昵称</view>
+    <input type="nickname" value="{{nickname}}" placeholder="请输入您的昵称" placeholder-style="font-size:30rpx" style="font-size: 30rpx;text-align: right;" bindinput="inname" />
+  </view>
+  <view class="linebox" style="border: none;">
+    <view>电话</view>
+    <input type="number" value="{{phone}}" placeholder="请输入您的联系方式" placeholder-style="font-size:30rpx" style="font-size: 30rpx;text-align: right;" maxlength="11" bindinput="inphone" />
+  </view>
+  <!-- <view class="linebox">
+    <view>生日</view>
+    <picker mode="date" disabled="{{birthday}}" bindchange="cbirthday">
+      <view style="display: flex;align-items: center;">
+        <input type="text" value="{{birthday}}" placeholder="请填写您的生日" placeholder-style="font-size:30rpx" style="font-size: 30rpx;text-align: right;" disabled />
+        <image src="/images/blackjiantou.png" style="width: 16rpx;height: 24rpx;margin-left: 10rpx;" mode="" />
+      </view>
+    </picker>
+  </view> -->
+</view>
+<view style="width: 100%;height: 180rpx;position: fixed;bottom: 0;background-color: white;">
+  <view class="btmbtn" bind:tap="setwxinfo">保存修改</view>
+</view>

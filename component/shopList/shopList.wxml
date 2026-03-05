@@ -1,0 +1,22 @@
+<!--component/shopList/shopList.wxml-->
+<template name="shopList">
+  <view class="jackitem" data-id="{{c_goods_id}}" bindtap="go">
+  
+  <view style="width:240rpx;height:240rpx;border-radius:34rpx;">
+    <image style="width:240rpx;height:240rpx;border-radius:34rpx;" src="{{goods_img}}"></image>
+  </view>
+  <view style="width:360rpx;margin-left:30rpx;">
+    <view class="jackbt1">{{goods_name}}{{small_title}}</view>
+    <view class="jackbt2" data-id="{{store_id}}" catchtap="dianpu">
+      <view class="shangjia">
+        <view class="name2">{{coupon_title}}</view>
+        <!-- <view class="name1">提供</view> -->
+      </view>
+      <!-- <image class="jackbt2Img" mode='heightFix' src="/images/right.png"></image> -->
+    </view>
+    <view class="jackbt3">会员价￥{{memberprice}} / 券后价 <text>￥{{quan_price}}</text></view>
+    <view class="jackbt4">{{store_name}} 提供
+    </view>
+  </view>
+</view>
+</template>

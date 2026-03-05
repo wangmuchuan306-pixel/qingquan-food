@@ -1,0 +1,17 @@
+/* pages/paysuccess/paysuccess.wxss */
+page{
+  background-color: #f8f8f8;
+
+}
+.btn{
+  width: 590rpx;
+  height: 120rpx;
+  margin: 0 auto ;
+  text-align: center;
+  line-height: 120rpx;
+  font-size: 34rpx;
+  font-weight: bold;
+  color: white;
+  border-radius: 20rpx;
+  background-color: #060;
+}

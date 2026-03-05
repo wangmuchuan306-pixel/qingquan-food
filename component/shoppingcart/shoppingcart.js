@@ -1,0 +1,569 @@
+const app = getApp()
+Component({
+    /**
+     * 组件的属性列表
+     */
+    properties: {
+        userinfo: {
+            type: Object,
+            value: {}
+        }
+    },
+
+    /**
+     * 组件的初始数据
+     */
+    data: {
+        isShow: false,
+        cartShow: false,
+    },
+    lifetimes: {
+        attached() {
+            this.usershoppingcart()
+        },
+        ready() {
+
+        }
+    },
+    methods: {
+        show() {
+            if (!this.data.userinfo) {
+                wx.showToast({
+                    title: '请先登录',
+                    icon: 'none'
+                })
+                setTimeout(() => {
+                    wx.navigateTo({
+                        url: '/pages/login/login',
+                    })
+                }, 1500)
+                return
+            }
+            if (this.data.isShow != this.data.cartShow) return
+            this.setData({
+                isShow: true,
+                page: 1,
+            })
+            setTimeout(() => {
+                this.setData({
+                    cartShow: true,
+                })
+            }, 200)
+            this.usershoppingcart()
+        },
+        hide() {
+            if (this.data.isShow != this.data.cartShow) return
+            this.setData({
+                cartShow: false,
+            })
+            setTimeout(() => {
+                this.setData({
+                    isShow: false,
+                })
+            }, 300)
+        },
+        showOrHide() {
+            if (this.data.cartShow) {
+                this.hide()
+            } else {
+                this.show()
+            }
+        },
+
+        //购物车列表
+        usershoppingcart() {
+            var that = this
+            app.apiPost(app.apiList.usershoppingcart, {
+                store_id: 1
+            }, (res) => {
+                var selectIdlist = this.data.selectIdlist || []
+                var delcartsid = []
+                var cartlist = res.data
+                cartlist.forEach(v => {
+                    v.Selected = selectIdlist.filter(id => id == v.goods_id).length > 0
+                    // if (!v.goodslist) {
+                    //     delcartsid.push(v.id)
+                    // }
+                })
+                var all_Selected = cartlist.filter(v => v.Selected == true).length == cartlist.length
+                this.setData({
+                    cartlist,
+                    all_Selected,
+                    cartSelectNum: cartlist.filter(v => v.Selected).length
+                })
+                if (delcartsid.length > 0) {
+                    this.setData({
+                        delcartsid,
+                    })
+                    this.delnogoodcart(0)
+                }
+                this.setallmoney()
+            })
+        },
+
+        cartcount() {
+            var that = this
+            app.apiPost(app.apiList.cartcount, {
+                store_id: 1
+            }, (res) => {
+                this.setData({
+                    gwcNumber: res.data
+                })
+            })
+        },
+
+        //scroll滚动
+        // scrolltolower() {
+        //     var page = this.data.page + 1
+        //     this.setData({
+        //         page
+        //     })
+        //     this.usershoppingcart()
+        // },
+        //购物车单选
+        checkcart(e) {
+            var index = e.currentTarget.dataset.index
+            var cartlist = this.data.cartlist
+            var selectIdlist = this.data.selectIdlist || []
+            cartlist[index].Selected = !cartlist[index].Selected
+            if (cartlist[index].Selected) {
+                if (selectIdlist.filter(d => d == cartlist[index].goods_id).length == 0) {
+                    selectIdlist.push(cartlist[index].goods_id)
+                }
+            } else {
+                if (selectIdlist.filter(d => d == cartlist[index].goods_id).length > 0) {
+                    selectIdlist = selectIdlist.filter(d => d != cartlist[index].goods_id)
+                }
+            }
+            var all_Selected = cartlist.every(item => item.Selected);
+            let pages = getCurrentPages()
+            let prevPage = pages[pages.length - 1]
+            prevPage.setData({
+                selectIdlist,
+            })
+            this.setData({
+                cartlist,
+                all_Selected,
+                selectIdlist,
+                cartSelectNum: cartlist.filter(v => v.Selected).length
+            })
+            // var cartlist = this.data.cartlist
+            // cartlist[index].check = !cartlist[index].check
+            // this.setData({
+            //   cartlist
+            // })
+            this.setallmoney()
+        },
+        //购物车全选
+        allcheck() {
+            var all_Selected = !this.data.all_Selected
+            var cartlist = this.data.cartlist
+            var selectIdlist = this.data.selectIdlist || []
+            cartlist.forEach(v => {
+                if (all_Selected) {
+                    v.Selected = true
+                    if (selectIdlist.filter(d => d == v.goods_id).length == 0) {
+                        selectIdlist.push(v.goods_id)
+                    }
+                } else {
+                    v.Selected = false
+                    if (selectIdlist.filter(d => d == v.goods_id).length > 0) {
+                        selectIdlist = selectIdlist.filter(d => d != v.goods_id)
+                    }
+                }
+            })
+            let pages = getCurrentPages()
+            let prevPage = pages[pages.length - 1]
+            prevPage.setData({
+                selectIdlist,
+            })
+            this.setData({
+                all_Selected,
+                cartlist,
+                selectIdlist,
+                cartSelectNum: cartlist.filter(v => v.Selected).length
+            })
+            this.setallmoney()
+        },
+        //设置总金额
+        setallmoney() {
+            var cartlist = this.data.cartlist.filter(v => v.Selected)
+            var userinfo = this.data.userinfo
+            var all_price = 0
+            cartlist.forEach(v => {
+                all_price += v.number * (userinfo.user_level == 2 ? v.line_price : (userinfo.user_level == 1 ? v.memberprice : v.normalprice))
+            })
+            all_price = Number(all_price).toFixed(2)
+            this.setData({
+                all_price
+            })
+        },
+        //清空所有
+        delcartgoods() {
+            var that = this
+            app.apiPost(app.apiList.delcartgoods, {
+                store_id: 1
+            }, (res) => {
+                wx.showToast({
+                    title: res.msg,
+                    icon: 'none'
+                })
+                if (res.status == 1) {
+                    that.setData({
+                        cartpage: 1
+                    })
+                    that.cartcount()
+                    that.usershoppingcart()
+                    let pages = getCurrentPages()
+                    let prevPage = pages[pages.length - 1]
+                    var goodslist = prevPage.data.goodslist
+                    goodslist.forEach(v => {
+                        v.number = 0
+                    })
+                    prevPage.setData({
+                        goodslist
+                    })
+                }
+            })
+        },
+        //删除单个商品
+        delonecartgoods(type, index, list) {
+            var that = this
+            if (type == 'list') {
+                var id = that.data.cartlist.find(item => item.goods_id == list[index].goods_id).id
+            } else {
+                var id = list[index].id
+            }
+            var thisgoods = list[index]
+            app.apiPost(app.apiList.delonecartgoods, {
+                id: id
+            }, (res) => {
+                wx.showToast({
+                    title: res.msg,
+                    icon: 'none'
+                })
+                if (type == 'list') {
+                    list[index].number = 0
+                    that.setData({
+                        goodslist: list
+                    })
+                    that.usershoppingcart()
+                    that.cartcount()
+                } else {
+                    that.usershoppingcart()
+                    let pages = getCurrentPages()
+                    let prevPage = pages[pages.length - 1]
+                    var goodslist = prevPage.data.goodslist
+                    goodslist.forEach(v => {
+                        if (v.goods_id == thisgoods.goods_id) {
+                            v.number = 0
+                        }
+                    })
+                    list.splice(index, 1)
+                    prevPage.setData({
+                        goodslist
+                    })
+                }
+            })
+        },
+        //减少数量
+        reducenum(e) {
+            var that = this
+            var type = e.currentTarget.dataset.type
+            var index = e.currentTarget.dataset.index
+            if (type == 'list') {
+                var list = that.data.goodslist
+            } else {
+                var list = that.data.cartlist
+            }
+            var thisgoods = list[index]
+            var selectIdlist = this.data.selectIdlist || []
+            if (selectIdlist.filter(v => v == thisgoods.goods_id).length == 0) {
+                selectIdlist.push(thisgoods.goods_id)
+            }
+            this.setData({
+                selectIdlist,
+            })
+            if (thisgoods.number == 1) {
+                that.delonecartgoods(type, index, list)
+            } else {
+                app.apiPost(app.apiList.decshopping, {
+                    goods_id: thisgoods.goods_id,
+                    number: 1,
+                    store_id: 1,
+                    goodsa_id: thisgoods.goodsa_id || thisgoods.id,
+                }, (res) => {
+                    if (res.status == 1) {
+                        list[index].number--
+                        if (type == 'list') {
+                            that.setData({
+                                goodslist: list
+                            })
+                        } else {
+                            var goodslist = that.data.goodslist
+                            goodslist.forEach(v => {
+                                if (v.goods_id == thisgoods.goods_id) {
+                                    v.number -= 1
+                                }
+                            })
+                            that.setData({
+                                cartlist: list,
+                                goodslist
+                            })
+                        }
+                        that.usershoppingcart()
+                        that.cartcount()
+                    }
+                })
+            }
+        },
+        //增加数量
+        addnum(e) {
+            if (!wx.getStorageSync('token_new')) {
+                wx.showModal({
+                    title: '提示',
+                    content: '加入购物车需要登录，是否登录',
+                    cancelText: '暂不登录',
+                    confirmText: '前往登录',
+                    complete: (res) => {
+                        if (res.cancel) {
+                            return
+                        }
+
+                        if (res.confirm) {
+                            this.setData({
+                                loginshow: true,
+                            })
+                        }
+                    }
+                })
+            }
+            var that = this
+            var type = e.currentTarget.dataset.type
+            var index = e.currentTarget.dataset.index
+            if (type == 'list') {
+                var list = that.data.goodslist
+            } else {
+                var list = that.data.cartlist
+            }
+            var thisgoods = list[index]
+            var selectIdlist = this.data.selectIdlist || []
+            if (selectIdlist.filter(v => v == thisgoods.goods_id).length == 0) {
+                selectIdlist.push(thisgoods.goods_id)
+            }
+            this.setData({
+                selectIdlist,
+            })
+            if (thisgoods.xg_num > 0 && thisgoods.havebuy + thisgoods.number >= thisgoods.xg_num) {
+                wx.showToast({
+                    title: '商品已达限购',
+                    icon: 'none'
+                })
+                return
+            }
+            if (thisgoods.number >= thisgoods.num) {
+                wx.showToast({
+                    title: '商品已达最大库存',
+                    icon: 'none'
+                })
+                return
+            }
+            app.apiPost(app.apiList.inshopping, {
+                goods_id: thisgoods.goods_id,
+                num: 1,
+                store_id: 1,
+                goodsa_id: thisgoods.goodsa_id || thisgoods.id,
+            }, (res) => {
+                wx.showToast({
+                    title: res.msg,
+                    icon: 'none'
+                })
+                if (res.status == 1) {
+                    list[index].number++
+                    if (type == 'list') {
+                        that.setData({
+                            goodslist: list
+                        })
+                    } else {
+                        var goodslist = that.data.goodslist
+                        goodslist.forEach(v => {
+                            if (v.goods_id == thisgoods.goods_id) {
+                                v.number += 1
+                            }
+                        })
+                        that.setData({
+                            cartlist: list,
+                            goodslist
+                        })
+                    }
+                    that.usershoppingcart()
+                    that.cartcount()
+                    that.setallmoney()
+                }
+            })
+        },
+        //输入数量
+        innum(e) {
+            var that = this
+            var type = e.currentTarget.dataset.type
+            var index = e.currentTarget.dataset.index
+            var num = Number(e.detail.value)
+            if (type == 'list') {
+                var list = that.data.goodslist
+            } else {
+                var list = that.data.cartlist
+            }
+            var thisgoods = list[index]
+            var selectIdlist = this.data.selectIdlist || []
+            if (selectIdlist.filter(v => v == thisgoods.goods_id).length == 0) {
+                selectIdlist.push(thisgoods.goods_id)
+            }
+            this.setData({
+                selectIdlist,
+            })
+            if (thisgoods.xg_num > 0 && thisgoods.havebuy + num >= thisgoods.xg_num) {
+                wx.showToast({
+                    title: '商品已达限购',
+                    icon: 'none'
+                })
+                num = thisgoods.xg_num - thisgoods.havebuy
+            }
+            if (num >= thisgoods.num) {
+                wx.showToast({
+                    title: '商品已达最大库存',
+                    icon: 'none'
+                })
+                num = thisgoods.num
+            }
+            if (num > thisgoods.number) {
+                app.apiPost(app.apiList.inshopping, {
+                    goods_id: thisgoods.goods_id,
+                    num: num - thisgoods.number,
+                    store_id: 1,
+                    goodsa_id: thisgoods.goodsa_id || thisgoods.id,
+                }, (res) => {
+                    wx.showToast({
+                        title: res.msg,
+                        icon: 'none'
+                    })
+                    if (res.status == 1) {
+                        list[index].number = num
+                        if (type == 'list') {
+                            that.setData({
+                                goodslist: list
+                            })
+                        } else {
+                            var goodslist = that.data.goodslist
+                            goodslist.forEach(v => {
+                                if (v.goods_id == thisgoods.goods_id) {
+                                    v.number = num
+                                }
+                            })
+                            that.setData({
+                                cartlist: list,
+                                goodslist
+                            })
+                        }
+                        that.usershoppingcart()
+                        that.cartcount()
+                        that.setallmoney()
+                    }
+                })
+            } else {
+                if (num == 0) {
+                    that.delonecartgoods(type, index, list)
+                } else {
+                    app.apiPost(app.apiList.decshopping, {
+                        goods_id: thisgoods.goods_id,
+                        number: thisgoods.number - num,
+                        store_id: 1,
+                        goodsa_id: thisgoods.goodsa_id || thisgoods.id,
+                    }, (res) => {
+                        if (res.status == 1) {
+                            list[index].number = num
+                            if (type == 'list') {
+                                that.setData({
+                                    goodslist: list
+                                })
+                            } else {
+                                var goodslist = that.data.goodslist
+                                goodslist.forEach(v => {
+                                    if (v.goods_id == thisgoods.goods_id) {
+                                        v.number = num
+                                    }
+                                })
+                                that.setData({
+                                    cartlist: list,
+                                    goodslist
+                                })
+                            }
+                            that.usershoppingcart()
+                            that.cartcount()
+                            that.setallmoney()
+                        }
+                    })
+                }
+            }
+        },
+
+        delnogoodcart(index) {
+            app.apiPost(app.apiList.delonecartgoods, {
+                id: this.data.delcartsid[index]
+            }, (res) => {
+                if (index == this.data.delcartsid.length - 1) {
+                    this.usershoppingcart()
+                    this.cartcount()
+                } else {
+                    this.delnogoodcart(index + 1)
+                }
+            })
+        },
+        refreshcart(selectIdlist) {
+            this.setData({
+                selectIdlist,
+            })
+            this.usershoppingcart()
+            this.cartcount()
+        },
+        //抢购
+        tobuy(e) {
+            var that = this
+            if (!that.data.userinfo) {
+                wx.showToast({
+                    title: '请先登录',
+                    icon: 'none'
+                })
+                
+                setTimeout(() => {
+                    wx.navigateTo({
+                        url: '/pages/login/login',
+                    })
+                }, 1500)
+                return
+            }
+            if (this.data.all_price == 0) {
+                wx.showToast({
+                    title: '请选择您要购买的商品',
+                    icon: 'none'
+                })
+                if (this.data.cartlist.length > 0) {
+                    this.show()
+                }
+                return
+            }
+            var cartlist = this.data.cartlist.filter(v => v.Selected)
+            var ordertype = '/pages/lotaddorder2/lotaddorder2?ordertype=2&zttype=' + 2
+            wx.setStorageSync('cartlist_pay', cartlist)
+            this.setData({
+                selectIdlist: [],
+            })
+            this.hide()
+            setTimeout(() => {
+                console.log(ordertype)
+                wx.navigateTo({
+                    url: ordertype,
+                })
+            }, 500)
+        }
+    }
+})

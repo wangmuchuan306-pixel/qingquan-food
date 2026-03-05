@@ -1,0 +1,67 @@
+/* pages/login/login.wxss */
+/**index.wxss**/
+page{
+  background-color: #fff;
+}
+.flex1 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex2 {
+  display: flex;
+  align-items: center;
+}
+
+.flex3 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.img {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 80rpx;
+}
+
+.login {
+  background-color: #015637;
+  width: 520rpx;
+  height: 113rpx;
+  border-radius: 60rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  font-size: 30rpx;
+  color: white;
+}
+.notl{
+  background-color: #ccc;
+}
+
+.nologin {
+  font-size: 30rpx;
+  color: #999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 30rpx;
+}
+
+.buttom {
+  width: 750rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  bottom: 50rpx;
+  left: 0rpx;
+}
+
+.xieyi {
+  font-size: 24rpx;
+  color: #ff6600;
+}

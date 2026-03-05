@@ -1,0 +1,6 @@
+<view>
+  <view style="width: 100%;height: 30rpx;background-color: #f8f8f8;"></view>
+  <coupons couponsList="{{couponsList}}" usedCouponsList="{{usedCouponsList}}" permissions="{{permissions}}" bind:choosethis="choosethis" bind:againCancel="againCancel" again="{{again}}" goodsnum="{{goodsnum}}" onemoney="{{onemoney}}"></coupons>
+  <!-- <view class="instruction" bindtap="goWebView">卡券说明</view> -->
+</view>
+<!-- <view class="bqjs">内容最终解释权归优胜多所有</view> -->

@@ -1,0 +1,152 @@
+page {
+  color: #000;
+  background: #eee;
+}
+
+/* 没有收货地址 */
+.noneAddress {
+  margin-top: 230rpx;
+  width: 100%;
+  font-size: 30rpx;
+  text-align: center;
+}
+
+.noneAddress image {
+  width: 654rpx;
+}
+
+/* 收货地址列表 */
+.Address {
+  padding: 0 30rpx 30rpx 30rpx;
+}
+
+.AddressList {
+  width: 100%;
+  background: #fff;
+  border-radius: 24rpx;
+  margin-top: 24rpx;
+}
+
+.AddressListName {
+  font-size: 26rpx;
+  color: #000;
+  padding-bottom: 24rpx;
+  width: 490rpx;
+  margin: 0 24rpx;
+
+}
+
+.addressInfo {
+  
+  font-size: 34rpx;
+  color: #000;
+  padding: 24rpx 0 10rpx 0rpx;
+  margin: 0 24rpx;
+  max-width: 460rpx;
+}
+
+.addressFooter {
+  margin: 0 24rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 96rpx;
+  border-top: 2rpx solid #eee;
+}
+
+.addressFooter_left {
+  font-size: 26rpx;
+  color: #999999;
+  display: flex;
+  align-items: center;
+}
+
+.addressFooter_left image {
+  width: 36rpx;
+  height: 36rpx;
+  margin-right: 16rpx;
+}
+
+.addressFooter_right {
+  display: flex;
+  align-items: center;
+}
+
+.addressFooter_right image {
+  display: block;
+  width: 40rpx;
+  height: 40rpx;
+}
+
+.addressFooter_right>view {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 26rpx;
+  color: #A6A5AD;
+  margin-left: 50rpx;
+}
+
+/* 底部按钮部分 */
+.footer {
+  width: 100%;
+  /* background: #100C1A; */
+  position: fixed;
+  bottom: 50rpx;
+  left: 0rpx;
+  padding-bottom: 16rpx;
+}
+
+.fix-iphonex-button {
+  bottom: 68rpx !important;
+}
+/* 
+.fix-iphonex-button::after {
+  content: ' ';
+  position: fixed;
+  bottom: 0 !important;
+  height: 68rpx !important;
+  width: 100%;
+  background: #100C1A;
+} */
+
+.footer view {
+  text-align: center;
+  font-size: 34rpx;
+  height: 88rpx;
+  line-height: 88rpx;
+  margin: 24rpx 30rpx 0 30rpx;
+  border-radius: 100rpx;
+}
+
+.weixin {
+  background: #09BD15;
+  color: #fff;
+}
+
+.add {
+  background: #000;
+  color: #fff;
+  /* background: linear-gradient(90deg, #FF9F00, #ff6600); */
+}
+
+.listItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.useThis {
+  margin-right: 30rpx;
+  padding: 10rpx 26rpx;
+  color: #000;
+  font-size: 26rpx;
+  border: 1px solid #000;
+  border-radius: 30rpx;
+}
+
+.listItem .address_check image {
+  width: 40rpx;
+  height: 40rpx;
+  margin-right: 30rpx;
+}

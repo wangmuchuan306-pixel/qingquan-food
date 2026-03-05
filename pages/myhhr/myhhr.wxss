@@ -1,0 +1,27 @@
+/* pages/myztdian/myztdian.wxss */
+page{
+  background-color: #f8f8f8;
+}
+.borbox{
+  width: 140rpx;
+  height: 60rpx;
+  font-size: 26rpx;
+  color: #e9f8e2;
+  border-radius: 32rpx;
+  border: 2rpx solid #fff;
+  text-align: center;
+  line-height: 60rpx;
+}
+.btmbtn{
+  width: 690rpx;
+  height: 100rpx;
+  background-color: #015637;
+  margin: 30rpx;
+  border-radius: 20rpx;
+  color: white;
+  font-size: 30rpx;
+  font-weight: bold;
+  text-align: center;
+  line-height: 100rpx;
+  position: relative;
+}

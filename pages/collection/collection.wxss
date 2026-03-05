@@ -1,0 +1,70 @@
+/* packageB/pages/collection/collection.wxss */
+
+.r_ping{
+  text-align: center;
+  color: #fff;
+  margin-top: 20rpx;
+}
+.hezi,.deleSpace{
+  position: relative;
+}
+.comment_main{
+  margin: 0 30rpx 0 30rpx;
+  padding-bottom: 40rpx;
+  color: #ffffff;
+
+}
+.hezi goods-card{
+  position: relative;
+  display: inline-block;
+  left: 0;
+  transition: width 0.5s;
+  -webkit-transition: left 0.5s; /* Safari */
+}
+
+.deleSpace goods-card{
+  position: relative;
+  display: inline-block;
+  left: -110rpx;
+  transition: width 0.5s;
+  -webkit-transition: left 0.5s; /* Safari */
+}
+
+.delete{
+  background:#F44336;
+  display: flex;
+  flex-direction: column;
+  vertical-align: center;
+  justify-content: center;
+  height: 240rpx;
+  color: #fff;
+  position: absolute;
+  top: 0;
+  right: 0;
+  text-align: center;
+  width:110rpx;
+  font-size: 24rpx;
+  border-radius: 10rpx;
+  margin-top: 40rpx;
+  transition: width 0.5s;
+  -webkit-transition: left 0.5s; /* Safari */
+  overflow: hidden;
+}
+.delete text{
+  white-space: nowrap;
+}
+.hezi .delete{
+  width: 0px;
+  transition: width 0.5s;
+  -webkit-transition: width 0.5s; /* Safari */
+}
+.deleSpace .delete{
+  width:110rpx;
+  transition: width 0.5s;
+  -webkit-transition: width 0.5s; /* Safari */
+}
+.delete image{
+  width: 54rpx;
+  height: auto;
+  margin: 0 auto;
+}

@@ -1,0 +1,34 @@
+<!--pages/mypoints/mypoints.wxml-->
+<view class="balance">
+  <view class="flex3">
+    <text class="item1">账户积分</text>
+    <view bind:tap="gotojianjie" class="flex1" style="font-size: 36rpx;color: var(--theme-color);font-weight: bold;width: 150rpx;height: 50rpx;"><text>积分规则</text></view>
+  </view>
+  <view class="item2">{{blance}}
+    <!-- <view style="font-size: 26rpx;font-weight: lighter;width: 150rpx;height: 60rpx;border-radius: 60rpx;display: flex;align-items: center;justify-content: center;background-color: #E02E20;color: white;" bind:tap="goShopping">立即抽奖</view> -->
+  </view>
+  <!-- <view class="item3">其中包含{{lockmoney}}元冻结资金(可用于余额支付，不可提现)</view> -->
+  <!-- <view class="item3">账户积分仅可用于抽奖，不可转增</view> -->
+</view>
+<!-- 列表 -->
+<view class="listBox">
+  <view wx:for="{{walletsList}}" wx:key="listK" wx:for-index='index' wx:if="{{walletcount!=0}}">
+    <view class="listTime" wx:if="{{walletsList[index].year_month != walletsList[index-1].year_month}}">{{item.left_time}}</view>
+    <view class="itemListBox {{walletsList[index].year_month!=walletsList[index-1].year_month?'one':''}} {{walletsList[index].year_month!=walletsList[index+1].year_month?'two':''}}">
+      <view class="timeItemList">
+        <view class="itemListLeft">
+          <view class="day">{{item.day}}</view>
+          <view class="hourMin">{{item.hour_min}}</view>
+        </view>
+        <view class="itemListRight">
+          <view class="rightTop">
+            <view class="title txt1">{{text[item.wheretype]}}</view>
+            <view class="money txt1">{{item.type == 1 ? '+' : '-'}} {{item.integral}}</view>
+          </view>
+          <view class="rightBottom">{{item.log_title}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+<view style="height: 90rpx;"></view>

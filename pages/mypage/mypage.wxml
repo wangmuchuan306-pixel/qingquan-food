@@ -1,0 +1,189 @@
+<!--pages/mypage/mypage.wxml-->
+<!-- <view style="width: 100%;display: flex;align-items: flex-start;justify-content: space-between;background-color: #fff;padding: 30rpx 0;">
+  <view style="display: flex;margin-left: 30rpx;" wx:if="{{userinfo}}">
+    <image src="{{userinfo.headimg}}" style="width: 120rpx;height: 120rpx;border-radius: 100%;" mode="" />
+    <view style="margin-top: 20rpx;margin-left: 30rpx;">
+      <view style="font-weight: bold;font-size: 36rpx;margin-bottom: 10rpx;color: #000;">{{userinfo.nickname}}</view>
+      <view style="font-size: 24rpx;color: {{userinfo.level==1?'#333':'#999'}};">{{userinfo.level==1?'到期时间：'+userinfo.end_time:'非会员'}}</view>
+    </view>
+  </view>
+  <view style="font-weight: bold;font-size: 36rpx;color: white;text-align: center;width: 100%;" bind:tap="tologin" wx:else>登录</view>
+  <view style="width: 690rpx;background-color: white;display: flex;align-items: center;justify-content: space-between;padding:0 30rpx;" wx:else>
+    <view style="display: flex;align-items: center;">
+      <image src="/images/noimg.png" style="width: 100rpx;height: 100rpx;border-radius: 100%;background-color: white;" mode="aspectFill" />
+      <view style="margin-left: 30rpx;">
+        <view style="font-size: 30rpx;font-weight: bold;">您还没有登录呢</view>
+        <view style="font-size: 24rpx;color: #999;margin-top: 10rpx;">余额 0 | 卡券 0</view>
+      </view>
+    </view>
+    <view class="gbox" bind:tap="tapg">{{userinfo?userinfo.level==1?'会员续费':'升级会员':'立即登录'}}</view>
+  </view>
+  <image src="/images/seticon.png" style="width: 40rpx;height: 38rpx;margin-right: 30rpx;margin-top: 30rpx;" mode="" wx:if="{{userinfo}}" bind:tap="toset" />
+</view> -->
+<view class="userColumn">
+  <view class=" flex2">
+    <block>
+      <image wx:if="{{userinfo.headimg}}" src="{{userinfo.headimg}}" style="width: 120rpx;height: 120rpx;border-radius: 100%;margin-right: 30rpx;" mode="" />
+      <image wx:else src="/images/noimg.png" style="width: 100rpx;height: 100rpx;border-radius: 100%;background-color: white;margin-right: 30rpx;" mode="aspectFill" />
+    </block>
+    <block>
+      <view wx:if="{{userinfo.nickname}}" style="width: 480rpx;">
+        <view class="flex3">
+          <view style="font-weight: bold;font-size: 36rpx;margin-bottom: 10rpx;color: #000;">{{userinfo.nickname}}</view>
+          <image src="/images/pen.png" bind:tap="toset" style="width: 30rpx;height: 36rpx;" mode="" />
+        </view>
+        <view style="font-size: 26rpx;" wx:if="{{userinfo.phone}}">{{userinfo.phone}}</view>
+      </view>
+      <view wx:else class="flex3" style="width: 480rpx;">
+        <view style="font-size: 30rpx;font-weight: bold;">您还没有登录呢</view>
+        <view class="gbox" bind:tap="gotologin">立即登录</view>
+      </view>
+    </block>
+  </view>
+  <!-- <view class="flex2" style="padding-top: 30rpx;">
+    <view class="flex2" bindtap="tocard" style="width:50%;border-right: 1rpx solid #eee;">
+      <image src="/images/mycard.png" style="width: 68rpx;height: 60rpx;margin-right: 30rpx;" mode="" />
+      <view>
+        <view class="title1">我的卡券</view>
+        <view class="title2">年卡和优惠券</view>
+      </view>
+    </view>
+    <view class="flex2" bindtap="gotopoints" style="width:50%;padding-left: 30rpx;box-sizing: border-box;">
+      <image src="/images/myjifen.png" style="width: 68rpx;height: 60rpx;margin-right: 30rpx;" mode="" />
+      <view>
+        <view class="title1">我的积分</view>
+        <view class="title2">积分可下单抵用</view>
+      </view>
+    </view>
+  </view> -->
+</view>
+<view class="content" bind:tap="tomyztdian" wx:if="{{userinfo.is_ztdian>0}}">
+  <view style="display: flex;align-items: center;justify-content: space-between;height: 120rpx;">
+    <view style="display: flex;align-items: center;">
+      <image src="/images/dd.png" style="width: 30rpx;height: 30rpx;"></image>
+      <view style="font-size: 30rpx;margin-left: 20rpx;">我的自提点</view>
+    </view>
+    <image src="/images/blackjiantou.png" style="width: 16rpx;height: 24rpx;"></image>
+  </view>
+</view>
+<view class="content" bind:tap="tohhr" wx:if="{{userinfo.hhr==1}}">
+  <view style="display: flex;align-items: center;justify-content: space-between;height: 120rpx;">
+    <view style="display: flex;align-items: center;">
+      <image src="/images/dd.png" style="width: 30rpx;height: 30rpx;"></image>
+      <view style="font-size: 30rpx;margin-left: 20rpx;">合伙人工作台</view>
+    </view>
+    <image src="/images/blackjiantou.png" style="width: 16rpx;height: 24rpx;"></image>
+  </view>
+</view>
+<view class="content1">
+  <!-- 上 -->
+  <view style="display: flex;align-items: center;justify-content: space-between;margin-bottom: 30rpx;" bindtap="myOrder" data-id='0'>
+    <view style="display: flex;align-items: center;">
+      <image src="/images/dd.png" style="width: 30rpx;height: 30rpx;"></image>
+      <view style="font-size: 30rpx;margin-left: 20rpx;">我的订单</view>
+    </view>
+    <view class="flex2">
+      <view style="font-size: 24rpx;color:#999;margin-right: 10rpx;">全部订单</view>
+      <image src="/images/blackjiantou.png" style="width: 18rpx;height: 24rpx;"></image>
+    </view>
+  </view>
+  <ul style="display: flex;align-items: center;justify-content: space-between;padding-left: 0;width: 630rpx;">
+    <li style="display: flex;align-items: center;justify-content: center;flex-direction: column;margin-right:0;padding-bottom: 0;position: relative;" bindtap="myOrder" data-id='1'>
+      <image src="/images/dfh.png" style="width: 60rpx;height: 60rpx;"></image>
+      <view style="font-size: 24rpx;color: #666;margin-top: 10rpx;">待发货</view>
+      <!-- <view wx:if="{{userinfo.ordernum.notsend !=0 && userinfo}}" style="background-color: #f60;color: #fff;min-width: 36rpx;height: 36rpx;border-radius: 100rpx;font-size: 20rpx;text-align: center;line-height: 36rpx;position: absolute;top: 0;right: 0;z-index: 9;">{{userinfo.ordernum.notsend}}</view> -->
+    </li>
+    <li style="display: flex;align-items: center;justify-content: center;flex-direction: column;margin-right:0;padding-bottom: 0;position: relative;" bindtap="myOrder" data-id='2'>
+      <image src="/images/dsh.png" style="width: 60rpx;height: 60rpx;"></image>
+      <view style="font-size: 24rpx;color: #666;margin-top: 10rpx;">待收货</view>
+      <!-- <view wx:if="{{userinfo.ordernum.notok !=0 && userinfo}}" style="background-color: #f60;color: #fff;min-width: 36rpx;height: 36rpx;border-radius: 100rpx;font-size: 20rpx;text-align: center;line-height: 36rpx;position: absolute;top: 0;right: 0;z-index: 9;">{{userinfo.no_rece_order}}</view> -->
+    </li>
+    <li style="display: flex;align-items: center;justify-content: center;flex-direction: column;margin-right:0;padding-bottom: 0;position: relative;" bindtap="myOrder" data-id='9'>
+      <image src="/images/ytk.png" style="width: 60rpx;height: 60rpx;"></image>
+      <view style="font-size: 24rpx;color: #666;margin-top: 10rpx;">已退款</view>
+      <!-- <view wx:if="{{userinfo.ordernum.notok !=0 && userinfo}}" style="background-color: #f60;color: #fff;min-width: 36rpx;height: 36rpx;border-radius: 100rpx;font-size: 20rpx;text-align: center;line-height: 36rpx;position: absolute;top: 0;right: 0;z-index: 9;">{{userinfo.no_rece_order}}</view> -->
+    </li>
+    <li style="display: flex;align-items: center;justify-content: center;flex-direction: column;margin-right:0;padding-bottom: 0;position: relative;" bindtap="myOrder" data-id='4'>
+      <image src="/images/ywc.png" style="width: 60rpx;height: 60rpx;"></image>
+      <view style="font-size: 24rpx;color: #666;margin-top: 10rpx;">已完成</view>
+    </li>
+  </ul>
+</view>
+<view class="content">
+  <view class="contentList" bindtap="gotopoints">
+    <view class="contentListLeft">
+      <image src="/images/jifen.png"></image>
+      <!-- <view>办理年卡</view> -->
+      <view>我的积分</view>
+    </view>
+    <image src="/images/blackjiantou.png"></image>
+  </view>
+  <!-- <view class="contentList" bindtap="tocard">
+    <view class="contentListLeft">
+      <image src="https://yhtapi.ehetuan.cn/yht/amoney.png"></image>
+      <view>我的卡券</view>
+    </view>
+    <image src="/images/blackjiantou.png"></image>
+  </view> -->
+  <!-- <view class="contentList" bindtap="gotopoints">
+    <view class="contentListLeft">
+      <image src="/images/jifen.png"></image>
+      <view>我的积分</view>
+    </view>
+    <image src="/images/blackjiantou.png"></image>
+  </view> -->
+  <button class="contentList" style="width: 100%;background-color: #fff;font-size: 15rpx; font-weight: normal;border-bottom: 2rpx solid #eee;height: 120rpx;" plain bind:tap="showshare">
+    <view class="contentListLeft">
+      <image src="https://yhtapi.ehetuan.cn/yht/share.png" style="width: 28rpx;height: 28rpx;"></image>
+      <view>邀请好友</view>
+    </view>
+    <image src="/images/blackjiantou.png"></image>
+  </button>
+  <view class="contentList" style="border-bottom: 3rpx solid #eee;" bindtap="collection">
+    <view class="contentListLeft">
+      <image src="https://yhtapi.ehetuan.cn/yht/lob.png"></image>
+      <view>我收藏的</view>
+    </view>
+    <image src="/images/blackjiantou.png"></image>
+  </view>
+  <view class="contentList" bindtap="editAddress">
+    <view class="contentListLeft">
+      <image src="https://yhtapi.ehetuan.cn/yht/address.png"></image>
+      <view>我的地址</view>
+    </view>
+    <image src="/images/blackjiantou.png"></image>
+  </view>
+</view>
+<view class="content">
+  <view class="flex3" bind:tap="tous" style="width: 100%;padding: 40rpx 0;border-bottom: 1rpx solid #eee;">
+    <view class="contentListLeft">
+      <image src="/images/aboutus.jpg"></image>
+      <view>关于我们</view>
+    </view>
+    <image src="/images/blackjiantou.png" style="width: 16rpx;height: 24rpx;"></image>
+  </view>
+  <view class="flex3" bind:tap="gotojianjie" style="width: 100%;padding: 40rpx 0;border-bottom: 1rpx solid #eee;">
+    <view class="contentListLeft">
+      <image src="/images/aboutus.jpg"></image>
+      <view>资质展示</view>
+    </view>
+    <image src="/images/blackjiantou.png" style="width: 16rpx;height: 24rpx;"></image>
+  </view>
+</view>
+<import src="/pages/template/template" />
+<template is="bottomtext" data="" />
+<painter palette="{{hbinfo}}" bind:imgOK="onImgOK" action="{{action}}"></painter>
+<image src="{{hbpath}}" class="shengcheng" wx:if="{{show}}" mode="widthFix" />
+<van-popup show="{{ show }}" round position="bottom" custom-style="height: 20%" bind:close="onClose" z-index="998">
+  <view style="display: flex;align-items: center;justify-content: space-around;margin-top: 50rpx;">
+    <view style="text-align: center;position: relative;">
+      <image src="/images/yqwx.png" style="width: 100rpx;height: 100rpx;" mode="" />
+      <view style="font-size: 30rpx;">微信好友</view>
+      <button plain style="position: absolute;width: 100%;height: 100%;top: 0;border: none;" open-type="share" bind:tap="toshare"></button>
+    </view>
+    <view style="text-align: center;" bind:tap="downhb">
+      <image src="/images/hbbc.png" style="width: 100rpx;height: 100rpx;" mode="" />
+      <view style="font-size: 30rpx;">保存海报</view>
+    </view>
+  </view>
+</van-popup>
