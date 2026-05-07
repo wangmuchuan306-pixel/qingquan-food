@@ -1,57 +1,101 @@
 <!--pages/login/login.wxml-->
-<!--pages/login/login.wxml-->
-<view class="img" style="margin-top: 200rpx;">
-  <image src="/images/logo.jpg" style="width: 300rpx;height: 300rpx;border-radius: 100%;" mode="aspectFill"></image>
+<view class="login-container">
+  <view class="logo-section">
+    <view class="logo-wrapper">
+      <image src="/images/logo.jpg" class="logo-img" mode="aspectFill"></image>
+    </view>
+    <view class="app-name">冀唐清泉</view>
+    <view class="app-slogan">品质生活，从这里开始</view>
+  </view>
+
+  <view class="login-section">
+    <view class="login-btn {{loading ? 'loading' : ''}}" bindtap="getUserProfile">
+      <view class="login-btn-content" wx:if="{{!loading}}">
+        <image src="/images/wechat.png" class="wechat-icon" mode="aspectFit"></image>
+        <text>微信一键登录</text>
+      </view>
+      <view class="loading-content" wx:if="{{loading}}">
+        <view class="loading-spinner"></view>
+        <text>登录中...</text>
+      </view>
+    </view>
+
+    <view class="skip-btn" bindtap="goback">
+      <text>稍后登录</text>
+      <image src="/images/blackjiantou.png" class="arrow-icon" mode="aspectFit"></image>
+    </view>
+  </view>
+
+  <view class="policy-section">
+    <view class="policy-text">登录即表示同意</view>
+    <view class="policy-link" bindtap="goWebview">《用户协议》</view>
+    <view class="policy-text">和</view>
+    <view class="policy-link" bindtap="goPrivacy">《隐私政策》</view>
+  </view>
 </view>
-<view style="font-size: 30rpx;display: flex;align-items: center;justify-content: center;margin: 30rpx;">登录冀唐清泉小程序</view>
-<view class="login" bindtap="getUserProfile">授权登录</view>
-<!-- <view class="login notl">微信授权登录</view> -->
-<view class="nologin" bindtap="goback">暂不登录</view>
+
 <van-popup show="{{loginShow}}" round custom-style="z-index: 999;" position="bottom" bind:click-overlay="closePopup">
   <view style="width: 100%;box-sizing: border-box;background-color: #fff;padding: 30rpx;">
     <view class="flex3" style="margin-bottom: 20rpx;">
-      <view style="font-size: 36rpx;">登录冀唐清泉小程序</view>
-      <image src="/images/del.png" bind:tap="closePopup" style="width: 40rpx;height: 40rpx;" mode="" />
-    </view>
-    <view style="font-size: 26rpx;color: #999;margin-bottom: 30rpx;">首次登录请先完善您的资料</view>
-    <view class="flex3" style="padding: 30rpx 0rpx;border-bottom: 1rpx solid #eee;">
-      <view class="flex1" style="flex-direction: column;">
-        <image src="{{tmpheadimg ? tmpheadimg : '/images/noimg.png'}}" style="width: 100rpx;height: 100rpx;border-radius: 100%;" mode="aspectFill" />
-        <view class="flex1" style="width: 80rpx;height: 40rpx;background-color: #003B73;color: #fff;font-size: 24rpx;margin-top: -30rpx;border-radius: 20rpx;"><text>上传</text></view>
-      </view>
-      <view class="flex2">
-        <text style="font-size: 28rpx;margin-right: 10rpx;">获取微信头像</text>
-        <image src="/images/blackjiantou.png" style="width: 16rpx;height: 24rpx;" mode="" />
-        <button open-type="chooseAvatar" bindchooseavatar="chooseloge" style="width: 200rpx;height: 40rpx;position: absolute;border: none;" plain></button>
+      <view style="font-size: 36rpx;font-weight: bold;">完善资料</view>
+      <view class="close-btn" bind:tap="closePopup">
+        <image src="/images/del.png" style="width: 40rpx;height: 40rpx;" mode="aspectFit" />
       </view>
     </view>
-    <view class="flex3" style="padding: 30rpx 0rpx;border-bottom: 1rpx solid #eee;">
-      <view class="flex2">
-        <text style="font-size: 30rpx;color: #333;margin-right: 20rpx;">您的昵称</text>
-        <input type="nickname" focus="{{name}}" bindinput="inickname" value="{{p_username}}" style="width: 320rpx;" placeholder="请填写您的昵称" placeholder-style="font-size: 30rpx;color: #ccc;" />
+    <view style="font-size: 26rpx;color: #666;margin-bottom: 30rpx;">请完善以下信息以获得完整服务</view>
+
+    <view class="info-section">
+      <view class="info-header">
+        <view class="step-num {{tmpheadimg ? 'completed' : ''}}">{{tmpheadimg ? '✓' : '1'}}</view>
+        <text class="info-title">上传头像</text>
       </view>
-      <view class="flex2">
-        <text style="font-size: 28rpx;margin-right: 10rpx;">获取微信昵称</text>
-        <image src="/images/blackjiantou.png" style="width: 16rpx;height: 24rpx;" mode="" />
-        <button bind:tap="inputsdf" style="width: 200rpx;height: 40rpx;position: absolute;border: none;" plain></button>
-      </view>
-    </view>
-    <view class="flex3" style="padding: 30rpx 0rpx;border-bottom: 1rpx solid #eee;">
-      <view class="flex2">
-        <text style="font-size: 30rpx;color: #333;margin-right: 20rpx;">手机号码</text>
-        <input type="number" style="width: 320rpx;" bindinput="inphone" value="{{p_phone}}" maxlength="11" placeholder="请填写您的手机号码" placeholder-style="font-size: 30rpx;color: #ccc;" />
-      </view>
-      <view class="flex2">
-        <text style="font-size: 28rpx;margin-right: 10rpx;">授权手机号码</text>
-        <image src="/images/blackjiantou.png" style="width: 16rpx;height: 24rpx;" mode="" />
-        <button open-type="getPhoneNumber" bindgetphonenumber="getphone" style="width: 200rpx;height: 40rpx;position: absolute;border: none;" plain></button>
+      <view class="info-content">
+        <view class="avatar-upload" bind:tap="chooseAvatar">
+          <image src="{{tmpheadimg ? tmpheadimg : '/images/noimg.png'}}" class="avatar-img" mode="aspectFill" />
+          <view class="upload-mask" wx:if="{{!tmpheadimg}}">
+            <text class="upload-text">点击上传</text>
+          </view>
+        </view>
+        <view class="auto-get">
+          <text class="auto-get-text">或</text>
+          <button open-type="chooseAvatar" bindchooseavatar="chooseloge" class="auto-btn">获取微信头像</button>
+        </view>
       </view>
     </view>
-    <view class="flex1" bind:tap="setwxinfo" style="width: 100%;height: 100rpx;border-radius: 20rpx;background-color: #003B73;font-size: 30rpx;font-weight: bold;color: #fff;margin-top: 30rpx;"><text>立即登录</text></view>
-    <!-- <view bind:tap="closePopup" style="color: #003B73;font-size: 28rpx;margin-top: 50rpx;text-align: center;">暂不登录</view> -->
+
+    <view class="info-section">
+      <view class="info-header">
+        <view class="step-num {{p_username && p_username != '微信用户' ? 'completed' : ''}}">{{p_username && p_username != '微信用户' ? '✓' : '2'}}</view>
+        <text class="info-title">设置昵称</text>
+      </view>
+      <view class="info-content">
+        <input type="nickname" class="nickname-input {{p_username && p_username != '微信用户' ? 'has-value' : ''}}" bindinput="inickname" value="{{p_username}}" placeholder="请输入您的昵称" placeholder-style="color: #ccc;" />
+        <view class="auto-get">
+          <text class="auto-get-text">或</text>
+          <button bind:tap="inputsdf" class="auto-btn">获取微信昵称</button>
+        </view>
+      </view>
+    </view>
+
+    <view class="info-section">
+      <view class="info-header">
+        <view class="step-num {{p_phone ? 'completed' : ''}}">{{p_phone ? '✓' : '3'}}</view>
+        <text class="info-title">绑定手机</text>
+      </view>
+      <view class="info-content">
+        <input type="number" class="phone-input {{p_phone ? 'has-value' : ''}}" maxlength="11" bindinput="inphone" value="{{p_phone}}" placeholder="请输入手机号码" placeholder-style="color: #ccc;" />
+        <view class="auto-get">
+          <text class="auto-get-text">或</text>
+          <button open-type="getPhoneNumber" bindgetphonenumber="getphone" class="auto-btn primary">一键获取</button>
+        </view>
+      </view>
+    </view>
+
+    <view class="submit-btn {{canSubmit ? 'active' : ''}}" bindtap="setwxinfo">
+      <text>完成登录</text>
+      <image src="/images/whitejiantou.png" class="submit-arrow" mode="aspectFit" wx:if="{{canSubmit}}" />
+    </view>
+
+    <view class="skip-link" bindtap="closePopup">暂不完善</view>
   </view>
 </van-popup>
-<!-- <view class="buttom">
-  <radio color="black" style="font-size: 24rpx;" checked="{{checka}}" bindtap="chacheck">我已阅读并同意</radio>
-  <view class="xieyi" bindtap="goWebview">《冀唐清泉平台协议》</view>
-</view> -->

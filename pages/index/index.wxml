@@ -48,7 +48,7 @@
       </view>
     </view>
     <swiper style="width: 100%;height: 305rpx;margin-top: 20rpx;" indicator-dots="{{false}}" autoplay="{{true}}" interval="{{5000}}" duration="{{500}}">
-        <block wx:for="{{activitylist2}}">
+        <block wx:for="{{activitylist2}}" wx:key="index">
           <swiper-item class="flex2" style="width: 100%;height: 100%;">
           <view class="zb_box" bindtap="gotoLive" data-index="{{index}}">
             <image src="https://qiniu.0315678.cn/{{item.bgimg}}" class="zb_img" />
@@ -68,14 +68,14 @@
       </view>
       <view style="flex: 1;min-height: 0;">
         <swiper class="index_swiper" indicator-dots="{{false}}" autoplay="{{true}}" interval="{{5000}}" duration="{{500}}">
-          <block wx:for="{{cxgoosList.length / 2}}" wx:for-index="lindex">
+          <block wx:for="{{cxgoosList.length / 2}}" wx:for-index="lindex" wx:key="lindex">
             <swiper-item style="width: 100%;height: 100%;display: flex;flex-direction: column;">
-              <block wx:for="{{2}}">
+              <block wx:for="{{2}}" wx:key="index">
                 <view class="fl_box" bindtap="{{cxgoosList[index + (lindex * 2)] ? 'toinfo' : ''}}" data-id="{{cxgoosList[index + (lindex * 2)].goods_id}}">
                   <image class="fl_img" src="{{cxgoosList[index + (lindex * 2)].goods_img}}" />
                   <view style="flex: 1;min-width: 0;flex-direction: column;height: 120rpx;display: flex;justify-content: space-between;">
                     <view class="twolinetext" style="font-size: 28rpx;font-weight: bold;">{{cxgoosList[index + (lindex * 2)].goods_name}}</view>
-                    <view wx:if="{{cxgoosList[index + (lindex * 2)]}}" style="font-size: 26rpx;color: #f60;font-weight: bold;">¥ {{userinfo.user_level == 2 ? cxgoosList[index + (lindex * 2)].specs_pfmoney : (userinfo.user_level == 1 ? cxgoosList[index + (lindex * 2)].specs_tgmoney : (userinfo.user_level == 3 ? cxgoosList[index + (lindex * 2)].specs_vipmoney : cxgoosList[index + (lindex * 2)].specs_erpmoney))}}<text wx:if="{{item.specs.length > 1}}" style="color: #999;font-size: 22rpx;"> 起</text>
+                    <view wx:if="{{cxgoosList[index + (lindex * 2)]}}" style="font-size: 26rpx;color: #003B73;font-weight: bold;">¥ {{userinfo && userinfo.user_level == 2 ? cxgoosList[index + (lindex * 2)].specs_pfmoney : (userinfo && userinfo.user_level == 1 ? cxgoosList[index + (lindex * 2)].specs_tgmoney : (userinfo && userinfo.user_level == 3 ? cxgoosList[index + (lindex * 2)].specs_vipmoney : cxgoosList[index + (lindex * 2)].specs_erpmoney))}}<text wx:if="{{item.specs.length > 1}}" style="color: #999;font-size: 22rpx;"> 起</text>
                       <!-- <text style="font-size: 20rpx;color: #999;text-decoration: line-through;margin-left: 6rpx;">¥ 999.99</text> -->
                       </view>
                   </view>
@@ -107,7 +107,7 @@
                     <view class="twolinetext" style="font-size: 28rpx;font-weight: bold;margin-bottom: 10rpx;">{{item.goods_name}}</view>
                     <view class="item_desc">已售 {{item.volume + 1000}} 库存 {{item.goodsstock}}</view>
                     <view class="flex3">
-                      <view style="font-size: 30rpx;font-weight: bold;color: #f60;">¥ {{userinfo.user_level == 2 ? item.specs_pfmoney : (userinfo.user_level == 1 ? item.specs_tgmoney : (userinfo.user_level == 3 ? item.specs_vipmoney : item.specs_erpmoney))}}<text wx:if="{{item.specs.length > 1}}" style="color: #999;font-size: 22rpx;"> 起</text></view>
+                      <view style="font-size: 30rpx;font-weight: bold;color: #003B73;">¥ {{userinfo && userinfo.user_level == 2 ? item.specs_pfmoney : (userinfo && userinfo.user_level == 1 ? item.specs_tgmoney : (userinfo && userinfo.user_level == 3 ? item.specs_vipmoney : item.specs_erpmoney))}}<text wx:if="{{item.specs.length > 1}}" style="color: #999;font-size: 22rpx;"> 起</text></view>
                       <view style="width: 90rpx;height: 50rpx;border-radius: 25rpx;background-color: #003B73;color: #fff;line-height: 50rpx;text-align: center;font-size: 24rpx;color: #fff;">抢购</view>
                     </view>
                 </view>

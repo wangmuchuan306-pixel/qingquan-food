@@ -18,7 +18,7 @@ Page({
         catelist: res.data.catelist
       })
       this.getgoodslist()
-    })
+    }, { requireAuth: false })
   },
   //切换分类
   changecate(e) {
@@ -84,7 +84,7 @@ Page({
         labelist: res.label,
         colorlist: res.color
       })
-    })
+    }, { requireAuth: false })
   },
   //选择商品
   choosegoods(e) {
@@ -103,11 +103,23 @@ Page({
     // wx.navigateBack()
   },
   userCenter() {
+    // 先从本地存储读取用户信息
+    const localUserInfo = wx.getStorageSync('userinfo');
+    if (localUserInfo) {
+      this.setData({ userinfo: localUserInfo });
+    }
+    
     app.apiPost(app.apiList.userCenter, {}, (res) => {
+      // 如果返回未授权，不做处理
+      if (res.status === 10011) {
+        return;
+      }
       this.setData({
         userinfo: res.data
-      })
-    })
+      });
+      // 更新本地存储
+      wx.setStorageSync('userinfo', res.data);
+    }, { requireAuth: false });
   },
   /**
    * 生命周期函数--监听页面加载

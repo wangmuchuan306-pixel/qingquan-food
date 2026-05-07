@@ -1,4 +1,5 @@
-@import '../app.wxss';
+@import '../styles/iconfont.wxss';
+
 .tab-bar {
   --pd-b: env(safe-area-inset-bottom);
   position: fixed;

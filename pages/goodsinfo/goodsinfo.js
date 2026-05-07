@@ -173,10 +173,14 @@ Page({
     app.apiPost(app.apiList.integral_list, {
       page: that.data.page
     }, (res) => {
+      // 如果返回未授权，不做处理
+      if (res.status === 10011) {
+        return;
+      }
       that.setData({
         integral: res.data.integral
       })
-    })
+    }, { requireAuth: false })
   },
   //左上角返回
   backpage() {
@@ -1250,7 +1254,18 @@ Page({
     return distance;
   },
   userCenter() {
+    const localUserInfo = wx.getStorageSync('userinfo');
+    if (localUserInfo) {
+      this.setData({ userinfo: localUserInfo });
+      if (localUserInfo.phone) {
+        this.setData({ userphone: localUserInfo.phone });
+      }
+    }
+
     app.apiPost(app.apiList.userCenter, {}, (res) => {
+      if (res.status === 10011) {
+        return;
+      }
       if (res.data.phone) {
         this.setData({
           userphone: res.data.phone
@@ -1259,8 +1274,9 @@ Page({
       this.setData({
         userinfo: res.data,
       })
+      wx.setStorageSync('userinfo', res.data);
       this.getAddressList()
-    })
+    }, { requireAuth: false })
   },
   //填写余额弹框
   chooseye() {
@@ -1278,6 +1294,10 @@ Page({
     var that = this;
     //自提情况
     app.apiPost(app.apiList.findAddress, {}, (data) => {
+      // 如果返回未授权，不做处理
+      if (data.status === 10011) {
+        return;
+      }
       if (data.status == 1) {
         if (data.data.length == 0) {
           that.setData({
@@ -1304,13 +1324,8 @@ Page({
             that.setexpress()
           }
         }
-      } else {
-        wx.showToast({
-          title: data.msg,
-          icon: 'loading'
-        })
       }
-    })
+    }, { requireAuth: false })
   },
   columnchange(e) {
     console.log(e)
@@ -1416,6 +1431,10 @@ Page({
     var stime = date.getTime() + usersendtime * 60 * 60 * 1000
     const today = new Date(date.setHours(0, 0, 0, 0)).getTime(); //获取当天零点的时间
     app.apiPost(app.apiList.findsendtime, {}, (res) => {
+      // 如果返回未授权，不做处理
+      if (res.status === 10011) {
+        return;
+      }
       var timelist = []
       const days = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
       const todayweek = new Date().getDay();
@@ -1470,16 +1489,20 @@ Page({
       this.setData({
         timelist
       })
-    })
+    }, { requireAuth: false })
   },
   getusersendtime() {
     app.apiPost(app.apiList.getusersendtime, {}, (res) => {
+      // 如果返回未授权，不做处理
+      if (res.status === 10011) {
+        return;
+      }
       this.setData({
         usersendtime: Number(res.data),
         send_tip: res.twoData
       })
       this.findsendtime()
-    })
+    }, { requireAuth: false })
   },
   /**
    * 生命周期函数--监听页面加载
@@ -1536,6 +1559,10 @@ Page({
       goods_id: _this.data.goods_id,
     }
     app.apiPost(app.apiList.getactivegoods_activehavemore_pelaseselectmaxendtimeandelsectactivepricepay, data, (res) => {
+      // 如果返回未授权，不做处理
+      if (res.status === 10011) {
+        return;
+      }
       if (res.status == 1) {
         if (res.data.length > 0) {
           res.data.forEach(v => {
@@ -1547,17 +1574,21 @@ Page({
           })
         }
       }
-    })
+    }, { requireAuth: false })
   },
   getztdian() {
     app.apiPost(app.apiList.getztdian, {
       page: 1,
       limit: 999
     }, (res) => {
+      // 如果返回未授权，不做处理
+      if (res.status === 10011) {
+        return;
+      }
       this.setData({
         ztdianlist: res.data
       })
-    })
+    }, { requireAuth: false })
   },
   ssjs() {
     var that = this
@@ -1579,6 +1610,10 @@ Page({
       latitude: this.data.latitude,
       longitude: this.data.longitude
     }, (res) => {
+      // 如果返回未授权，不做处理
+      if (res.status === 10011) {
+        return;
+      }
       //  this.setData({
       //     ztdian: res.data[0]
       //  })
@@ -1586,11 +1621,13 @@ Page({
       //     key: 'ztdian',
       //     data: res.data[0],
       //  });
-      res.data[0].distance = (res.data[0].distance / 1000).toFixed(2)
-      this.setData({
-        ztdian2: res.data[0]
-      })
-    })
+      if (res.data && res.data[0]) {
+        res.data[0].distance = (res.data[0].distance / 1000).toFixed(2)
+        this.setData({
+          ztdian2: res.data[0]
+        })
+      }
+    }, { requireAuth: false })
   },
   changeziti(e) {
     var ztdianlist = this.data.ztdianlist

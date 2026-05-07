@@ -1,7 +1,8 @@
 <!--pages/template/template.wxml-->
 <template name="bottomtext">
   <view style="margin: 50rpx auto;text-align: center;">
-    <view style="font-size: 30rpx;font-weight: bold;color: #003B73;">冀唐清泉</view>
+    <image src="/images/logo.png" style="width: 120rpx;height: 120rpx;border-radius: 20rpx;" mode="aspectFill"></image>
+    <view style="font-size: 30rpx;font-weight: bold;color: #003B73;margin-top: 20rpx;">冀唐清泉</view>
     <view style="font-size: 24rpx;color: #ccc;margin-top: 20rpx;" bind:tap="callphone">唐山共享科技有限公司提供技术支持</view>
   </view>
 </template>
