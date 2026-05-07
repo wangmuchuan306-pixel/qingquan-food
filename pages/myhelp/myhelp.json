@@ -3,8 +3,8 @@
     "poster": "/component/poster/index",
     "image-loader": "/component/image-loader/image-loader"
   },
-  "navigationBarTitleText": "清泉食品",
+  "navigationBarTitleText": "冀唐清泉",
   "navigationBarTextStyle":"white",
-  "navigationBarBackgroundColor": "#015637",
-  "backgroundColor":"#015637"
+  "navigationBarBackgroundColor": "#003B73",
+  "backgroundColor":"#003B73"
 }

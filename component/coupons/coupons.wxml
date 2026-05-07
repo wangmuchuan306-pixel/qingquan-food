@@ -9,70 +9,53 @@
           <!-- 上半部分盒子 -->
           <view class="couponTop" data-theme="{{theme}}">
             <!-- 上半部分左边内容 -->
-            <view class="couponLeft2">
-              <view class="flex3">
-                <view class="coupon_title" wx:if="{{item.is_discount==1}}">
-                  <text style="color:#000;font-size:42rpx">{{item.zhekou_num==0?'兑换券':item.zhekou_num+'折'}}</text>
-                  <text style="color:#000;padding-left:20rpx;font-size:42rpx">蛋票</text>
-                </view>
-                <view class="coupon_title" wx:else>
-                  <text style="color:#000;font-size:42rpx">￥{{item.used_amount}}</text>
-                  <text style="color:#000;padding-left:20rpx;font-size:42rpx">代金券</text>
-                </view>
-                <view style="font-size: 36rpx;font-weight: bold;">
-                  <view style="color: #000;" wx:if="{{item.status==0}}">待使用</view>
-                  <view style="color: #999;" wx:if="{{item.status==1}}">已使用</view>
-                  <view style="color: #999;" wx:if="{{item.status==2}}">已过期</view>
-                  <view style="color: #999;" wx:if="{{item.status==3}}">转赠中</view>
-                </view>
+            <view class="couponLeft">
+              <view class="coupon_title" wx:if="{{item.is_discount==1}}">
+                <text style="color:#000;font-size:40rpx">{{item.zhekou_num==0?'兑换券':item.zhekou_num+'折'}}</text>
+                <text style="color:#000;padding-left:20rpx;font-size:40rpx">兑换券</text>
               </view>
-              <view class="c_content" style="color:#000;font-size: 28rpx;font-weight: normal;margin-top: 10rpx;">
-                {{item.isgoods==1?'全场通用':item.goods_name?item.goods_name:'商品已下架'}}
+              <view class="coupon_title" wx:else>
+                <text style="color:#000;font-size:40rpx">￥{{item.used_amount}}</text>
+                <text style="color:#000;padding-left:20rpx;font-size:40rpx">代金券</text>
               </view>
-              <view class="flex3" style="font-weight: normal;font-size: 26rpx;margin-top: 10rpx;">
-                <text style="color: #999;">有效期至{{item.coupon_end_time}}</text>
-                <view style="color: #015637;" bind:tap="showcontent" data-index="{{index}}">使用说明</view>
+              <view class="c_content" style="color:#000">
+                {{item.isgoods==1?'全场通用 / ' + (item.with_amount != '0.00' ? '满' + item.with_amount + '可用':'无门槛') :item.goods_name?item.goods_name + ' / ' + (item.with_amount != '0.00' ? '满' + item.with_amount + '可用':'无门槛'):'商品已下架'}}
               </view>
             </view>
             <!-- 上半部分右边内容 -->
             <!-- <view> -->
-            <!-- <view class="couponRight" wx:if="{{item.status==0}}">
+            <view class="couponRight" wx:if="{{item.status==0}}">
               <view bind:tap="tousecoupon" data-index="{{index}}">立即使用</view>
+              <!-- <navigator wx:if="{{item.face_type == 3}}" url="/pages/goodsinfo/goodsinfo?id={{item.quan_goods_id}}&histoty_coupon_id={{item.histoty_coupon_id}}" open-type="redirect" hover-class="none">立即使用</navigator>
+              <navigator wx:if="{{item.face_type == 1}}" url="/pages/index/index" open-type="switchTab" hover-class="none">
+                立即使用
+              </navigator> -->
             </view>
             <view style="width: 140rpx;height: 60rpx;border-radius: 30rpx;background-color: #ccc;margin-right: 30rpx;color: white;font-size: 26rpx;text-align: center;line-height: 60rpx;" wx:if="{{item.status==1}}">已使用</view>
             <view style="width: 140rpx;height: 60rpx;border-radius: 30rpx;background-color: #ccc;margin-right: 30rpx;color: white;font-size: 26rpx;text-align: center;line-height: 60rpx;" wx:if="{{item.status==2}}">已过期</view>
             <view style="width: 140rpx;height: 60rpx;border-radius: 30rpx;background-color: #ccc;margin-right: 30rpx;color: white;font-size: 26rpx;text-align: center;line-height: 60rpx;" wx:if="{{item.status==3}}">待领取</view>
-            <view class="couponRight" style="color: #015637;" wx:if="{{item.status==4}}">丢回奖池</view> -->
+            <view class="couponRight" style="color: #003B73;" wx:if="{{item.status==4}}">丢回奖池</view>
             <!-- </view> -->
           </view>
           <!-- 下半部分盒子 -->
           <view class="couponBot" style="background-image:url('{{url}}/summer/okbgcolor1.png');background-size: 100% 100%;">
             <view style="margin-top:10rpx">
               <view class="dibu1">
-                <view style="font-size: 26rpx;">
-                  <!-- <text>有效期至{{item.coupon_end_time}}</text> -->
-                  <view wx:if="{{item.status==3}}">距失效还剩 <text style="color: #f30;">{{item.countdown.h}}:{{item.countdown.m}}:{{item.countdown.s}}</text></view>
-                  <view wx:if="{{item.status==1}}">使用时间 {{item.use_time}}</view>
-                  <view wx:if="{{item.status==2}}">过期时间 {{item.coupon_end_time}}</view>
-                  <view wx:if="{{item.status==0}}">{{item.cat_id!=8&&item.cat_id!=2&&item.cat_id!=6 ? '您也可以通过转赠送给好友' : '该优惠券不可转赠'}}</view>
+                <view>
+                  <text>有效期至{{item.coupon_end_time}}</text>
                 </view>
                 <view style="display: flex;align-items: center;">
-                  <view class="flex1" wx:if="{{item.status == 3}}" bind:tap="gotureceiv" data-index="{{index}}" style="width: 100rpx;height: 60rpx;border-radius: 30rpx;background-color: #015637;color: #fff;font-size: 26rpx;">
-                    <view>查看</view>
-                    </view>
-                    <button wx:else open-type="{{item.status==0&&item.cat_id!=8&&item.cat_id!=2&&item.cat_id!=6 ? 'share' : ''}}" class="flex1" plain style="width: 100rpx;height: 60rpx;border-radius: 30rpx;background-color: {{item.status==0&&item.cat_id!=8&&item.cat_id!=2&&item.cat_id!=6 ? '#015637':'#ccc'}};color: #fff;font-size: 26rpx;padding: 0;border: none;" data-id="{{item.histoty_id}}" data-name="{{item.title}}">
-                      <view>转赠</view>
-                    </button>
-                    <!-- <button plain style="margin: 0;padding: 0 10rpx;border: none;color: #015637;font-size: 22rpx;height: 40rpx;line-height: 40rpx;" wx:if="{{item.status==3}}">待好友领取</button>
-                    <button plain style="margin: 0;padding: 0 10rpx;border: none;color: #015637;font-size: 22rpx;height: 40rpx;line-height: 40rpx;" wx:if="{{item.status==1}}">{{item.is_discount==1?'免单':'代金'}}券被使用</button> -->
-                    <view class="flex1" bind:tap="{{item.status==0 ? 'tousecoupon' : ''}}" data-index="{{index}}" style="width: 150rpx;height: 60rpx;border-radius: 30rpx;background-color: {{item.status==0 ? '#015637' : '#ccc'}};color: #fff;font-size: 26rpx;margin-left: 30rpx;">
-                      <view>立即使用</view>
-                    </view>
-                  </view>
+                  <!-- <block wx:if="{{item.is_discount==1}}"> -->
+                    <button open-type="share" plain style="margin: 0;padding: 0 10rpx;border: none;color: #003B73;font-size: 22rpx;height: 40rpx;line-height: 40rpx;" data-id="{{item.histoty_id}}" data-name="{{item.title}}" wx:if="{{item.status==0}}">转赠给好友</button>
+                    <button plain style="margin: 0;padding: 0 10rpx;border: none;color: #003B73;font-size: 22rpx;height: 40rpx;line-height: 40rpx;" wx:if="{{item.status==3}}">待好友领取</button>
+                    <button plain style="margin: 0;padding: 0 10rpx;border: none;color: #003B73;font-size: 22rpx;height: 40rpx;line-height: 40rpx;" wx:if="{{item.status==1}}">{{item.is_discount==1?'免单':'代金'}}券被使用</button>
+                  <!-- </block> -->
+                  <view style="font-size: 22rpx;color: #003B73;width: fit-content;" bind:tap="showcontent" data-index="{{index}}">使用说明</view>
                 </view>
               </view>
             </view>
           </view>
+        </view>
       </block>
       <!-- 优惠券过期 -->
       <block wx:if="{{usedCouponsList.length > 0&&type==1}}" wx:for="{{usedCouponsList}}" wx:key="item" wx:item="item">
@@ -82,7 +65,7 @@
             <view class="couponLeft">
               <view class="coupon_title" wx:if="{{item.is_discount==1}}">
                 <text style="color:#fff;font-size:40rpx">{{item.zhekou_num==0?'兑换券':item.zhekou_num+'折'}}</text>
-                <text style="color:#fff;padding-left:20rpx;font-size:40rpx">蛋票</text>
+                <text style="color:#fff;padding-left:20rpx;font-size:40rpx">兑换券</text>
               </view>
               <view class="coupon_title" wx:else>
                 <text style="color:#fff;font-size:40rpx">￥{{item.used_amount}}</text>
@@ -111,38 +94,33 @@
           <!-- 上半部分盒子 -->
           <view class="couponTop" data-theme="{{theme}}">
             <!-- 上半部分左边内容 -->
-            <view class="couponLeft2">
-              <view class="flex3">
-                <view class="coupon_title">
-                  <text style="color:#000;font-size:42rpx">兑换券</text>
-                  <text style="color:#000;padding-left:20rpx;font-size:42rpx">蛋票</text>
-                </view>
-                <view style="font-size: 36rpx;font-weight: bold;">
-                  <view style="color: #999;">已转赠</view>
-                </view>
+            <view class="couponLeft">
+              <!-- is_discount 1折扣 2抵现金额 -->
+              <view class="coupon_title">
+                <text style="color:#000;font-size:40rpx">兑换券</text>
+                <text style="color:#000;padding-left:20rpx;font-size:40rpx">兑换券</text>
               </view>
-              <view class="c_content" style="color:#000;font-size: 28rpx;font-weight: normal;margin-top: 10rpx;">
+              <view class="c_content" style="color:#000">
                 {{item.name}}
               </view>
-              <view class="flex3" style="font-weight: normal;font-size: 26rpx;margin-top: 10rpx;">
-                <text style="color: #999;">有效期至{{item.coupon_end_time}}</text>
-                <view style="color: #015637;" bind:tap="showcontent" data-index="{{index}}">使用说明</view>
-              </view>
             </view>
+            <!-- 上半部分右边内容 -->
+            <view class="couponRight" wx:if="{{item.status==0}}">
+              <navigator wx:if="{{item.face_type == 3}}" url="/pages/goodsinfo/goodsinfo?id={{item.quan_goods_id}}&histoty_coupon_id={{item.histoty_coupon_id}}" open-type="redirect" hover-class="none">立即使用</navigator>
+              <navigator wx:if="{{item.face_type == 1}}" url="/pages/index/index" open-type="switchTab" hover-class="none">
+                立即使用
+              </navigator>
+            </view>
+            <view style="width: 140rpx;height: 60rpx;border-radius: 30rpx;background-color: #ccc;margin-right: 30rpx;color: white;font-size: 26rpx;text-align: center;line-height: 60rpx;">已领取</view>
           </view>
           <!-- 下半部分盒子 -->
           <view class="couponBot" style="background-image:url('{{url}}/summer/okbgcolor1.png');background-size: 100% 100%;">
-            <view style="margin-top:20rpx">
+            <view style="margin-top:10rpx">
               <view class="dibu1">
-                <button plain style="margin: 0;padding: 0 10rpx;border: none;color: #999;font-size: 26rpx;height: 40rpx;line-height: 40rpx;">好友{{item.get_user_phone}} 已领取</button>
-                <view class="flex2">
-                  <!-- <view class="flex1" bind:tap="gotureceiv" data-index="{{index}}" data-type="1" style="width: 100rpx;height: 60rpx;border-radius: 30rpx;background-color: #015637;color: #fff;font-size: 26rpx;">
-                    <view>查看</view>
-                    </view> -->
-                <view class="flex1" data-index="{{index}}" style="width: 150rpx;height: 60rpx;border-radius: 30rpx;background-color: #ccc;color: #fff;font-size: 26rpx;margin-left: 30rpx;">
-                      <view>立即使用</view>
-                    </view>
-                    </view>
+                <view>
+                  <text>转增时间{{item.add_time1}}</text>
+                </view>
+                <button plain style="margin: 0;padding: 0 10rpx;border: none;color: #003B73;font-size: 22rpx;height: 40rpx;line-height: 40rpx;">已被{{item.get_user_name}}领取</button>
               </view>
             </view>
           </view>
@@ -153,12 +131,12 @@
     <!-- 使用优惠券的样式 -->
     <block wx:else>
       <block wx:for="{{couponsList}}" wx:key="item" wx:item="item">
-        <view wx:if="{{item.used_amount <= onemoney}}" class="couponItem" bindtap="useCoupon" data-index="{{index}}" data-couponId="{{item.quan_id}}">
+        <view class="couponItem" bindtap="useCoupon" data-index="{{index}}" data-couponId="{{item.quan_id}}">
           <view class="couponTop">
             <view class="couponLeft">
               <view class="coupon_title" wx:if="{{item.is_discount==1}}">
                 <text style="color:#000;font-size:40rpx">{{item.zhekou_num==0?'兑换券':item.zhekou_num+'折'}}</text>
-                <text style="color:#000;padding-left:20rpx;font-size:40rpx">蛋票</text>
+                <text style="color:#000;padding-left:20rpx;font-size:40rpx">兑换券</text>
               </view>
               <view class="coupon_title" wx:else>
                 <text style="color:#000;font-size:40rpx">￥{{item.used_amount}}</text>
@@ -191,11 +169,11 @@
           <view class="couponTop">
             <view class="couponLeft">
               <view class="coupon_title" wx:if="{{item.is_discount==1}}">
-                <!-- <text style="color:#999;font-size:40rpx">{{item.zhekou}}</text> -->
-                <text style="color:#999;padding-left:20rpx;font-size:40rpx">蛋票</text>
+                <text style="color:#999;font-size:40rpx">{{item.zhekou}}</text>
+                <text style="color:#999;padding-left:20rpx;font-size:40rpx">兑换券</text>
               </view>
               <view class="coupon_title" wx:else>
-                <!-- <text style="color:#999;font-size:40rpx">￥{{item.used_amount}}</text> -->
+                <text style="color:#999;font-size:40rpx">￥{{item.used_amount}}</text>
                 <text style="color:#999;padding-left:20rpx;font-size:40rpx">代金券</text>
               </view>
               <view class="c_content">
@@ -216,7 +194,7 @@
                     <image src="{{url}}/summer/jinggao.png" style="width:24rpx;height:24rpx"></image>
                     <view style="margin-left:10rpx">不可用原因：{{item.nostr}}</view>
                   </view>
-                  <view style="color:#015637;margin-right:30rpx;font-size:24rpx" bindtap="xufei" wx:if="{{item.nobtn==1}}">立即续费</view>
+                  <view style="color:#003B73;margin-right:30rpx;font-size:24rpx" bindtap="xufei" wx:if="{{item.nobtn==1}}">立即续费</view>
                 </view>
               </view>
             </view>

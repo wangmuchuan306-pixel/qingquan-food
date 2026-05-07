@@ -171,7 +171,7 @@ Page({
     return {
       path: '/pages/index/index?ruid=' + wx.getStorageSync('uid'),
       imageUrl: '/images/logo.jpg',
-      title: '清泉食品'
+      title: '冀唐清泉'
     }
   }
 })

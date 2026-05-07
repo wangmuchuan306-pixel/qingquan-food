@@ -9,8 +9,8 @@ Page({
 
   },
   lookorder() {
-    wx.redirectTo({
-      url: '/pages/orderInfo/orderInfo?id=' + this.data.orderno,
+    wx.reLaunch({
+      url: '/pages/orderlist/orderlist',
     })
   },
   goback(){
@@ -33,9 +33,9 @@ Page({
    */
   onLoad(options) {
     this.setData({
-      orderno: options.orderno
+      pay_real_money: options.pay_real_money
     })
-    this.userOrderDetail()
+    // this.userOrderDetail()
   },
 
   /**

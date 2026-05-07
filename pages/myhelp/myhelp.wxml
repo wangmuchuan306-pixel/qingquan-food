@@ -17,9 +17,9 @@
           名好友帮忙助力
         </view>
         <view style="text-align: center;font-size: 24rpx;color:#333;margin-top: 20rpx;" wx:if="{{timeend&&!issuccess}}">
-          <text style="color:#015637">奖励</text>
+          <text style="color:#003B73">奖励</text>
           {{integralNum}}积分
-          <text style="color:#015637" bindtap="gogoodsinfo"></text>
+          <text style="color:#003B73" bindtap="gogoodsinfo"></text>
         </view>
         <view class="main_main_top" wx:if="{{ishelp&&!timeend&&!issuccess}}">时间到了，你差一点就集齐助力啦</view>
         <view class="main_main_top" wx:if="{{issuccess}}">恭喜您已助力成功</view>
@@ -30,7 +30,7 @@
           <text class="main_main_top1_left">距离失效:</text>
           <view class="main_main_top1_right">
             {{endTimeArr.h}} : {{endTimeArr.m}} :
-            <text style="color:#015637;">{{endTimeArr.s}}</text>
+            <text style="color:#003B73;">{{endTimeArr.s}}</text>
           </view>
         </view>
         <!-- <view class="main_main_top2" wx:if="{{issuccess}}" bindtap="goWallet">
@@ -95,7 +95,7 @@
   <view class="bottom"></view>
 </view>
 <!-- <view class="footer1" bindtap="gohome">
-  <text>回到清泉食品商城</text>
+  <text>回到冀唐清泉商城</text>
   <image src="{{url}}/summer/hq.png?{{veision}}"></image>
 </view> -->
 <!-- <view class="footer">

@@ -2,7 +2,7 @@
   position: fixed;
   width: 100vw;
   height: 114rpx;
-  background-color: #005832;
+  background-color: #003B73;
   z-index: 999;
   bottom: 100%;
   padding-top: 1000rpx;
@@ -75,7 +75,7 @@
   height: 20rpx;
   border-radius: 30rpx;
   border-radius: 100%;
-  background-color: #005832;
+  background-color: #003B73;
 }
 
 
@@ -99,7 +99,7 @@
   z-index: 2;
 }
 .sk-cube {
-  --theme-color: #005832;
+  --theme-color: #003B73;
   width: 33%;
   height: 33%;
   background-color: var(--theme-color);

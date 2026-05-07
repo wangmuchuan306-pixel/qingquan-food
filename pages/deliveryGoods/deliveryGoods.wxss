@@ -23,14 +23,14 @@ page{
   height: 100rpx;
   text-align: center;
   line-height: 96rpx;
-  border: 2rpx solid #015637;
+  border: 2rpx solid #003B73;
   box-sizing: border-box;
-  /* background-color: #015637; */
+  /* background-color: #003B73; */
   margin: 30rpx;
   border-radius: 20rpx;
   font-size: 30rpx;
   font-weight: bold;
-  color: #015637;
+  color: #003B73;
 }
 .goodstitle{
   overflow:hidden;
@@ -44,8 +44,8 @@ page{
 .istitle{
   font-size: 36rpx;
   font-weight: bold;
-  color: #015637;
-  border-bottom: 10rpx solid #015637;
+  color: #003B73;
+  border-bottom: 10rpx solid #003B73;
   margin-right: 30rpx;
 }
 .titletext{
@@ -56,7 +56,7 @@ page{
   width: 120rpx;
   height: 60rpx;
   border-radius: 30rpx;
-  background-color: #015637;
+  background-color: #003B73;
   text-align: center;
   line-height: 60rpx;
   font-size: 30rpx;
@@ -97,6 +97,6 @@ page{
   color: white;
   text-align: center;
   line-height: 100rpx;
-  background-color: #015637;
+  background-color: #003B73;
   margin: 30rpx;
 }

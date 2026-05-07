@@ -24,7 +24,7 @@
           <view>
             <view style="font-size: 28rpx;width: 350rpx;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">{{item.goods_name}}</view>
             <view style="font-size: 22rpx;color: #999;margin: 10rpx 0;">市场价 ￥{{item.line_price}} 已售 {{item.volume}} </view>
-            <view style="font-size: 30rpx;color: #015637;">￥{{userinfo.level==1?item.memberprice:item.normalprice}}</view>
+            <view style="font-size: 30rpx;color: #003B73;">￥{{userinfo.level==1?item.memberprice:item.normalprice}}</view>
           </view>
         </view>
       </block>

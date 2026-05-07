@@ -100,13 +100,13 @@
 
 .goodsLabel2 {
   background-color: #ffccd5;
-  color: #005832;
+  color: #003B73;
 }
 
 .goodsH3 text {
   font-size: 36rpx;
   font-weight: bold;
-  color: #005832;
+  color: #003B73;
 }
 
 .SurvivalOrDeath image {

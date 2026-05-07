@@ -9,7 +9,7 @@
   width: 240rpx;
   height: 100rpx;
   border-radius: 50rpx;
-  background-color: #c30505;
+  background-color: var(--theme-color);
   color: white;
   font-size: 30rpx;
   text-align: center;
@@ -29,7 +29,7 @@
   border-radius: 20rpx;
   font-size: 30rpx;
   color: #fff;
-  background-color: #c30505;
+  background-color: var(--theme-color);
 }
 
 .topbody {
@@ -87,7 +87,7 @@
   height: 42rpx;
   margin-right: 20rpx;
   border-radius: 100%;
-  background-color: #c30505;
+  background-color: var(--theme-color);
   flex-shrink: 0;
 }
 
@@ -106,7 +106,7 @@
 
 .titlehuo {
   font-size: 24rpx;
-  color: #c30505;
+  color: var(--theme-color);
   width: 100%;
   padding: 20rpx 30rpx;
   box-sizing: border-box;
@@ -127,7 +127,7 @@
   border-radius: 20rpx;
   flex-direction: column;
   margin-right: 14rpx;
-  color: #c30505;
+  color: var(--theme-color);
   flex-shrink: 0;
 }
 
@@ -139,4 +139,13 @@
 .item_s {
   font-size: 26rpx;
   margin-top: 10rpx;
+}
+
+.xxhf{
+  padding: 6rpx 10rpx;
+  border-radius: 10rpx;
+  background-color: #f60;
+  font-size: 22rpx;
+  color: #fff;
+  margin-left: 10rpx;
 }

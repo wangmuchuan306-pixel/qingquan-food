@@ -1,5 +1,6 @@
 // pages/orderlist/orderlist.js
 var app = getApp();
+const tab_bar = require('../../custom-tab-bar/utils/tab-bar.js')
 var order_status; //查询列表时的id
 var order_statuss; //对订单有操作时的id
 var page = 1;
@@ -358,6 +359,7 @@ Page({
     * 生命周期函数--监听页面显示
     */
    onShow: function () {
+      tab_bar.getTab(2)
       var that = this;
       that.setData({
          theme: 'light'

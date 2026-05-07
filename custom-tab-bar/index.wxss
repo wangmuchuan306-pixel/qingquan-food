@@ -1,0 +1,41 @@
+@import '../app.wxss';
+.tab-bar {
+  --pd-b: env(safe-area-inset-bottom);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  /* height: 100rpx; */
+  background: white;
+  display: flex;
+  padding-bottom: calc(var(--pd-b) - 20rpx);
+  border-top: 2rpx solid #eee;
+  transition: all 0.5s ease-in-out;
+}
+.hidden {
+  transform: translateY(100%);
+}
+
+.tab-bar-item {
+  flex: 1;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  transition: all 0.3s ease-in-out;
+  padding: 20rpx 0 20rpx;
+}
+
+.tab-bar-item.active {
+  transform: scale(1.03);
+}
+
+.tab-bar-item .tab-bar-image {
+  font-size: 42rpx;
+  margin-bottom: 6rpx;
+}
+
+.tab-bar-item .tab-bar-view {
+  font-size: 20rpx;
+}

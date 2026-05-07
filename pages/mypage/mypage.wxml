@@ -27,14 +27,14 @@
       <image wx:else src="/images/noimg.png" style="width: 100rpx;height: 100rpx;border-radius: 100%;background-color: white;margin-right: 30rpx;" mode="aspectFill" />
     </block>
     <block>
-      <view wx:if="{{userinfo.nickname}}" style="width: 480rpx;">
-        <view class="flex3">
-          <view style="font-weight: bold;font-size: 36rpx;margin-bottom: 10rpx;color: #000;">{{userinfo.nickname}}</view>
+      <view wx:if="{{userinfo.nickname}}" style="flex: 1;min-width: 0;">
+        <view class="flex3" style="width: 100%;">
+          <view class="txt1" style="font-weight: bold;font-size: 36rpx;margin-bottom: 10rpx;color: #000;flex: 1;min-width: 0;margin-right: 30rpx;">{{userinfo.nickname}}</view>
           <image src="/images/pen.png" bind:tap="toset" style="width: 30rpx;height: 36rpx;" mode="" />
         </view>
         <view style="font-size: 26rpx;" wx:if="{{userinfo.phone}}">{{userinfo.phone}}</view>
       </view>
-      <view wx:else class="flex3" style="width: 480rpx;">
+      <view wx:else class="flex3" style="flex: 1;min-width: 0;">
         <view style="font-size: 30rpx;font-weight: bold;">您还没有登录呢</view>
         <view class="gbox" bind:tap="gotologin">立即登录</view>
       </view>
@@ -84,7 +84,7 @@
     </view>
     <view class="flex2">
       <view style="font-size: 24rpx;color:#999;margin-right: 10rpx;">全部订单</view>
-      <image src="/images/blackjiantou.png" style="width: 18rpx;height: 24rpx;"></image>
+      <image src="/images/blackjiantou.png" style="width: 14rpx;height: 24rpx;"></image>
     </view>
   </view>
   <ul style="display: flex;align-items: center;justify-content: space-between;padding-left: 0;width: 630rpx;">
@@ -118,13 +118,13 @@
     </view>
     <image src="/images/blackjiantou.png"></image>
   </view>
-  <!-- <view class="contentList" bindtap="tocard">
+  <view class="contentList" bindtap="tocard">
     <view class="contentListLeft">
       <image src="https://yhtapi.ehetuan.cn/yht/amoney.png"></image>
       <view>我的卡券</view>
     </view>
     <image src="/images/blackjiantou.png"></image>
-  </view> -->
+  </view>
   <!-- <view class="contentList" bindtap="gotopoints">
     <view class="contentListLeft">
       <image src="/images/jifen.png"></image>
@@ -187,3 +187,5 @@
     </view>
   </view>
 </van-popup>
+
+<view style="height: {{tabBarHeight}};"></view>

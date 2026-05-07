@@ -389,7 +389,7 @@ Page({
     var remoneybl = that.data.remoney
     var total = 0;
     cartlist.forEach(v => {
-      var price = level == 2 ? v.line_price : (level == 1 ? v.memberprice : v.normalprice)
+      var price = level == 2 ? v.specs_pfmoney : (level == 1 ? v.specs_tgmoney : (level == 3 ? v.specs_vipmoney : v.specs_erpmoney))
       v.zongprice = Number(price) * Number(v.number)
       v.zongmoney = Number(price) * Number(v.number)
       total += Number(price) * Number(v.number)
@@ -1028,32 +1028,32 @@ Page({
       })
       return
     }
-    if (that.data.chooseStyle == 2 && that.data.manjianinfo && that.data.manjianinfo.id && Number(that.data.zongmoney) < Number(that.data.manjianinfo.man)) {
-      wx.showModal({
-        title: '提示',
-        content: `您未满足门店满${that.data.manjianinfo.man}减${that.data.manjianinfo.jian}是否前往凑单`,
-        cancelText: '继续支付',
-        confirmText: '前往凑单',
-        complete: (res) => {
-          if (res.cancel) {
-            wx.showLoading({
-              title: '订单提交中',
-              mask: true
-            })
-            that.addOrdermorewxss()
-          }
-          if (res.confirm) {
-            wx.navigateBack()
-          }
-        }
-      })
-    } else {
-      wx.showLoading({
-        title: '订单提交中',
-        mask: true
-      })
-      that.addOrdermorewxss()
-    }
+    // if (that.data.chooseStyle == 2 && that.data.manjianinfo && that.data.manjianinfo.id && Number(that.data.zongmoney) < Number(that.data.manjianinfo.man)) {
+    //   wx.showModal({
+    //     title: '提示',
+    //     content: `您未满足门店满${that.data.manjianinfo.man}减${that.data.manjianinfo.jian}是否前往凑单`,
+    //     cancelText: '继续支付',
+    //     confirmText: '前往凑单',
+    //     complete: (res) => {
+    //       if (res.cancel) {
+    //         wx.showLoading({
+    //           title: '订单提交中',
+    //           mask: true
+    //         })
+    //         that.addOrdermorewxss()
+    //       }
+    //       if (res.confirm) {
+    //         wx.navigateBack()
+    //       }
+    //     }
+    //   })
+    // } else {
+    wx.showLoading({
+      title: '订单提交中',
+      mask: true
+    })
+    that.addOrdermorewxss()
+    // }
     var userinfo = that.data.userinfo
     // if (that.data.chooseStyle == 1 && (userinfo.headimg == 'https://thirdwx.qlogo.cn/mmopen/vi_32/POgEwh4mIHO4nibH0KlMECNjjGxQUq24ZEaGT4poC6icRiccVGKSyXwibcPq4BWmiaIGuG1icwxaQX6grC9VemZoJ8rg/132' || userinfo.nickname == '微信用户' || !userinfo.phone)) {
     //   wx.showToast({
@@ -1198,19 +1198,21 @@ Page({
         bl: v.bl,
         number: v.number, // 购买数量
         yue_price: v.yue, // 余额
-        oneprice: (Number(userinfo.user_level == 2 ? v.line_price : (userinfo.user_level == 1 ? v.memberprice : v.normalprice)) * Number(v.number)).toFixed(2), // 单价
-        memberprice: v.memberprice, // 会员价
-        pay_price: Number(v.zongprice).toFixed(2), // 总价
+        oneprice: (Number(userinfo.user_level == 2 ? v.specs_pfmoney : (userinfo.user_level == 1 ? v.specs_tgmoney : (userinfo.user_level == 3 ? v.specs_vipmoney : v.specs_erpmoney))) * Number(v.number)).toFixed(2), // 单价
+        memberprice: Number(userinfo.user_level == 2 ? v.specs_pfmoney : (userinfo.user_level == 1 ? v.specs_tgmoney : (userinfo.user_level == 3 ? v.specs_vipmoney : v.specs_erpmoney))), // 会员价
+        pay_price: userinfo.iscan_zero == 1 ? 0 : Number(v.zongprice).toFixed(2), // 总价
         goods_id: v.goods_id, // 商品id
+        specs_id: v.specs_id, // 商品规格id
         // goodsa_id: v.goodsalist.id, // 门店商品id
         quan_price: v.quanmoney, // 优惠券
         quan_id: v.quan_id || '', //优惠券id
-        shopprice: (Number(userinfo.user_level == 2 ? v.line_price : (userinfo.user_level == 1 ? v.memberprice : v.normalprice)) * Number(v.number)).toFixed(2), // 总价
+        shopprice: (Number(userinfo.user_level == 2 ? v.specs_pfmoney : (userinfo.user_level == 1 ? v.specs_tgmoney : (userinfo.user_level == 3 ? v.specs_vipmoney : v.specs_erpmoney))) * Number(v.number)).toFixed(2), // 总价
         store_id: 1, // 门店id
         sku_id: 0,
         cart_id: v.id,
         pointspay: v.points, // 积分
         blance_pay: (Number(v.yue) + (Number(v.points) / 100)).toFixed(2), // 余额
+        active_id: v.active_id || '',// 活动id
       })
     })
     if (that.data.chooseStyle == 2) {
@@ -1230,7 +1232,7 @@ Page({
       deliver_money: express, // 运费
       deliver_type: chooseStyle, // 配送方式 1 自提 2 配送
       isallye: 0, // 是否全部使用余额
-      pay_real_money: zongprice, // 实际支付金额
+      pay_real_money: userinfo.iscan_zero == 1 ? 0 : zongprice, // 实际支付金额
       pointspay: that.data.reduce_balance, // 使用积分
       quan_money: that.data.coupon_money, // 优惠券金额
       balancepay: all_remoney, // 余额
@@ -1240,7 +1242,7 @@ Page({
       userphone, // 手机号
       username, // 姓名
       store_id: 1, // 门店id
-      store_name: '清泉食品', // 门店名称
+      store_name: '冀唐清泉', // 门店名称
       ztname: '', // 自提点名称
       zt_phone,
       pay_list, // 商品列表
@@ -1250,6 +1252,16 @@ Page({
       data.quan_id = coupons[0].quan_id // 优惠券id
     } else {
       data.quan_id = ''
+    }
+    if (userinfo.iscan_zero == 0) {
+      data.pay_real_money = zongprice
+    }
+    if(data.pay_real_money == 0 && userinfo.iscan_zero == 0){
+      wx.showToast({
+        title: '错误',
+        icon: 'loading'
+      })
+      return;
     }
     app.apiPost(app.apiList.addOrdermorewxss, data, (res) => {
       if (res.status = 1) {
@@ -1307,6 +1319,16 @@ Page({
   },
   delPayCart(e) {
     var index = e
+    if (index == 0 && this.data.cartlist.length == 1 && !this.data.cartlist[index].id) {
+      setTimeout(function () {
+        wx.hideLoading()
+        //跳转到购买成功页面
+        wx.redirectTo({
+          url: '/pages/buysuccess/buysuccess?pay_real_money=' + paymoney,
+        })
+      }, 1500)
+      return;
+    }
     app.apiPost(app.apiList.delonecartgoods, {
       id: this.data.cartlist[index].id,
     }, (res) => {
@@ -1333,19 +1355,20 @@ Page({
       this.setData({
         chooseStyle: options.zttype,
       })
-      if (options.zttype == 1) {
-        wx.setNavigationBarTitle({
-          title: '自提订单',
-        })
-      } else {
-        wx.setNavigationBarTitle({
-          title: '配送订单',
-        })
-      }
+      // if (options.zttype == 1) {
+      //   wx.setNavigationBarTitle({
+      //     title: '自提订单',
+      //   })
+      // } else {
+      //   wx.setNavigationBarTitle({
+      //     title: '配送订单',
+      //   })
+      // }
       var ztdian = wx.getStorageSync('ztdian')
       var storeLatitude = Number(ztdian.latitude) // 门店纬度
       var storeLongitude = Number(ztdian.longitude) // 门店经度
       var cartlist = wx.getStorageSync('cartlist_pay')
+      console.log("🚀 ~ lotaddorder2.js:1359 ~ cartlist:", cartlist)
       var maxComPrice = Math.max(...cartlist.map(v =>
         Number(v.freight_info.com_price)
       ));

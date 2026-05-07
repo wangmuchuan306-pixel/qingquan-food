@@ -29,7 +29,7 @@
 <block wx:for="{{nsgoodslist}}" wx:for-index="index" wx:key="0">
   <view wx:if="{{titletype==1}}" style="width: 690rpx;margin: 30rpx;background-color: white;border-radius: 20rpx;">
     <view style="width: 630rpx;display: flex;align-items: center;border-bottom: 2rpx solid #eee;padding: 30rpx;" catch:tap="goodscheck" data-index="{{index}}">
-      <radio value="" color="#015637" checked="{{item.ischeck}}" />
+      <radio value="" color="#003B73" checked="{{item.ischeck}}" />
       <image src="https://qiniu.0315678.cn/{{item.goodsimg}}" style="width: 140rpx;height: 140rpx;border-radius: 20rpx;margin-left: 30rpx;" mode="aspectFill" />
       <view style="width: 370rpx;height: 140rpx;margin-left: 30rpx;">
         <view style="width: 100%;display: flex;align-items: center;justify-content: space-between;">
@@ -47,7 +47,7 @@
         </block>
       </view>
       <view style="display: flex;align-items: center;">
-        <view style="font-size: 28rpx;color: #015637;">{{item.orderuser.length}}人下单，共{{item.all_goodsnum}}单</view>
+        <view style="font-size: 28rpx;color: #003B73;">{{item.orderuser.length}}人下单，共{{item.all_goodsnum}}单</view>
         <image src="/images/blackjiantou.png" style="height: 30rpx;margin-left: 10rpx;width: 16rpx;" />
       </view>
     </view>
@@ -55,7 +55,7 @@
   <view wx:else style="width: 690rpx;margin: 30rpx;border-radius: 20rpx;background-color: white;">
     <view style="width: 630rpx;display: flex;align-items: center;justify-content: space-between;padding: 30rpx;">
       <view style="display: flex;align-items: center;">
-        <radio value="" color="#015637" checked="{{item.parentcheck}}" bind:tap="parentcheck" data-index="{{index}}" />
+        <radio value="" color="#003B73" checked="{{item.parentcheck}}" bind:tap="parentcheck" data-index="{{index}}" />
         <image src="{{item.headimg}}" style="width: 100rpx;height: 100rpx;border-radius: 100%;margin:0 30rpx;" mode="aspectFill" />
         <view>
           <view style="width: 240rpx;font-weight: bold;font-size: 28rpx;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">{{item.nickname}}</view>
@@ -63,7 +63,7 @@
           <view style="font-size: 24rpx;color: #666;">共{{item.ordergoods.length}}种 共{{item.goodsnum}}件</view>
         </view>
       </view>
-      <view style="width: 120rpx;height: 60rpx;border-radius: 30rpx;background-color: #015637;display: flex;align-items: center;justify-content: center;" bind:tap="callphone" data-phone="{{item.phone}}">
+      <view style="width: 120rpx;height: 60rpx;border-radius: 30rpx;background-color: #003B73;display: flex;align-items: center;justify-content: center;" bind:tap="callphone" data-phone="{{item.phone}}">
         <!-- <image src="/images/phone.png" style="width: 30rpx;height: 30rpx;" mode="" /> -->
         <view style="font-size: 28rpx;color: white;">联系</view>
       </view>
@@ -73,7 +73,7 @@
     <view style="width: 630rpx;height: 2rpx;background-color: #eee;margin: 0 auto;margin-bottom: 30rpx;"></view>
     <view wx:for="{{item.ordergoods}}" wx:for-item="goods" wx:for-index="gindex" style="padding: 30rpx;padding-top: 0;" catch:tap="goodscheck" data-index="{{index}}" data-gindex="{{gindex}}">
       <view style="width: 630rpx;display: flex;align-items: center;">
-        <radio value="" color="#015637" checked="{{goods.ischeck}}" />
+        <radio value="" color="#003B73" checked="{{goods.ischeck}}" />
         <image src="https://qiniu.0315678.cn/{{goods.goodsimg}}" style="width: 140rpx;height: 140rpx;border-radius: 20rpx;margin-left: 30rpx;" mode="aspectFill" />
         <view style="width: 370rpx;height: 140rpx;margin-left: 30rpx;">
           <view style="width: 100%;display: flex;align-items: center;justify-content: space-between;">
@@ -107,7 +107,7 @@
     </view>
     <view style="width: 690rpx;padding: 30rpx;display: flex;align-items: center;justify-content: space-between;" wx:for="{{nsgoodslist[gindex].orderuser}}">
       <view style="display: flex;align-items: center;" bind:tap="chooseorder" data-index="{{index}}">
-        <radio value="" color="#015637" checked="{{item.ischecked}}" />
+        <radio value="" color="#003B73" checked="{{item.ischecked}}" />
         <image src="{{item.headimg}}" style="width: 140rpx;height: 140rpx;border-radius: 100%;background-color: #eee;margin-left: 10rpx;" mode="aspectFill" />
         <view style="margin-left: 30rpx;">
           <view style="display: flex;align-items: center;justify-content: space-between;width: 450rpx;">
@@ -127,10 +127,10 @@
   </scroll-view>
   <view style="width: 690rpx;margin: 30rpx 30rpx 50rpx 30rpx;display: flex;align-items: center;justify-content: space-between;">
     <view style="display: flex;align-items: center;" bind:tap="chooseall">
-      <radio value="" color="#015637" checked="{{allchecked}}" />
-      <view style="font-size: 30rpx;color: #015637;margin-left: 10rpx;">全选</view>
+      <radio value="" color="#003B73" checked="{{allchecked}}" />
+      <view style="font-size: 30rpx;color: #003B73;margin-left: 10rpx;">全选</view>
     </view>
-    <view class="alldelivery" style="background-color: {{cansend?'#015637':''}};" bindtap="{{cansend?'updateOrderStatus':''}}" data-index="allsendorder">批量发货</view>
+    <view class="alldelivery" style="background-color: {{cansend?'#003B73':''}};" bindtap="{{cansend?'updateOrderStatus':''}}" data-index="allsendorder">批量发货</view>
   </view>
 </van-popup>
 <van-popup show="{{ sendgoods }}" bind:close="sendcancel" round="true" position="bottom" closeable="true" z-index="999">
@@ -139,17 +139,17 @@
   </view>
   <view style="display: flex;align-items: center;justify-content: space-between;width: 690rpx;margin: 30rpx;padding-bottom: 30rpx;" bindtap="cstype" data-type="1">
     <view>
-      <view style="font-size: 30rpx;font-weight: bold;color: {{send_type==1?'#015637':''}};">商家自行配送</view>
+      <view style="font-size: 30rpx;font-weight: bold;color: {{send_type==1?'#003B73':''}};">商家自行配送</view>
       <view style="font-size: 24rpx;color: {{send_type==1?'':'#999'}};margin-top: 10rpx;">供应商自有配送团队，配送给团长</view>
     </view>
-    <radio color="#015637" checked="{{send_type==1}}" />
+    <radio color="#003B73" checked="{{send_type==1}}" />
   </view>
   <view style="display: flex;align-items: center;justify-content: space-between;width: 690rpx;margin: 30rpx;border-bottom: 2rpx solid #eee;padding-bottom: 80rpx;" bindtap="cstype" data-type="3">
     <view>
-      <view style="font-size: 30rpx;font-weight: bold;color: {{send_type==3?'#015637':''}};">交由平台配送</view>
+      <view style="font-size: 30rpx;font-weight: bold;color: {{send_type==3?'#003B73':''}};">交由平台配送</view>
       <view style="font-size: 24rpx;color: {{send_type==3?'':'#999'}};margin-top: 10rpx;">艺荷团镖师上门揽件，配送给团长</view>
     </view>
-    <radio color="#015637" checked="{{send_type==3}}" />
+    <radio color="#003B73" checked="{{send_type==3}}" />
   </view>
-  <view class="csbtn" style="background-color: {{send_type?'#015637':'#ccc'}};" bindtap="{{send_type?'choosetype':''}}">立即发货</view>
+  <view class="csbtn" style="background-color: {{send_type?'#003B73':'#ccc'}};" bindtap="{{send_type?'choosetype':''}}">立即发货</view>
 </van-popup>

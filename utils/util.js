@@ -24,7 +24,7 @@ function richText(htmlString) {
       var br = ''
       console.log(brCount);
       for (var i = 2; i <= brCount; i++) {
-         br = br + '<div><br /></div>'
+         br = br + '<div><br/></div>'
       }
       // br = '<div>'+br+'</div>'
       htmlString = htmlString.replace(match[0], br);
@@ -138,55 +138,55 @@ function timeStamp(timestamp) {
    return `${date.getFullYear()}.${pad(date.getMonth() + 1)}.${pad(date.getDate())}`
 }
 function timeStamp123(timestamp, format = 'YYYY-MM-DD HH:mm:ss') {
-  // 处理传入的时间戳（支持秒级和毫秒级）
-  const time = typeof timestamp === 'string' ? Number(timestamp) : timestamp;
-  const date = time >= 10000000000 ? new Date(time) : new Date(time * 1000);
-  
-  // 格式化数字，不足两位时前面补零
-  const pad = (num) => num.toString().padStart(2, '0');
-  
-  // 提取时间各部分
-  const year = date.getFullYear();
-  const month = pad(date.getMonth() + 1);
-  const day = pad(date.getDate());
-  const hours = pad(date.getHours());
-  const minutes = pad(date.getMinutes());
-  const seconds = pad(date.getSeconds());
-  
-  // 根据格式字符串返回对应格式的时间
-  return format
-    .replace('YYYY', year)
-    .replace('MM', month)
-    .replace('DD', day)
-    .replace('HH', hours)
-    .replace('mm', minutes)
-    .replace('ss', seconds);
+   // 处理传入的时间戳（支持秒级和毫秒级）
+   const time = typeof timestamp === 'string' ? Number(timestamp) : timestamp;
+   const date = time >= 10000000000 ? new Date(time) : new Date(time * 1000);
+
+   // 格式化数字，不足两位时前面补零
+   const pad = (num) => num.toString().padStart(2, '0');
+
+   // 提取时间各部分
+   const year = date.getFullYear();
+   const month = pad(date.getMonth() + 1);
+   const day = pad(date.getDate());
+   const hours = pad(date.getHours());
+   const minutes = pad(date.getMinutes());
+   const seconds = pad(date.getSeconds());
+
+   // 根据格式字符串返回对应格式的时间
+   return format
+      .replace('YYYY', year)
+      .replace('MM', month)
+      .replace('DD', day)
+      .replace('HH', hours)
+      .replace('mm', minutes)
+      .replace('ss', seconds);
 }
 function checkTimeRange(startTime, endTime) {
-  // 处理开始时间和结束时间（支持秒级/毫秒级时间戳、字符串或Date对象）
-  const processTime = (time) => {
-    if (time instanceof Date) return time.getTime();
-    const numTime = typeof time === 'string' ? Number(time) : time;
-    return numTime >= 10000000000 ? numTime : numTime * 1000;
-  };
-  
-  const start = processTime(startTime);
-  const end = processTime(endTime);
-  const now = Date.now(); // 当前时间的毫秒时间戳
-  
-  // 验证开始时间是否小于结束时间
-  if (start > end) {
-    console.error('开始时间必须小于结束时间');
-    return -1;
-  }
-  
-  if (now < start) {
-    return 0; // 当前时间在开始时间之前
-  } else if (now > end) {
-    return 2; // 当前时间在结束时间之后
-  } else {
-    return 1; // 当前时间在时间范围之内
-  }
+   // 处理开始时间和结束时间（支持秒级/毫秒级时间戳、字符串或Date对象）
+   const processTime = (time) => {
+      if (time instanceof Date) return time.getTime();
+      const numTime = typeof time === 'string' ? Number(time) : time;
+      return numTime >= 10000000000 ? numTime : numTime * 1000;
+   };
+
+   const start = processTime(startTime);
+   const end = processTime(endTime);
+   const now = Date.now(); // 当前时间的毫秒时间戳
+
+   // 验证开始时间是否小于结束时间
+   if (start > end) {
+      console.error('开始时间必须小于结束时间');
+      return -1;
+   }
+
+   if (now < start) {
+      return 0; // 当前时间在开始时间之前
+   } else if (now > end) {
+      return 2; // 当前时间在结束时间之后
+   } else {
+      return 1; // 当前时间在时间范围之内
+   }
 }
 
 

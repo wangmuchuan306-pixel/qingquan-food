@@ -1,6 +1,8 @@
 {
   "usingComponents": {},
   "navigationBarBackgroundColor": "#ffffff",
+  "backgroundColorBottom": "#f8f8f8",
+  "backgroundColorTop": "#f8f8f8",
   "navigationBarTitleText": "确认订单",
   "navigationBarTextStyle":"black"
 }

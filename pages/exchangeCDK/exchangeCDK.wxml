@@ -11,7 +11,7 @@
   <view class="bot1">正确兑换码由16位数字和字母组合而成。</view>
   <view style="font-weight:800">· 兑换码获取</view>
   <!-- 参与{{procedure.wxname}} -->
-  <view class="bot1">请您刮开清泉食品实体年卡图层即可获得兑换码。</view>
+  <view class="bot1">请您刮开冀唐清泉实体年卡图层即可获得兑换码。</view>
   <view style="font-weight:800">· 兑换码使用</view>
   <view class="bot1">在当前页面输入兑换码即可兑换相应优惠券或充值卡。一个兑换码只能兑换一次，不可重复使用。</view>
   <view style="font-weight:800">· 提示</view>

@@ -1,5 +1,6 @@
 // pages/lotgoodslist/lotgoodslist.js
 const app = getApp()
+const tab_bar = require('../../custom-tab-bar/utils/tab-bar.js')
 var utils = require('../../utils/util.js')
 Page({
 
@@ -27,6 +28,8 @@ Page({
       indextime: -1,
       zindextime: -1,
       notexNum: 0,
+      specshow: false,
+      qiniu: 'https://qiniu.0315678.cn/',
    },
    notesValue(e) {
       var notesValue = e.detail.value
@@ -428,22 +431,37 @@ Page({
       var thisgoods = list[index]
       var selectIdlist = this.data.selectIdlist || []
       if (selectIdlist.filter(v => v == thisgoods.goods_id).length == 0) {
-         selectIdlist.push(thisgoods.goods_id)
+         selectIdlist.push({ g_id: thisgoods.goods_id, s_id: thisgoods.specs[0].specs_id })
       }
       this.setData({
          selectIdlist,
       })
-      if (thisgoods.number == 1) {
+      if (thisgoods.number <= thisgoods.specs[0].specs_batch || thisgoods.specs[0].specs_stock == 0 || thisgoods.specs[0].specs_batch > thisgoods.specs[0].specs_stock || (thisgoods.xg_num > 0 && thisgoods.specs[0].specs_batch > thisgoods.xg_num)) {
          that.delonecartgoods(type, index, list)
       } else {
+         let specsnum = 1
+         let specsmaxnum = thisspecs.specs_stock
+         if (thisgoods.xg_num > 0) {
+            if (thisspecs.specs_stock <= thisgoods.xg_num) {
+               specsmaxnum = thisspecs.specs_stock - (thisspecs.shoppingspecs?.number || 0)
+            } else {
+               specsmaxnum = thisgoods.xg_num - (thisspecs.shoppingspecs?.number || 0)
+            }
+         } else {
+            specsmaxnum = thisspecs.specs_stock - (thisspecs.shoppingspecs?.number || 0)
+         }
+         if (thisgoods.number > specsmaxnum) {
+            specsnum = thisgoods.number - specsmaxnum
+         }
          app.apiPost(app.apiList.decshopping, {
             goods_id: thisgoods.goods_id,
-            number: 1,
+            specs_id: type == 'list' ? thisgoods.specs[0].specs_id : thisgoods.specs_id,
+            number: specsnum,
             store_id: 1,
             goodsa_id: thisgoods.goodsa_id || thisgoods.id,
          }, (res) => {
             if (res.status == 1) {
-               list[index].number--
+               list[index].number -= specsnum
                if (type == 'list') {
                   that.setData({
                      goodslist: list
@@ -452,7 +470,7 @@ Page({
                   var goodslist = that.data.goodslist
                   goodslist.forEach(v => {
                      if (v.goods_id == thisgoods.goods_id) {
-                        v.number -= 1
+                        v.number -= specsnum
                      }
                   })
                   that.setData({
@@ -462,7 +480,7 @@ Page({
                }
                that.usershoppingcart()
                that.cartcount()
-            this.selectComponent('#shoppingcart').refreshcart(this.data.selectIdlist)
+               this.selectComponent('#shoppingcart').refreshcart(this.data.selectIdlist)
             }
          })
       }
@@ -499,28 +517,53 @@ Page({
       var thisgoods = list[index]
       var selectIdlist = this.data.selectIdlist || []
       if (selectIdlist.filter(v => v == thisgoods.goods_id).length == 0) {
-         selectIdlist.push(thisgoods.goods_id)
+         selectIdlist.push({ g_id: thisgoods.goods_id, s_id: thisgoods.specs[0].specs_id })
       }
       this.setData({
          selectIdlist,
       })
-      if (thisgoods.xg_num > 0 && thisgoods.havebuy + thisgoods.number >= thisgoods.xg_num) {
-         wx.showToast({
-            title: '商品已达限购',
-            icon: 'none'
-         })
-         return
+
+      let thisspecs = thisgoods.specs[0]
+      let specsnum = thisspecs.specs_batch
+      if (!thisgoods.number) {
+         if (thisspecs.specs_stock < thisspecs.specs_batch) {
+            wx.showToast({
+               title: '库存小于起批',
+               icon: 'none'
+            })
+            return
+         } else if (thisgoods.xg_num > 0 && thisgoods.xg_num < thisspecs.specs_batch) {
+            wx.showToast({
+               title: '限购小于起批',
+               icon: 'none'
+            })
+            return
+         }
+      } else {
+         if (thisspecs.specs_stock - (thisgoods.number || 0) <= 0) {
+            wx.showToast({
+               title: '已达库存上限',
+               icon: 'none'
+            })
+            return
+         } else if (thisgoods.xg_num > 0 && thisgoods.xg_num - (thisgoods.number || 0) <= 0) {
+            wx.showToast({
+               title: '已达限购上限',
+               icon: 'none'
+            })
+            return
+         }
+         if (thisgoods.number >= specsnum) {
+            specsnum = 1
+         } else {
+            specsnum = specsnum - thisgoods.number
+         }
       }
-      if (thisgoods.number >= thisgoods.num) {
-         wx.showToast({
-            title: '商品已达最大库存',
-            icon: 'none'
-         })
-         return
-      }
+
       app.apiPost(app.apiList.inshopping, {
          goods_id: thisgoods.goods_id,
-         num: 1,
+         specs_id: thisgoods.specs[0].specs_id,
+         num: specsnum,
          store_id: 1,
          goodsa_id: thisgoods.goodsa_id || thisgoods.id,
       }, (res) => {
@@ -529,7 +572,7 @@ Page({
             icon: 'none'
          })
          if (res.status == 1) {
-            list[index].number++
+            list[index].number += specsnum
             if (type == 'list') {
                that.setData({
                   goodslist: list
@@ -538,7 +581,7 @@ Page({
                var goodslist = that.data.goodslist
                goodslist.forEach(v => {
                   if (v.goods_id == thisgoods.goods_id) {
-                     v.number += 1
+                     v.number += specsnum
                   }
                })
                that.setData({
@@ -564,44 +607,38 @@ Page({
          var list = that.data.cartlist
       }
       var thisgoods = list[index]
-      if(num == thisgoods.number){
+      if (num == thisgoods.number) {
          return
       }
       var selectIdlist = this.data.selectIdlist || []
       if (selectIdlist.filter(v => v == thisgoods.goods_id).length == 0) {
-         selectIdlist.push(thisgoods.goods_id)
+         selectIdlist.push({ g_id: thisgoods.goods_id, s_id: thisgoods.specs[0].specs_id })
       }
       this.setData({
          selectIdlist,
       })
-      if (thisgoods.xg_num > 0 && thisgoods.havebuy + num >= thisgoods.xg_num) {
-         wx.showToast({
-            title: '商品已达限购',
-            icon: 'none'
-         })
-         num = thisgoods.xg_num - thisgoods.havebuy
-         list[index].number = num
-         that.setData({
-            goodslist: list
-         })
-         return
-      }
-      if (num >= thisgoods.num) {
-         wx.showToast({
-            title: '商品已达最大库存',
-            icon: 'none'
-         })
-         num = thisgoods.num
-         list[index].number = num
-         that.setData({
-            goodslist: list
-         })
-         return
-      }
+      let thisspecs = thisgoods.specs[0]
       if (num > thisgoods.number) {
+         if (thisspecs.specs_stock - thisgoods.number <= 0) {
+            wx.showToast({
+               title: '已达最大库存',
+               icon: 'none'
+            })
+            this.setData({
+               goodslist: list
+            })
+            return
+         }
+         let specsnum = thisspecs.specs_batch
+         if (thisspecs.specs_stock - num <= 0) {
+            specsnum = thisspecs.specs_stock - thisgoods.number
+         } else {
+            specsnum = num - thisgoods.number
+         }
          app.apiPost(app.apiList.inshopping, {
             goods_id: thisgoods.goods_id,
-            num: num - thisgoods.number,
+            specs_id: type == 'list' ? thisgoods.specs[0].specs_id : thisgoods.specs_id,
+            num: specsnum,
             store_id: 1,
             goodsa_id: thisgoods.goodsa_id || thisgoods.id,
          }, (res) => {
@@ -633,11 +670,12 @@ Page({
             }
          })
       } else {
-         if (num == 0) {
+         if (num == 0 || num < thisspecs.specs_batch || thisspecs.specs_stock == 0 || thisspecs.specs_batch > thisspecs.specs_stock) {
             that.delonecartgoods(type, index, list)
          } else {
             app.apiPost(app.apiList.decshopping, {
                goods_id: thisgoods.goods_id,
+               specs_id: type == 'list' ? thisgoods.specs[0].specs_id : thisgoods.specs_id,
                number: thisgoods.number - num,
                store_id: 1,
                goodsa_id: thisgoods.goodsa_id || thisgoods.id,
@@ -848,6 +886,9 @@ Page({
          that.setData({
             goodslist,
          })
+         if (res.data.length > 0) {
+            this.getspecs(res.data, 0)
+         }
          wx.hideLoading()
       })
    },
@@ -869,8 +910,14 @@ Page({
                id: 0
             }]
          })
+         if (this.data.cate_id) {
+            let catindex = res.data.findIndex(item => item.id == this.data.cate_id)
+            this.setData({
+               catindex
+            })
+         }
          this.setData({
-            catelist: res.data
+            catelist: res.data,
          })
          this.goodsPage()
       })
@@ -1549,7 +1596,7 @@ Page({
          isallPoints,
          pointspay,
          store_id: 1,
-         store_name: '清泉食品',
+         store_name: '冀唐清泉',
          deliver_type: 2,
          ztdian_type: that.data.chooseStyle,
          deliver_money: that.data.express,
@@ -1685,7 +1732,228 @@ Page({
       // }
    },
 
+   getspecs(list, index) {
+      if (index >= list.length) {
+         return
+      }
+      app.apiPost(app.apiList.getspecs, {
+         goods_id: list[index].goods_id
+      }, (res) => {
+         let goodslist = this.data.goodslist
+         let gIndex = goodslist.findIndex(v => v.goods_id == list[index].goods_id)
+         const specs_pfmoney = Math.min(...res.data.map(item => Number(item['specs_pfmoney'])).filter(price => !isNaN(price)))
+         const specs_tgmoney = Math.min(...res.data.map(item => Number(item['specs_tgmoney'])).filter(price => !isNaN(price)))
+         const specs_erpmoney = Math.min(...res.data.map(item => Number(item['specs_erpmoney'])).filter(price => !isNaN(price)))
+         const specs_vipmoney = Math.min(...res.data.map(item => Number(item['specs_vipmoney'])).filter(price => !isNaN(price)))
+         goodslist[gIndex].specs_pfmoney = (specs_pfmoney || 0).toFixed(2)
+         goodslist[gIndex].specs_tgmoney = (specs_tgmoney || 0).toFixed(2)
+         goodslist[gIndex].specs_vipmoney = (specs_vipmoney || 0).toFixed(2)
+         goodslist[gIndex].specs_erpmoney = (specs_erpmoney || 0).toFixed(2)
+         const totalStock = res.data.reduce((sum, item) => sum + (Number(item.specs_stock) || 0), 0)
+         goodslist[gIndex].all_goodsstock = totalStock
+         goodslist[gIndex].number = res.data.reduce((sum, item) => sum + (Number(item.shoppingspecs?.number) || 0), 0)
+         goodslist[gIndex].specs = res.data
+         this.setData({
+            goodslist
+         })
+         this.getspecs(list, index + 1)
+      })
+   },
+   showchospecs(e) {
+      var that = this
+      if (!this.data.userinfo) {
+         wx.showToast({
+            title: '请先登录',
+            icon: 'none'
+         })
+         setTimeout(() => {
+            wx.navigateTo({
+               url: '/pages/login/login',
+            })
+         }, 1000)
+         return
+      }
+      let index = e.currentTarget.dataset.index
+      app.apiPost(app.apiList.getspecs, {
+         goods_id: this.data.goodslist[index].goods_id
+      }, (res) => {
+         let goodslist = this.data.goodslist
+         const specs_pfmoney = Math.min(...res.data.map(item => Number(item['specs_pfmoney'])).filter(price => !isNaN(price)))
+         const specs_tgmoney = Math.min(...res.data.map(item => Number(item['specs_tgmoney'])).filter(price => !isNaN(price)))
+         const specs_erpmoney = Math.min(...res.data.map(item => Number(item['specs_erpmoney'])).filter(price => !isNaN(price)))
+         const specs_vipmoney = Math.min(...res.data.map(item => Number(item['specs_vipmoney'])).filter(price => !isNaN(price)))
+         goodslist[index].specs_pfmoney = (specs_pfmoney || 0).toFixed(2)
+         goodslist[index].specs_tgmoney = (specs_tgmoney || 0).toFixed(2)
+         goodslist[index].specs_vipmoney = (specs_vipmoney || 0).toFixed(2)
+         goodslist[index].specs_erpmoney = (specs_erpmoney || 0).toFixed(2)
+         const totalStock = res.data.reduce((sum, item) => sum + (Number(item.specs_stock) || 0), 0)
+         goodslist[index].all_goodsstock = totalStock
+         goodslist[index].number = res.data.reduce((sum, item) => sum + (Number(item.shoppingspecs?.number) || 0), 0)
+         goodslist[index].specs = res.data
 
+         let specsindex = 0
+         let thisgoods = goodslist[index]
+         let thisspecs = thisgoods.specs[specsindex]
+         let is_thisspecsadd = true
+         let specsnum = thisspecs.specs_batch
+         if (!thisspecs.shoppingspecs) {
+            if (thisspecs.specs_stock < thisspecs.specs_batch) {
+               is_thisspecsadd = false
+            } else if (thisgoods.xg_num > 0 && thisgoods.xg_num < thisspecs.specs_batch) {
+               is_thisspecsadd = false
+            }
+         } else {
+            if (thisspecs.specs_stock - (thisspecs.shoppingspecs.number || 0) <= 0) {
+               is_thisspecsadd = false
+            } else if (thisgoods.xg_num > 0 && thisgoods.xg_num - (thisspecs.shoppingspecs.number || 0) <= 0) {
+               is_thisspecsadd = false
+            }
+            if (thisspecs.shoppingspecs.number >= specsnum) {
+               specsnum = 1
+            } else {
+               specsnum = specsnum - thisspecs.shoppingspecs.number
+            }
+         }
+         let specsmaxnum = thisspecs.specs_stock
+         if (thisgoods.xg_num > 0) {
+            if (thisspecs.specs_stock <= thisgoods.xg_num) {
+               specsmaxnum = thisspecs.specs_stock - (thisspecs.shoppingspecs?.number || 0)
+            } else {
+               specsmaxnum = thisgoods.xg_num - (thisspecs.shoppingspecs?.number || 0)
+            }
+         } else {
+            specsmaxnum = thisspecs.specs_stock - (thisspecs.shoppingspecs?.number || 0)
+         }
+         that.setData({
+            goodslist,
+            thisgoods,
+            specshow: true,
+            specsindex,
+            specsnum,
+            is_thisspecsadd,
+            specsmaxnum,
+         })
+      })
+   },
+   specsClose() {
+      this.setData({
+         specshow: false,
+      })
+   },
+   //选择规格
+   choosespecs(e) {
+      var specsindex = e.currentTarget.dataset.index
+      var thisgoods = this.data.thisgoods
+      let thisspecs = thisgoods.specs[specsindex]
+      let is_thisspecsadd = true
+      let specsnum = thisspecs.specs_batch
+      if (!thisspecs.shoppingspecs) {
+         if (thisspecs.specs_stock < thisspecs.specs_batch) {
+            is_thisspecsadd = false
+         } else if (thisgoods.xg_num > 0 && thisgoods.xg_num < thisspecs.specs_batch) {
+            is_thisspecsadd = false
+         }
+      } else {
+         if (thisspecs.specs_stock - (thisspecs.shoppingspecs.number || 0) <= 0) {
+            is_thisspecsadd = false
+         } else if (thisgoods.xg_num > 0 && thisgoods.xg_num - (thisspecs.shoppingspecs.number || 0) <= 0) {
+            is_thisspecsadd = false
+         }
+         if (thisspecs.shoppingspecs.number >= specsnum) {
+            specsnum = 1
+         } else {
+            specsnum = specsnum - thisspecs.shoppingspecs.number
+         }
+      }
+      let specsmaxnum = thisspecs.specs_stock
+      if (thisgoods.xg_num > 0) {
+         if (thisspecs.specs_stock <= thisgoods.xg_num) {
+            specsmaxnum = thisspecs.specs_stock - (thisspecs.shoppingspecs?.number || 0)
+         } else {
+            specsmaxnum = thisgoods.xg_num - (thisspecs.shoppingspecs?.number || 0)
+         }
+      } else {
+         specsmaxnum = thisspecs.specs_stock - (thisspecs.shoppingspecs?.number || 0)
+      }
+      this.setData({
+         specsindex,
+         specsnum,
+         is_thisspecsadd,
+         specsmaxnum,
+      })
+   },
+   //多规格添加购物车更改数量
+   onChangeshop(e) {
+      this.setData({
+         specsnum: e.detail
+      })
+   },
+   //选择规格后加入购物车
+   toinshop() {
+      var that = this
+      var thisgoods = that.data.thisgoods
+      var specsindex = that.data.specsindex
+      let thisspecs = thisgoods.specs[specsindex]
+      if (!thisspecs.shoppingspecs) {
+         if (thisspecs.specs_stock < thisspecs.specs_batch) {
+            wx.showToast({
+               title: '库存小于起批',
+               icon: 'none'
+            })
+            return
+         } else if (thisgoods.xg_num > 0 && thisgoods.xg_num < thisspecs.specs_batch) {
+            wx.showToast({
+               title: '限购小于起批',
+               icon: 'none'
+            })
+            return
+         }
+      } else {
+         if (thisspecs.specs_stock - (thisspecs.shoppingspecs.number || 0) <= 0) {
+            wx.showToast({
+               title: '已达库存上限',
+               icon: 'none'
+            })
+            return
+         } else if (thisgoods.xg_num > 0 && thisgoods.xg_num - (thisspecs.shoppingspecs.number || 0) <= 0) {
+            wx.showToast({
+               title: '已达限购上限',
+               icon: 'none'
+            })
+            return
+         }
+      }
+
+      var selectIdlist = this.data.selectIdlist || []
+      if (selectIdlist.filter(v => v == thisgoods.goods_id).length == 0) {
+         selectIdlist.push({ g_id: thisgoods.goods_id, s_id: thisgoods.specs[specsindex].specs_id })
+      }
+      this.setData({
+         selectIdlist,
+      })
+      app.apiPost(app.apiList.inshopping, {
+         goods_id: thisgoods.goods_id,
+         specs_id: thisgoods.specs[specsindex].specs_id,
+         num: that.data.specsnum
+      }, (res) => {
+         wx.showToast({
+            title: res.msg,
+            icon: 'none'
+         })
+         if (res.status == 1) {
+            let goodslist = that.data.goodslist
+            let gIndex = goodslist.findIndex(v => v.goods_id == thisgoods.goods_id)
+            goodslist[gIndex].number += that.data.specsnum
+            that.setData({
+               specshow: false,
+               goodslist
+            })
+            that.usershoppingcart()
+            that.cartcount()
+            this.selectComponent('#shoppingcart').refreshcart(this.data.selectIdlist)
+         }
+      })
+   },
 
 
    /**
@@ -1738,6 +2006,7 @@ Page({
     * 生命周期函数--监听页面显示
     */
    onShow() {
+      tab_bar.getTab(1)
       this.userCenter()
       this.walletsList()
    },

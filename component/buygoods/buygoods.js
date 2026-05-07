@@ -419,7 +419,7 @@ Component({
         summoney,
         pay_real_money,
         store_id: 1,
-        store_name: '清泉食品',
+        store_name: '冀唐清泉',
         deliver_type: 2,
         ztdian_type: that.data.chooseStyle,
         deliver_money: that.data.express,

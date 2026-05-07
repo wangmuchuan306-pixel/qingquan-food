@@ -51,7 +51,7 @@
               </view>
             </view>
             <view class="list_bottom1">
-              <view wx:if="{{list.order_status==4}}" bind:tap="tobuygoods" data-id="{{list.ordergoods[0].goodsid}}" class="flex1" style="width: 160rpx;height: 60rpx;color: #fff;background-color: #015637;border-radius: 30rpx;font-size: 24rpx;margin-right: 20rpx;">再来一单</view>
+              <view wx:if="{{list.order_status==4}}" bind:tap="tobuygoods" data-id="{{list.ordergoods[0].goodsid}}" class="flex1" style="width: 160rpx;height: 60rpx;color: #fff;background-color: #003B73;border-radius: 30rpx;font-size: 24rpx;margin-right: 20rpx;">再来一单</view>
               <view class="view1" style="margin-right: 0;" bindtap="call_phone" data-phone="{{list.store_phone}}">联系客服</view>
               <view class="fukuan" wx:if="{{list.order_status==1}}" bind:tap="cancelOrderfy" data-id="{{list.orderno}}" data-index="{{index}}">我要退款</view>
               <block wx:else>
@@ -128,3 +128,5 @@
   </view>
   <view style="width: 690rpx;height: 100rpx;margin: 30rpx;background-color: #f60;border-radius: 20rpx;font-size: 30rpx;font-weight: bold;color: white;text-align: center;line-height: 100rpx;" bind:tap="onClose">确定</view>
 </van-popup>
+
+<view style="height: {{tabBarHeight}};"></view>

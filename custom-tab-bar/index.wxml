@@ -1,0 +1,10 @@
+<!-- miniprogram/custom-tab-bar/index.wxml -->
+<view class="tab-bar {{show ? '' : 'hidden'}}" id="tab-bar">
+  <view wx:for="{{list}}" wx:key="index" class="tab-bar-item {{selected == index ? 'active' : ''}}" data-path="{{item.pagePath}}" data-index="{{index}}" bindtap="switchTab">
+    <!-- <image class="tab-bar-image" style="--w: {{item.img_w}}; --h: {{item.img_h}};" src="{{selected == index ? item.selectedIconPath : item.iconPath}}"></image> -->
+    <text class="iconfont {{item.iconPath}}" style="--size: 42rpx;--color: {{selected == index ? selectedColor : color}};--bold: {{selected == index ? 'bold' : 'normal'}};margin-bottom: 6rpx;"></text>
+    <view class="tab-bar-view" style="color: {{selected == index ? selectedColor : color}}">
+      {{item.text}}
+    </view>
+  </view>
+</view>

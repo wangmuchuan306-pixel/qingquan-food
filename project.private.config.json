@@ -17,17 +17,38 @@
     "showES6CompileOption": false,
     "checkInvalidKey": true,
     "ignoreDevUnusedFiles": true,
-    "bigPackageSizeSupport": false
+    "bigPackageSizeSupport": true
   },
   "condition": {
     "miniprogram": {
       "list": [
         {
-          "name": "pages/mypage/mypage",
-          "pathName": "pages/mypage/mypage",
+          "name": "pages/mycard/mycard",
+          "pathName": "pages/mycard/mycard",
           "query": "",
           "scene": null,
           "launchMode": "default"
+        },
+        {
+          "name": "pages/choosecard/choosecard",
+          "pathName": "pages/choosecard/choosecard",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "pages/lotaddorder2/lotaddorder2",
+          "pathName": "pages/lotaddorder2/lotaddorder2",
+          "query": "ordertype=2&zttype=2",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "pages/mypage/mypage",
+          "pathName": "pages/mypage/mypage",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
         },
         {
           "name": "pages/activity/activity",

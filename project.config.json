@@ -6,7 +6,7 @@
     "minifyWXML": true,
     "postcss": false,
     "compileWorklet": false,
-    "minified": false,
+    "minified": true,
     "uglifyFileName": false,
     "uploadWithSourceMap": true,
     "packNpmManually": false,

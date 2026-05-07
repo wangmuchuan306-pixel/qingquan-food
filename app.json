@@ -3,7 +3,6 @@
     "pages/index/index",
     "pages/orderlist/orderlist",
     "pages/mypage/mypage",
-    "pages/logs/logs",
     "pages/goodsinfo/goodsinfo",
     "pages/login/login",
     "pages/editAddress/editAddress",
@@ -31,7 +30,6 @@
     "pages/preparegoods/preparegoods",
     "pages/ztorderlist/ztorderlist",
     "pages/chooseztdian/chooseztdian",
-    "pages/lotaddorder/lotaddorder",
     "pages/lotaddorder2/lotaddorder2",
     "pages/myMoney1/myMoney1",
     "pages/myMoney2/myMoney2",
@@ -42,22 +40,22 @@
     "pages/setyearcard/setyearcard",
     "pages/mypoints/mypoints",
     "pages/myhelp/myhelp",
-    "pages/addorder/addorder",
     "pages/activity/activity",
     "pages/activitydetail/activitydetail",
     "pages/rankingList/rankingList"
   ],
   "window": {
     "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "清泉食品",
+    "navigationBarTitleText": "冀唐清泉",
     "navigationBarBackgroundColor": "#ffffff"
   },
   "componentFramework": "glass-easel",
   "sitemapLocation": "sitemap.json",
   "lazyCodeLoading": "requiredComponents",
   "tabBar": {
+    "custom": true,
     "color": "#cccccc",
-    "selectedColor": "#015637",
+    "selectedColor": "#003B73",
     "list": [{
         "pagePath": "pages/index/index",
         "text": "首页",

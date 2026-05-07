@@ -24,7 +24,7 @@ Page({
         console.log(e)
         if (!e.authSetting['scope.address']) {
           wx.showModal({
-            title: '清泉食品',
+            title: '冀唐清泉',
             content: '请授权地理位置以继续使用',
             showCancel: true,
             success: function (res) {
@@ -81,7 +81,7 @@ Page({
       })
     } else {
       wx.showModal({
-        title: '清泉食品',
+        title: '冀唐清泉',
         content: '请授权地理位置以继续使用',
         showCancel: true,
         success: function (res) {

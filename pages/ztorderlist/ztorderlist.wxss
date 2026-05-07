@@ -4,9 +4,9 @@ page{
 }
 .istatus{
   font-size: 30rpx;
-  color: #015637;
+  color: #003B73;
   font-weight: bold;
-  border-bottom: 6rpx solid #015637;
+  border-bottom: 6rpx solid #003B73;
   padding-bottom: 4rpx;
 }
 .status{
@@ -27,7 +27,7 @@ page{
 .bigbtn{
   width: 160rpx;
   height: 60rpx;
-  background-color: #015637;
+  background-color: #003B73;
   border-radius: 30rpx;
   font-size: 26rpx;
   color: white;
@@ -37,7 +37,7 @@ page{
 .btmbtn{
   width: 690rpx;
   height: 100rpx;
-  background-color: #015637;
+  background-color: #003B73;
   margin: 30rpx;
   border-radius: 20rpx;
   color: white;

@@ -27,7 +27,7 @@ page{
 }
 
 .login {
-  background-color: #015637;
+  background-color: #003B73;
   width: 520rpx;
   height: 113rpx;
   border-radius: 60rpx;

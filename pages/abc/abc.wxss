@@ -86,17 +86,17 @@
   height: 298rpx;
   line-height: 298rpx;
   font-weight: normal;
-  background-color: #005832;
+  background-color: #003B73;
   color: #fff;
   font-size: 32rpx;
 }
 
 .btn-box .pay_btn.pay-btn-display {
-  background-color: #005832 !important;
+  background-color: #003B73 !important;
 }
 
 .btn-box .pay_btn.pay-btn-hover {
-  background-color: #005832;
+  background-color: #003B73;
 }
 /* 光标 */
 .cursor-insert {

@@ -23,6 +23,8 @@ Page({
     indextime: -1,
     zindextime: -1,
     notexNum: 0,
+    qiniu: 'https://qiniu.0315678.cn/',
+    specsindex: 0,
   },
   notesValue(e) {
     var notesValue = e.detail.value
@@ -321,6 +323,116 @@ Page({
         storeLongitude: res.data.store_info.longitude,
         freight_info: res.data.goodsinfo.freight_info
       })
+      this.getspecs([res.data], 0, 'Detail')
+    })
+  },
+  getspecs() {
+    app.apiPost(app.apiList.getspecs, {
+      goods_id: this.data.Detail.goods_id
+    }, (res) => {
+      let Detail = this.data.Detail
+      const specs_pfmoney_min = Math.min(...res.data.map(item => Number(item['specs_pfmoney'])).filter(price => !isNaN(price)))
+      const specs_tgmoney_min = Math.min(...res.data.map(item => Number(item['specs_tgmoney'])).filter(price => !isNaN(price)))
+      const specs_erpmoney_min = Math.min(...res.data.map(item => Number(item['specs_erpmoney'])).filter(price => !isNaN(price)))
+      const specs_vipmoney_min = Math.min(...res.data.map(item => Number(item['specs_vipmoney'])).filter(price => !isNaN(price)))
+      Detail.specs_pfmoney_min = (specs_pfmoney_min || 0).toFixed(2)
+      Detail.specs_tgmoney_min = (specs_tgmoney_min || 0).toFixed(2)
+      Detail.specs_erpmoney_min = (specs_erpmoney_min || 0).toFixed(2)
+      Detail.specs_vipmoney_min = (specs_vipmoney_min || 0).toFixed(2)
+      const specs_pfmoney_max = Math.max(...res.data.map(item => Number(item['specs_pfmoney'])).filter(price => !isNaN(price)))
+      const specs_tgmoney_max = Math.max(...res.data.map(item => Number(item['specs_tgmoney'])).filter(price => !isNaN(price)))
+      const specs_erpmoney_max = Math.max(...res.data.map(item => Number(item['specs_erpmoney'])).filter(price => !isNaN(price)))
+      const specs_vipmoney_max = Math.max(...res.data.map(item => Number(item['specs_vipmoney'])).filter(price => !isNaN(price)))
+      Detail.specs_pfmoney_max = (specs_pfmoney_max || 0).toFixed(2)
+      Detail.specs_tgmoney_max = (specs_tgmoney_max || 0).toFixed(2)
+      Detail.specs_erpmoney_max = (specs_erpmoney_max || 0).toFixed(2)
+      Detail.specs_vipmoney_max = (specs_vipmoney_max || 0).toFixed(2)
+      const totalStock = res.data.reduce((sum, item) => sum + (Number(item.specs_stock) || 0), 0)
+      Detail.all_goodsstock = totalStock
+      Detail.specs = res.data
+      this.setData({
+        Detail
+      })
+    })
+  },
+  showchospecs(e) {
+    var that = this
+    if (!this.data.userinfo) {
+      wx.showToast({
+        title: '请先登录',
+        icon: 'none'
+      })
+      setTimeout(() => {
+        wx.navigateTo({
+          url: '/pages/login/login',
+        })
+      }, 1000)
+      return
+    }
+    let Detail = this.data.Detail
+    let thisspecs = Detail.specs[0]
+    let specsmaxnum = thisspecs.specs_stock
+    let is_thisspecsadd = true
+    if (thisspecs.specs_stock < thisspecs.specs_batch) {
+      is_thisspecsadd = false
+    } else if (Detail.xg_num > 0 && Detail.xg_num < thisspecs.specs_batch) {
+      is_thisspecsadd = false
+    }
+    if (Detail.xg_num > 0) {
+      if (thisspecs.specs_stock <= Detail.xg_num) {
+        specsmaxnum = thisspecs.specs_stock
+      } else {
+        specsmaxnum = Detail.xg_num
+      }
+    } else {
+      specsmaxnum = thisspecs.specs_stock
+    }
+    that.setData({
+      specshow: true,
+      specsindex: 0,
+      specsnum: thisspecs.specs_batch,
+      specsmaxnum,
+      is_thisspecsadd
+    })
+  },
+  specsClose() {
+    this.setData({
+      specshow: false,
+    })
+  },
+  //选择规格
+  choosespecs(e) {
+    var specsindex = e.currentTarget.dataset.index
+    var Detail = this.data.Detail
+    let thisspecs = Detail.specs[specsindex]
+    let is_thisspecsadd = true
+    if (thisspecs.specs_stock < thisspecs.specs_batch) {
+      is_thisspecsadd = false
+    } else if (Detail.xg_num > 0 && Detail.xg_num < thisspecs.specs_batch) {
+      is_thisspecsadd = false
+    }
+    let specsmaxnum = thisspecs.specs_stock
+    if (Detail.xg_num > 0) {
+      if (thisspecs.specs_stock <= Detail.xg_num) {
+        specsmaxnum = thisspecs.specs_stock
+      } else {
+        specsmaxnum = Detail.xg_num
+      }
+    } else {
+      specsmaxnum = thisspecs.specs_stock
+    }
+    this.setData({
+      specsindex,
+      specsnum: thisspecs.specs_batch,
+      specsmaxnum,
+      is_thisspecsadd
+    })
+  },
+  //多规格添加购物车更改数量
+  onChangeshop(e) {
+    console.log(e)
+    this.setData({
+      specsnum: e.detail
     })
   },
   //接收上一级信息
@@ -611,7 +723,7 @@ Page({
         isallPoints,
         pointspay,
         store_id: 1,
-        store_name: '清泉食品',
+        store_name: '冀唐清泉',
         deliver_type: 2,
         ztdian_type: that.data.chooseStyle,
         deliver_money: that.data.express,
@@ -826,7 +938,35 @@ Page({
           id: that.data.goods_id
         }, (res) => {
           if (res.status == 1 && res.data.length > 0) {
-            res.data[0].number = 1
+            let specsindex = that.data.specsindex
+            let Detail = that.data.Detail
+            let thisspecs = Detail.specs[specsindex]
+            if (thisspecs.specs_stock < thisspecs.specs_batch) {
+              wx.showToast({
+                title: '库存小于起批',
+                icon: 'none'
+              })
+              return
+            } else if (Detail.xg_num > 0 && Detail.xg_num < thisspecs.specs_batch) {
+              wx.showToast({
+                title: '限购小于起批',
+                icon: 'none'
+              })
+              return
+            }
+            res.data[0].number = Detail.specs[specsindex].specs_batch
+            res.data[0].specs_id = Detail.specs[specsindex].specs_id
+            res.data[0].specs_pfmoney = Detail.specs[specsindex].specs_pfmoney
+            res.data[0].specs_tgmoney = Detail.specs[specsindex].specs_tgmoney
+            res.data[0].specs_erpmoney = Detail.specs[specsindex].specs_erpmoney
+            res.data[0].specs_vipmoney = Detail.specs[specsindex].specs_vipmoney
+            res.data[0].specs_stock = Detail.specs[specsindex].specs_stock
+            res.data[0].specs_batch = Detail.specs[specsindex].specs_batch
+            res.data[0].specs_name = Detail.specs[specsindex].specs_name
+            if (that.data.active_id) {
+              res.data[0].active_id = that.data.active_id
+            }
+            res.data[0].specs_img = Detail.specs[specsindex].specs_img ? 'https://qiniu.0315678.cn/' + Detail.specs[specsindex].specs_img : Detail.goods_img
             var cartlist = res.data
             var ordertype = '/pages/lotaddorder2/lotaddorder2?ordertype=2&zttype=' + 2
             wx.setStorageSync('cartlist_pay', cartlist)

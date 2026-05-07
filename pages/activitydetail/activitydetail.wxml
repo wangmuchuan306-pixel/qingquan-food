@@ -24,10 +24,10 @@
         / 已售 {{item.volume+1000}}
       </view> -->
       <view style="display: flex;align-items: center;justify-content: space-between;width: 300rpx;margin: 0 auto;">
-        <view style="font-size: 32rpx;font-weight: bold;color: #005832;">
-          <text>¥ {{userinfo.user_level == 2 ? item.line_price : (userinfo.user_level == 1 ? item.memberprice : item.normalprice)}}</text>
+        <view style="font-size: 32rpx;font-weight: bold;color: #003B73;">
+          <text>¥ {{userinfo.user_level == 2 ? item.specs_pfmoney : (userinfo.user_level == 1 ? item.specs_tgmoney : (userinfo.user_level == 3 ? item.specs_vipmoney : item.specs_erpmoney))}}</text>
         </view>
-        <view class="buybox" catch:tap="tobuy" data-index="{{index}}">去下单</view>
+        <view class="buybox" data-index="{{index}}">去下单</view>
       </view>
     </view>
   </grid-view>

@@ -2,7 +2,7 @@
   "usingComponents": {},
   "navigationBarTitleText": "兑换卡券",
   "navigationBarTextStyle":"black",
-  "backgroundColor":"#eeeeee",
+  "backgroundColor":"#f8f8f8",
   "navigationBarBackgroundColor":"#fff"
 
 }

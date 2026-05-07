@@ -1,4 +1,4 @@
-<view class="shopping-cart-container">
+<view class="shopping-cart-container" style="--tbH: {{tabBarHeight}};">
     <view class="shopping-cart {{isShow ? 'show' : 'hide'}}">
         <view class="shopping-cart__logo" bind:tap="showOrHide">
             <image class="shopping-cart__logo-image" src="/images/cart_icon.png" />
@@ -15,13 +15,13 @@
     <view style="height: 95vh;display: flex;flex-direction: column;">
         <view style="display: flex;align-items: center;margin: 30rpx;padding-bottom: 30rpx;border-bottom: 2rpx solid #eee;">
             <!-- <view style="display: flex;align-items: center;margin-right: 30rpx;" bind:tap="allcheck">
-            <radio color="#156c34" checked="{{allcheck}}" />
-            <view style="font-size: 32rpx;color: #156c34;margin-left: 10rpx;">全选</view>
+            <radio color="#003B73" checked="{{allcheck}}" />
+            <view style="font-size: 32rpx;color: #003B73;margin-left: 10rpx;">全选</view>
             </view> -->
             <view style="display: flex;align-items: center;">
             <view class="flex2" style="margin-right: 40rpx;">
-                <radio checked="{{all_Selected}}" bind:tap="allcheck" color="#156c34" />
-                <view style="font-size: 32rpx;color: #156c34;margin-left: 10rpx;">全选</view>
+                <radio checked="{{all_Selected}}" bind:tap="allcheck" color="#003B73" />
+                <view style="font-size: 32rpx;color: #003B73;margin-left: 10rpx;">全选</view>
             </view>
             <view class="flex2" bind:tap="delcartgoods">
                 <image src="/images/lajitong.png" style="width: 30rpx;height: 30rpx;" />
@@ -31,24 +31,25 @@
         </view>
         <scroll-view style="width: 100%;flex: 1;min-height: 0;" bindscrolltolower="scrolltolower" scroll-y>
             <view style="width: 690rpx;margin: 30rpx;border-bottom: 2rpx solid #eee;padding-bottom: 30rpx;display: flex;align-items: center;justify-content: space-between;margin-top: 0;" wx:for="{{cartlist}}" wx:key="id">
-            <radio checked="{{item.Selected}}" bind:tap="checkcart" data-index="{{index}}" color="#156c34" />
+            <radio checked="{{item.Selected}}" bind:tap="checkcart" data-index="{{index}}" color="#003B73" />
             <image src="{{item.goods_img}}" style="width: 180rpx;height: 180rpx;border-radius: 20rpx;margin-left: 30rpx;flex-shrink: 0;" mode="aspectFill" />
             <view style="margin-left: 30rpx;flex: 1;min-width: 0;">
                 <view style="width: 100%;font-size: 32rpx;font-weight: bold;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">{{item.goods_name}}</view>
                 <view style="display: flex;align-items: center;margin: 10rpx auto;">
                 <view class="hbox" style="height: 120rpx;height: 40rpx;font-size: 24rpx;line-height: 40rpx;">
-                    <text wx:if="{{item.zttype==12}}">配送/自提</text>
+                    <!-- <text wx:if="{{item.zttype==12}}">配送/自提</text>
                     <text wx:if="{{item.zttype==1}}">仅自提</text>
-                    <text wx:if="{{item.zttype==2}}">仅配送</text>
+                    <text wx:if="{{item.zttype==2}}">仅配送</text> -->
+                    <text >[{{item.specs[0].specs_name}}]</text>
                 </view>
-                <view class="hbox" style="height: 120rpx;height: 40rpx;font-size: 24rpx;line-height: 40rpx;">{{item.xg_num==0?'不限购':'限购 '+item.xg_num}}</view>
+                <!-- <view class="hbox" style="height: 120rpx;height: 40rpx;font-size: 24rpx;line-height: 40rpx;">{{item.xg_num==0?'不限购':'限购 '+item.xg_num}}</view> -->
                 </view>
                 <view style="width: 100%;display: flex;align-items: center;justify-content: space-between;">
-                <view style="font-size: 36rpx;font-weight: bold;color: #156c34;">¥ {{userinfo.user_level == 2 ? item.line_price : (userinfo.user_level == 1 ? item.memberprice : item.normalprice)}}</view>
+                <view style="font-size: 36rpx;font-weight: bold;color: #003B73;">¥ {{userinfo.user_level == 2 ? item.specs[0].specs_pfmoney : (userinfo.user_level == 1 ? item.specs[0].specs_tgmoney : (userinfo.user_level == 3 ? item.specs[0].specs_vipmoney : item.specs[0].specs_erpmoney))}}</view>
                 <view style="display: flex;align-items: center;">
                     <block wx:if="{{item.number>0}}">
-                    <view class="chanumbox" bind:tap="reducenum" data-type="cart" data-index="{{index}}">-</view>
-                    <input type="num" style="width: 50rpx;text-align: center;font-size: 30rpx;" value="{{item.number}}" bindblur="innum" data-type="cart" data-index="{{index}}" />
+                        <view class="chanumbox" bind:tap="reducenum" data-type="cart" data-index="{{index}}">-</view>
+                        <input type="num" disabled style="width: 50rpx;text-align: center;font-size: 30rpx;" value="{{item.number}}" bindblur="innum" data-type="cart" data-index="{{index}}" />
                     </block>
                     <view class="chanumbox" bind:tap="addnum" data-type="cart" data-index="{{index}}">+</view>
                 </view>

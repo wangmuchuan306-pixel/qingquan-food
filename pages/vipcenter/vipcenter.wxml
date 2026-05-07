@@ -37,7 +37,7 @@
     <view style="line-height: 50rpx;margin-top: 20rpx;">四、如复购，点击我的——会员年卡——选择会员年卡类型，直接付款购买；</view>
   </view>
   <!-- <view class="linebox">
-    <view style="display: flex;align-items: center;justify-content: center;width: 100rpx;height: 100rpx;background-color: #015637;border-radius: 100%;">
+    <view style="display: flex;align-items: center;justify-content: center;width: 100rpx;height: 100rpx;background-color: #003B73;border-radius: 100%;">
       <image src="/images/huanguan.png" style="width: 60rpx;height: 48rpx;" mode="" />
     </view>
     <view style="margin-left: 20rpx;">
@@ -46,16 +46,16 @@
     </view>
   </view>
   <view class="linebox">
-    <view style="display: flex;align-items: center;justify-content: center;width: 100rpx;height: 100rpx;background-color: #015637;border-radius: 100%;">
+    <view style="display: flex;align-items: center;justify-content: center;width: 100rpx;height: 100rpx;background-color: #003B73;border-radius: 100%;">
       <image src="/images/mfsong.png" style="width: 60rpx;height: 58rpx;" mode="" />
     </view>
     <view style="margin-left: 20rpx;">
       <view style="font-size: 30rpx;">免费送鸡蛋</view>
-      <view style="font-size: 24rpx;color: #999;">送{{vipindex==0?12:13}}张{{vipindex==0?'清泉食品36枚富硒柴鸡蛋礼盒年卡':'清泉食品36枚原生态散养笨鸡蛋礼盒年卡'}}抵用券</view>
+      <view style="font-size: 24rpx;color: #999;">送{{vipindex==0?12:13}}张{{vipindex==0?'冀唐清泉36枚富硒柴鸡蛋礼盒年卡':'冀唐清泉36枚原生态散养笨鸡蛋礼盒年卡'}}抵用券</view>
     </view>
   </view>
   <view class="linebox">
-    <view style="display: flex;align-items: center;justify-content: center;width: 100rpx;height: 100rpx;background-color: #015637;border-radius: 100%;">
+    <view style="display: flex;align-items: center;justify-content: center;width: 100rpx;height: 100rpx;background-color: #003B73;border-radius: 100%;">
       <image src="/images/birthday.png" style="width: 60rpx;height: 54rpx;" mode="" />
     </view>
     <view style="margin-left: 20rpx;">
@@ -64,7 +64,7 @@
     </view>
   </view>
   <view class="linebox" style="border: none;">
-    <view style="display: flex;align-items: center;justify-content: center;width: 100rpx;height: 100rpx;background-color: #015637;border-radius: 100%;">
+    <view style="display: flex;align-items: center;justify-content: center;width: 100rpx;height: 100rpx;background-color: #003B73;border-radius: 100%;">
       <image src="/images/phone.png" style="width: 46rpx;height: 58rpx;" mode="" />
     </view>
     <view style="margin-left: 20rpx;">

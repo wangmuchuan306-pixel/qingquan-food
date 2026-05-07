@@ -7,7 +7,7 @@ page {
   width: 120rpx;
   height: 60rpx;
   border-radius: 30rpx;
-  background-color: #005832;
+  background-color: #003B73;
   font-size: 28rpx;
   color: white;
   text-align: center;
@@ -35,12 +35,12 @@ page {
 
 .day_act {
   color: #fff;
-  background-color: #005832;
+  background-color: #003B73;
   border-radius: 10rpx;
 }
 
 .time_act {
-  color: #005832;
+  color: #003B73;
 }
 .ztbody {
   width: 560rpx;
@@ -52,7 +52,7 @@ page {
 
 .ztH1 {
   font-size: 30rpx;
-  color: #015637;
+  color: #003B73;
   font-weight: bold;
   margin: 0 10rpx;
 }
@@ -60,7 +60,7 @@ page {
 .xian {
   width: 130rpx;
   height: 3rpx;
-  background-color: #015637;
+  background-color: #003B73;
 }
 
 .ztbut1 {
@@ -68,8 +68,8 @@ page {
   height: 90rpx;
   border-radius: 45rpx;
   font-size: 30rpx;
-  border: 2rpx solid #015637;
-  color: #015637;
+  border: 2rpx solid #003B73;
+  color: #003B73;
 }
 
 .listnone {
@@ -86,7 +86,7 @@ page {
 .mendianbut {
   width: 400rpx;
   height: 100rpx;
-  background-color: #015637;
+  background-color: #003B73;
   border-radius: 50rpx;
   font-size: 30rpx;
   color: #fff;
@@ -98,7 +98,7 @@ page {
   border-radius: 45rpx;
   font-size: 30rpx;
   color: #fff;
-  background-color: #015637;
+  background-color: #003B73;
   margin-top: 30rpx;
 }
 .yjt {
@@ -112,7 +112,7 @@ page {
   border-radius: 20rpx;
   font-size: 30rpx;
   color: #fff;
-  background-color: #015637;
+  background-color: #003B73;
 }
 
 .numbox {
@@ -134,7 +134,7 @@ page {
 /* .buybox {
   width: 220rpx;
   height: 100rpx;
-  background-color: #005832;
+  background-color: #003B73;
   border-radius: 50rpx;
   margin: 30rpx;
   font-size: 30rpx;
@@ -165,11 +165,11 @@ page {
   width: 140rpx;
   height: 60rpx;
   box-sizing: border-box;
-  border: 2rpx solid #005832;
+  border: 2rpx solid #003B73;
   background-color: #f4fffb;
   border-radius: 30rpx;
   font-size: 24rpx;
-  color: #005832;
+  color: #003B73;
   text-align: center;
   line-height: 56rpx;
   margin-right: 30rpx;
@@ -203,11 +203,52 @@ page {
 .chanumbox {
   width: 50rpx;
   height: 50rpx;
-  background-color: #005832;
+  background-color: #003B73;
   color: white;
   text-align: center;
   /* font-weight: bolder; */
   line-height: 47rpx;
   border-radius: 100%;
   font-size: 40rpx;
+}
+
+.isspecs {
+  background-color: #e9ffe1;
+  width: 690rpx;
+  height: 100rpx;
+  border-radius: 20rpx;
+  margin: 30rpx;
+  color: #003B73;
+  font-size: 28rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30rpx;
+  box-sizing: border-box;
+  border: 2rpx solid #003B73;
+}
+
+.specsbox {
+  background-color: #f8f8f8;
+  width: 690rpx;
+  height: 100rpx;
+  border-radius: 20rpx;
+  margin: 30rpx;
+  font-size: 28rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30rpx;
+  box-sizing: border-box;
+}
+.btmbtn {
+  width: 690rpx;
+  height: 100rpx;
+  border-radius: 50rpx;
+  background-color: #003B73;
+  text-align: center;
+  line-height: 100rpx;
+  margin: 0 auto 30rpx;
+  font-size: 30rpx;
+  color: white;
 }

@@ -91,6 +91,7 @@ Page({
               goodsList: goodsList,
               pageShow: true,
             })
+            this.getspecs(goodsList, 0, 'goodsList')
           }, 500);
         } else {
           wx.showToast({
@@ -100,6 +101,30 @@ Page({
           });
         }
       }
+    })
+  },
+  getspecs(list, index, key) {
+    if (index >= list.length) {
+      return
+    }
+    app.apiPost(app.apiList.getspecs, {
+      goods_id: list[index].goods_id
+    }, (res) => {
+      let list = this.data[key]
+      let gIndex = list.findIndex(v => v.goods_id == list[index].goods_id)
+      const specs_ptmoney = Math.min(...res.data.map(item => Number(item['specs_ptmoney'])).filter(price => !isNaN(price)))
+      const specs_tgmoney = Math.min(...res.data.map(item => Number(item['specs_tgmoney'])).filter(price => !isNaN(price)))
+      const specs_erpmoney = Math.min(...res.data.map(item => Number(item['specs_erpmoney'])).filter(price => !isNaN(price)))
+      list[gIndex].specs_ptmoney = (specs_ptmoney || 0).toFixed(2)
+      list[gIndex].specs_tgmoney = (specs_tgmoney || 0).toFixed(2)
+      list[gIndex].specs_erpmoney = (specs_erpmoney || 0).toFixed(2)
+      const totalStock = res.data.reduce((sum, item) => sum + (Number(item.specs_stock) || 0), 0)
+      list[gIndex].all_goodsstock = totalStock
+      list[gIndex].specs = res.data
+      this.setData({
+        [key]: list
+      })
+      this.getspecs(list, index + 1, key)
     })
   },
   userCenter() {

@@ -1,5 +1,6 @@
 // index.js
 const app = getApp()
+const tab_bar = require('../../custom-tab-bar/utils/tab-bar.js')
 import {
    base64src
 } from '../../utils/base64src.js'
@@ -47,14 +48,14 @@ Page({
       zindextime: -1,
       notexNum: 0,
       showQrcodePopup: false,
-      cate_pid:0
+      cate_pid: 0
    },
    //活动商品
    getactivitylist2() {
       let data = {
          page: 1,
          limit: 5,
-         active_type: 1,
+         active_type: 0,
       }
       app.apiPost(app.apiList.getactivitylist, data, (res) => {
          if (res.status == 1) {
@@ -109,10 +110,10 @@ Page({
          // this.goodsPage()
       })
    },
-   choosecate(e){
+   choosecate(e) {
       let id = e.currentTarget.dataset.id
       this.setData({
-         cate_pid:id
+         cate_pid: id
       })
       this.goodsPage()
    },
@@ -962,7 +963,7 @@ Page({
          isallPoints,
          pointspay,
          store_id: 1,
-         store_name: '清泉食品',
+         store_name: '冀唐清泉',
          deliver_type: 2,
          ztdian_type: that.data.chooseStyle,
          deliver_money: that.data.express,
@@ -1364,6 +1365,7 @@ Page({
             goodslist,
             // viplist
          })
+         this.getspecs(goodslist, 0, 'goodslist')
          // if (that.data.showtype == 2 && that.data.page == 1) {
          // setTimeout(() => {
          //   const waterfallInstance = that.selectComponent("#waterfall");
@@ -1395,6 +1397,7 @@ Page({
          that.setData({
             hotgoodslist: res.data,
          })
+         this.getspecs(res.data, 0, 'hotgoodslist')
       })
    },
    //商品列表
@@ -1413,6 +1416,33 @@ Page({
       }
       app.apiPost(app.apiList.goodsPage, data, (res) => {
          this.setData({ cxgoosList: res.data })
+         this.getspecs(res.data, 0, 'cxgoosList')
+      })
+   },
+   getspecs(list, index, key) {
+      if (index >= list.length) {
+         return
+      }
+      app.apiPost(app.apiList.getspecs, {
+         goods_id: list[index].goods_id
+      }, (res) => {
+         let list = this.data[key]
+         let gIndex = list.findIndex(v => v.goods_id == list[index].goods_id)
+         const specs_pfmoney = Math.min(...res.data.map(item => Number(item['specs_pfmoney'])).filter(price => !isNaN(price)))
+         const specs_tgmoney = Math.min(...res.data.map(item => Number(item['specs_tgmoney'])).filter(price => !isNaN(price)))
+         const specs_erpmoney = Math.min(...res.data.map(item => Number(item['specs_erpmoney'])).filter(price => !isNaN(price)))
+         const specs_vipmoney = Math.min(...res.data.map(item => Number(item['specs_vipmoney'])).filter(price => !isNaN(price)))
+         list[gIndex].specs_pfmoney = (specs_pfmoney || 0).toFixed(2)
+         list[gIndex].specs_tgmoney = (specs_tgmoney || 0).toFixed(2)
+         list[gIndex].specs_erpmoney = (specs_erpmoney || 0).toFixed(2)
+         list[gIndex].specs_vipmoney = (specs_vipmoney || 0).toFixed(2)
+         const totalStock = res.data.reduce((sum, item) => sum + (Number(item.specs_stock) || 0), 0)
+         list[gIndex].all_goodsstock = totalStock
+         list[gIndex].specs = res.data
+         this.setData({
+            [key]: list
+         })
+         this.getspecs(list, index + 1, key)
       })
    },
    miniIndex() {
@@ -1588,7 +1618,7 @@ Page({
       this.miniIndex()
       this.nklist()
       this.getIndexCat()
-      this.getactivitylist()
+      // this.getactivitylist()
       this.getIndexSet()
       this.getusersendtime()
       this.getgoodscat()
@@ -1643,6 +1673,7 @@ Page({
    },
    onShow() {
       var that = this
+      tab_bar.getTab(0)
       this.userCenter()
       this.walletsList()
       this.goodsPage()
@@ -1677,7 +1708,7 @@ Page({
       return {
          path: '/pages/index/index?ruid=' + wx.getStorageSync('uid'),
          imageUrl: '/images/logo.jpg',
-         title: '清泉食品'
+         title: '冀唐清泉'
       }
    },
    onShareTimeline() {
@@ -1692,5 +1723,17 @@ Page({
          })
          this.goodsPage()
       }
-   }
+   },
+   // onPageScroll(e){
+   //    let scrollTop = e.scrollTop
+   //    if(scrollTop >= 215 && !this.data.catebjshow){
+   //       this.setData({
+   //          catebjshow: true
+   //       })
+   //    }else if(scrollTop < 215 && this.data.catebjshow){
+   //       this.setData({
+   //          catebjshow: false
+   //       })
+   //    }
+   // },
 })

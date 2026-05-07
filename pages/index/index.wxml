@@ -2,17 +2,28 @@
 <page-meta page-style="{{ show||commodityshow||showQrcodePopup ? 'overflow: hidden;' : '' }}" />
 <import src="/pages/template/template" />
 
-<naviBar tabBar empty shadow="{{false}}">
+<!-- <naviBar tabBar empty shadow="{{false}}">
     <view class="naviBar">
-        <text>清泉食品</text>
+        <text>冀唐清泉</text>
     </view>
-</naviBar>
+</naviBar> -->
+
+<view class="jianbianbj"></view>
 
 <view class="flex2 asdf_box">
     <view class="search_box flex2" bindtap="gosearch">
-        <icon type="search" size="16" color="#015637"></icon>
+        <!-- <icon type="search" size="16" color="#003B73"></icon> -->
+        <text class="iconfont icon-search" style="--size: 32rpx;--color: #003B73;"></text>
         <view class="search_input">请输入商品名称</view>
     </view>
+</view>
+
+<view wx:if="{{bannerlist.length != 0}}" class="homeTop">
+  <swiper style="width: 710rpx;height: 300rpx;" autoplay="{{true}}">
+    <swiper-item wx:for="{{bannerlist}}" style="z-index:999;width:100%;border-radius: 20rpx;height:100%" wx:key="id" data-path='{{item.path}}' data-type='{{item.iswhere}}' data-id='{{item.whereid}}' bindtap="bannernav">
+      <image src="{{item.imgpath}}" style="width: 710rpx;height: 300rpx;border-radius: 20rpx;" mode="aspectFill" />
+    </swiper-item>
+  </swiper>
 </view>
 
 <scroll-view class="cateScroll {{cateTop ? 'cateScroll_top' : ''}}" scroll-x="{{true}}" scroll-into-view="{{'C'+ cate_pid}}" scroll-with-animation="{{true}}" scroll-into-view-offset="{{-150}}" style="--menu-h:{{menu.height}}px;--menu-w:{{menu.width}}px;--menu-t:{{menu.top}}px;--menu-l:{{menu.left}}px;">
@@ -20,26 +31,19 @@
     <block wx:for="{{catelist}}" wx:key="id">
         <view bind:tap="choosecate" id="{{'C'+ item.id}}" data-id="{{item.id}}" class="cateitem flex1 {{cateTop ? 'cate_top' : ''}}">
           <image src="{{item.imgpath}}" mode="aspectFill" />
+          <!-- <view class="{{cateTop ? 'cate_text_top' : ''}}">{{item.cate_name}}</view> -->
           <view class="{{cate_pid == item.id ? 'cate_act' : ''}} {{cateTop ? 'cate_text_top' : ''}}">{{item.cate_name}}</view>
         </view>
     </block>
     </view>
 </scroll-view>
 
-<view wx:if="{{bannerlist.length != 0}}" class="homeTop">
-  <swiper style="width: 710rpx;height: 260rpx;" autoplay="{{true}}">
-    <swiper-item wx:for="{{bannerlist}}" style="z-index:999;width:100%;border-radius: 20rpx;height:100%" wx:key="id" data-path='{{item.path}}' data-type='{{item.iswhere}}' data-id='{{item.whereid}}' bindtap="bannernav">
-      <image src="{{item.imgpath}}" style="width: 710rpx;height: 260rpx;border-radius: 20rpx;" mode="aspectFill" />
-    </swiper-item>
-  </swiper>
-</view>
-
 <view class="flex2" style="width: 100%;padding: 20rpx 20rpx 0;box-sizing: border-box;height: 430rpx;">
   <view class="live_box">
     <view class="flex3">
       <view class="live_title">活动区</view>
       <view class="flex2" bindtap="goalllive">
-        <view class="live_all">全部</view>
+        <view class="live_all">更多</view>
         <image class="live_jian" src="/images/blackjiantou.png" />
       </view>
     </view>
@@ -70,8 +74,8 @@
                 <view class="fl_box" bindtap="{{cxgoosList[index + (lindex * 2)] ? 'toinfo' : ''}}" data-id="{{cxgoosList[index + (lindex * 2)].goods_id}}">
                   <image class="fl_img" src="{{cxgoosList[index + (lindex * 2)].goods_img}}" />
                   <view style="flex: 1;min-width: 0;flex-direction: column;height: 120rpx;display: flex;justify-content: space-between;">
-                    <view class="txt2" style="font-size: 28rpx;font-weight: bold;">{{cxgoosList[index + (lindex * 2)].goods_name}}</view>
-                    <view wx:if="{{cxgoosList[index + (lindex * 2)]}}" style="font-size: 26rpx;color: #f60;font-weight: bold;">¥ {{userinfo.user_level == 2 ? cxgoosList[index + (lindex * 2)].line_price : (userinfo.user_level == 1 ? cxgoosList[index + (lindex * 2)].memberprice : cxgoosList[index + (lindex * 2)].normalprice)}}
+                    <view class="twolinetext" style="font-size: 28rpx;font-weight: bold;">{{cxgoosList[index + (lindex * 2)].goods_name}}</view>
+                    <view wx:if="{{cxgoosList[index + (lindex * 2)]}}" style="font-size: 26rpx;color: #f60;font-weight: bold;">¥ {{userinfo.user_level == 2 ? cxgoosList[index + (lindex * 2)].specs_pfmoney : (userinfo.user_level == 1 ? cxgoosList[index + (lindex * 2)].specs_tgmoney : (userinfo.user_level == 3 ? cxgoosList[index + (lindex * 2)].specs_vipmoney : cxgoosList[index + (lindex * 2)].specs_erpmoney))}}<text wx:if="{{item.specs.length > 1}}" style="color: #999;font-size: 22rpx;"> 起</text>
                       <!-- <text style="font-size: 20rpx;color: #999;text-decoration: line-through;margin-left: 6rpx;">¥ 999.99</text> -->
                       </view>
                   </view>
@@ -86,22 +90,26 @@
 </view>
 <view class="gblw_box">
     <view class="flex2" style="margin-bottom: 30rpx;">
-    <view class="flex2" style="flex: 1;min-width: 0;">
-        <view class="live_title" style="margin-right: 20rpx;flex-shrink: 0;">主卖区</view>
-    </view>
-    <view class="flex2" bind:tap="goranking" data-type="4" style="flex-shrink: 0;margin-left: 50rpx;">
-        <view class="live_all">更多</view>
-        <image class="live_jian" src="/images/blackjiantou.png" />
-    </view>
+      <view class="flex2" style="flex: 1;min-width: 0;">
+          <view class="live_title" style="margin-right: 20rpx;flex-shrink: 0;">主卖区</view>
+      </view>
+      <view class="flex2" bind:tap="goranking" data-type="4" style="flex-shrink: 0;margin-left: 50rpx;">
+          <view class="live_all">更多</view>
+          <image class="live_jian" src="/images/blackjiantou.png" />
+      </view>
     </view>
     <view style="flex: 1;min-height: 0;">
         <swiper class="index_swiper" indicator-dots="{{false}}" autoplay="{{true}}" interval="{{5000}}" duration="{{500}}" display-multiple-items="{{hotgoodslist.length>2?2:hotgoodslist.length}}">
             <block wx:for="{{hotgoodslist}}" wx:key="index">
             <swiper-item class="flex2" bindtap="toinfo" data-id="{{item.goods_id}}" style="width: 100%;height: 100%;flex-direction: column;">
                 <image class="gblw_img" src="{{item.goods_img}}" />
-                <view style="flex: 1;min-height: 0;width: 100%;">
-                    <view class="txt2" style="font-size: 28rpx;font-weight: bold;margin-bottom: 20rpx;">{{item.goods_name}}</view>
-                    <view style="font-size: 30rpx;font-weight: bold;color: #f60;">¥ {{userinfo.user_level == 2 ? item.line_price : (userinfo.user_level == 1 ? item.memberprice : item.normalprice)}}</view>
+                <view style="flex: 1;min-height: 0;width: calc(100% - 20rpx);">
+                    <view class="twolinetext" style="font-size: 28rpx;font-weight: bold;margin-bottom: 10rpx;">{{item.goods_name}}</view>
+                    <view class="item_desc">已售 {{item.volume + 1000}} 库存 {{item.goodsstock}}</view>
+                    <view class="flex3">
+                      <view style="font-size: 30rpx;font-weight: bold;color: #f60;">¥ {{userinfo.user_level == 2 ? item.specs_pfmoney : (userinfo.user_level == 1 ? item.specs_tgmoney : (userinfo.user_level == 3 ? item.specs_vipmoney : item.specs_erpmoney))}}<text wx:if="{{item.specs.length > 1}}" style="color: #999;font-size: 22rpx;"> 起</text></view>
+                      <view style="width: 90rpx;height: 50rpx;border-radius: 25rpx;background-color: #003B73;color: #fff;line-height: 50rpx;text-align: center;font-size: 24rpx;color: #fff;">抢购</view>
+                    </view>
                 </view>
             </swiper-item>
             </block>
@@ -109,3 +117,4 @@
         </view>
 </view>
 <goodslist goodslist="{{goodslist}}" userinfo="{{userinfo}}" bind:myevent="myevent"></goodslist>
+<view style="height: {{tabBarHeight}};"></view>

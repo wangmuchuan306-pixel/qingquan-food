@@ -1,20 +1,20 @@
 <!-- pages/lotaddorder/lotaddorder.wxml -->
-<!-- <view style="width: 750rpx;height: 600rpx;position: fixed;top:150rpx;background: linear-gradient(#c30505, #f8f8f8);z-index: -1;"></view>
-<view style="position: fixed;z-index: 999;background-color: #c30505;width: 100%;height: 150rpx;">
+<!-- <view style="width: 750rpx;height: 600rpx;position: fixed;top:150rpx;background: linear-gradient(var(--theme-color), #f8f8f8);z-index: -1;"></view>
+<view style="position: fixed;z-index: 999;background-color: var(--theme-color);width: 100%;height: 150rpx;">
   <view style="width: 690rpx;height: 100rpx;border-radius: 20rpx;background-color: white;margin: 30rpx;display: flex;margin-top: 20rpx;">
-    <view style="z-index: 1;width: 50%;line-height: 100rpx;text-align: center;font-size: 30rpx;{{chooseStyle==2?'color:#fff;font-weight: bold;':'color:#c30505'}}" bind:tap="chooseStyle" data-id="2" wx:if="{{zttype!=1}}">
+    <view style="z-index: 1;width: 50%;line-height: 100rpx;text-align: center;font-size: 30rpx;{{chooseStyle==2?'color:#fff;font-weight: bold;':'color:var(--theme-color)'}}" bind:tap="chooseStyle" data-id="2" wx:if="{{zttype!=1}}">
       送货上门
     </view>
     <view style="z-index: 1;width: 50%;line-height: 100rpx;text-align: center;font-size: 30rpx;color: #999999;" bind:tap="nottap" data-type="2" wx:else>
       送货上门
     </view>
-    <view style="z-index: 1;width: 50%;line-height: 100rpx;text-align: center;font-size: 30rpx;{{chooseStyle==1?'color:#fff;font-weight: bold;':'color:#c30505;'}}" bind:tap="chooseStyle" data-id="1" wx:if="{{zttype!=2}}">
+    <view style="z-index: 1;width: 50%;line-height: 100rpx;text-align: center;font-size: 30rpx;{{chooseStyle==1?'color:#fff;font-weight: bold;':'color:var(--theme-color);'}}" bind:tap="chooseStyle" data-id="1" wx:if="{{zttype!=2}}">
       到店自提
     </view>
     <view style="z-index: 1;width: 50%;line-height: 100rpx;text-align: center;font-size: 30rpx;color: #999999;" bind:tap="nottap" data-type="1" wx:else>
       到店自提
     </view>
-    <view style="width: 334rpx;height: 94rpx;margin: 5rpx;position: absolute;background-color: #c30505;border-radius: 20rpx;z-index: 0;transform: translate({{xdistance}}rpx);transition:transform 0.5s"></view>
+    <view style="width: 334rpx;height: 94rpx;margin: 5rpx;position: absolute;background-color: var(--theme-color);border-radius: 20rpx;z-index: 0;transform: translate({{xdistance}}rpx);transition:transform 0.5s"></view>
   </view>
 </view>
 <view style="height: 150rpx"></view> -->
@@ -90,17 +90,17 @@
   </view>
   <view style="width: 690rpx;background-color: white;margin: 30rpx 0;border-radius: 20rpx;padding: 0 30rpx;box-sizing: border-box;">
     <view wx:for="{{cartlist}}" wx:key="id" style="display: flex;width: 630rpx;padding: 30rpx 0;{{index == cartlist.length-1 ? '' : 'border-bottom: 1rpx solid #eee;'}}">
-      <image src="{{item.goods_img}}" mode="aspectFill" class="tx"></image>
+      <image src="{{item.specs_img}}" mode="aspectFill" class="tx"></image>
       <view>
         <view style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;width: 440rpx;">
           {{item.goods_name}}
         </view>
         <view class="fbt" style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;width: 440rpx;">
-          {{item.small_title}}
+          [{{item.specs_name}}]
         </view>
         <view style="display: flex;align-items: center;justify-content: space-between;width: 440rpx;">
-          <view class="money">¥ {{userinfo.user_level == 2 ? item.line_price : (userinfo.user_level == 1 ? item.memberprice : item.normalprice)}}</view>
-          <van-stepper value="{{item.number}}" max="{{item.goodsalist.num}}" bind:change="onChange" data-index="{{index}}"></van-stepper>
+          <view class="money">¥ {{userinfo.user_level == 2 ? item.specs_pfmoney : (userinfo.user_level == 1 ? item.specs_tgmoney : (userinfo.user_level == 3 ? item.specs_vipmoney : item.specs_erpmoney))}}</view>
+          <van-stepper value="{{item.number}}" min="{{item.specs_batch}}" max="{{item.xg_num <= 0 ? item.specs_stock : (item.specs_stock <= item.xg_num ? item.specs_stock : item.xg_num)}}" bind:change="onChange" data-index="{{index}}"></van-stepper>
         </view>
       </view>
     </view>
@@ -109,34 +109,34 @@
     <view style="width: 630rpx;display: flex;align-items: center;justify-content: space-between;margin: 30rpx;border-bottom: 2rpx solid #eee;padding: 30rpx 0;">
       <view style="font-size: 30rpx;">商品小计</view>
       <view style="display: flex;align-items: center;">
-        <text style="font-size:28rpx;color:#c30505;margin-right: 10rpx;">￥{{zongmoney}}</text>
+        <text style="font-size:28rpx;color:var(--theme-color);margin-right: 10rpx;">￥{{zongmoney}}</text>
       </view>
     </view>
-    <!-- <view style="width: 630rpx;display: flex;align-items: center;justify-content: space-between;margin: 30rpx;border-bottom: 2rpx solid #eee;padding-bottom: 30rpx;">
+    <view style="width: 630rpx;display: flex;align-items: center;justify-content: space-between;margin: 30rpx;border-bottom: 2rpx solid #eee;padding-bottom: 30rpx;">
       <view style="font-size: 30rpx;">使用卡券</view>
       <view style="display: flex;align-items: center;" bind:tap="choosecard">
-        <text style="font-size:28rpx;color:#c30505;margin-right: 10rpx;" wx:if="{{coupons&&coupons.length>0}}">-￥{{coupon_money}} x {{coupons.length}}</text>
-        <text style="font-size:28rpx;color:{{have_quan >0 ? '#c30505':'#999'}};margin-right: 10rpx;" wx:else>{{have_quan >0?'您有'+have_quan+'张可用优惠券':'没有可使用的优惠券'}}</text>
+        <text style="font-size:28rpx;color:var(--theme-color);margin-right: 10rpx;" wx:if="{{coupons&&coupons.length>0}}">-￥{{coupon_money}} x {{coupons.length}}</text>
+        <text style="font-size:28rpx;color:{{have_quan >0 ? 'var(--theme-color)':'#999'}};margin-right: 10rpx;" wx:else>{{have_quan >0?'您有'+have_quan+'张可用优惠券':'没有可使用的优惠券'}}</text>
         <image src="/images/blackjiantou.png" mode="" class="yjt"></image>
       </view>
-    </view> -->
-    <view class="underline flex3" style="margin-bottom: 30rpx;">
+    </view>
+    <!-- <view class="underline flex3" style="margin-bottom: 30rpx;">
       <view class="flex2">
         <text class="orderH2">使用积分</text>
       </view>
       <view class="flex2" bind:tap="balanShow">
         <view style="font-size: 28rpx;color: #999;margin-right: 20rpx;">{{'-'+reduce_balance}} 
-        <text style="color: #c30505;">{{'(' + (reduce_balance != 0 ? ('￥' + all_balance) : ('可用积分' + integral)) + ')'}}</text></view>
+        <text style="color: var(--theme-color);">{{'(' + (reduce_balance != 0 ? ('￥' + all_balance) : ('可用积分' + integral)) + ')'}}</text></view>
         <image src="/images/blackjiantou.png" class="yjt" mode="" />
       </view>
-    </view>
+    </view> -->
     <!-- <view class="underline">
       <view class="flex3">
         <view class="flex2">
           <text class="orderH2">使用余额</text>
         </view>
         <view class="flex2" bind:tap="remoneyShow">
-          <text style="font-size: 28rpx;color: #999;margin-right: 20rpx;">{{'-'+re_money}} <text style="color: #c30505;">(可用余额￥{{intremoney}})</text></text>
+          <text style="font-size: 28rpx;color: #999;margin-right: 20rpx;">{{'-'+re_money}} <text style="color: var(--theme-color);">(可用余额￥{{intremoney}})</text></text>
           <image src="/images/blackjiantou.png" class="yjt" mode="" />
         </view>
       </view>
@@ -163,7 +163,7 @@
         <text style="color: #999;">(已减 ¥{{all_money}})</text>
       </view>
       </view>
-    <view style="color: #c30505;font-size: 30rpx;margin-top: 10rpx;justify-content: flex-end;display: flex;" wx:if="{{mjtype}}">已享受门店满 ￥{{manjianinfo.man}} 减 ￥{{manjianinfo.jian}}</view>
+    <view style="color: var(--theme-color);font-size: 30rpx;margin-top: 10rpx;justify-content: flex-end;display: flex;" wx:if="{{mjtype}}">已享受门店满 ￥{{manjianinfo.man}} 减 ￥{{manjianinfo.jian}}</view>
     </view>
   </view>
   
@@ -180,9 +180,13 @@
 </view>
 <view style="width: 100%;padding: 20rpx 30rpx 50rpx;box-sizing: border-box;background-color: #fff;position: fixed;bottom: 0;height: 180rpx;z-index: 999;">
   <view class="flex3">
-    <view>
-      <view style="font-size: 36rpx;color: #c30505;font-weight: bold;">￥{{zongprice}}</view>
+    <view wx:if="{{userinfo.iscan_zero == 0}}">
+      <view style="font-size: 36rpx;color: var(--theme-color);font-weight: bold;">￥{{zongprice}}</view>
       <view style="font-size: 24rpx;color: #999;">实付金额</view>
+    </view>
+    <view wx:else>
+      <view class="flex2" style="font-size: 36rpx;color: var(--theme-color);font-weight: bold;">￥0.00<view class="xxhf">先享后付</view></view>
+      <view style="font-size: 24rpx;color: #999;">实付金额 <text style="color: var(--theme-color);">￥{{zongprice}}</text></view>
     </view>
     <view class="tjdd1 flex1" bindtap="back">提交订单</view>
   </view>
@@ -202,7 +206,7 @@
         <!-- <text style="font-size: 46rpx;font-weight: bold;color: #333;margin-right: 30rpx;">￥</text> -->
         <input type="number" value="{{balanMoney2}}" bindinput="balanValue" confirm-type="done" style="height: 70rpx;width: 400rpx;" />
       </view>
-      <view class="flex1" bind:tap="balanValue2" style="font-size: 26rpx;border-radius: 40rpx;width: 160rpx;height: 70rpx;border: 1rpx solid #c30505;color: #c30505;">
+      <view class="flex1" bind:tap="balanValue2" style="font-size: 26rpx;border-radius: 40rpx;width: 160rpx;height: 70rpx;border: 1rpx solid var(--theme-color);color: var(--theme-color);">
         <text>最多可用</text>
       </view>
     </view>
@@ -213,7 +217,7 @@
       <view>1. 退款后抵扣金额自动退回到余额</view>
       <view>2. 积分与人民币的比例为 100 ： 1</view>
     </view>
-    <view class="flex1" bind:tap="validated" style="font-size: 30rpx;color: #fff;width: 690rpx;height: 100rpx;border-radius: 20rpx;background-color: #c30505;margin: 60rpx 0rpx 0rpx;">
+    <view class="flex1" bind:tap="validated" style="font-size: 30rpx;color: #fff;width: 690rpx;height: 100rpx;border-radius: 20rpx;background-color: var(--theme-color);margin: 60rpx 0rpx 0rpx;">
       <text>确认使用</text>
     </view>
   </view>
@@ -231,7 +235,7 @@
         <text style="font-size: 46rpx;font-weight: bold;color: #333;margin-right: 30rpx;">￥</text>
         <input type="number" value="{{remoney2}}" bindinput="remoneyValue" confirm-type="done" style="height: 70rpx;width: 400rpx;" />
       </view>
-      <view class="flex1" bind:tap="remoneyValue2" style="font-size: 26rpx;border-radius: 40rpx;width: 160rpx;height: 70rpx;border: 1rpx solid #c30505;color: #c30505;">
+      <view class="flex1" bind:tap="remoneyValue2" style="font-size: 26rpx;border-radius: 40rpx;width: 160rpx;height: 70rpx;border: 1rpx solid var(--theme-color);color: var(--theme-color);">
         <text>最多可用</text>
       </view>
     </view>
@@ -242,7 +246,7 @@
       <view>1. 退款后抵扣金额自动退回到余额</view>
       <view>2. 余额与人民币的比例为 1 ： 1</view>
     </view>
-    <view class="flex1" bind:tap="validated2" style="font-size: 30rpx;color: #fff;width: 690rpx;height: 100rpx;border-radius: 20rpx;background-color: #c30505;margin: 60rpx 0rpx 0rpx;">
+    <view class="flex1" bind:tap="validated2" style="font-size: 30rpx;color: #fff;width: 690rpx;height: 100rpx;border-radius: 20rpx;background-color: var(--theme-color);margin: 60rpx 0rpx 0rpx;">
       <text>确认使用</text>
     </view>
   </view>

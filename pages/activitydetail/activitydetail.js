@@ -37,7 +37,39 @@ Page({
         this.setData({
           activity: res.data
         })
+        if (res.data.act_goods.length > 0) {
+          this.getspecs(res.data.act_goods, 0)
+        }
       }
+    })
+  },
+  getspecs(list, index) {
+    if (index >= list.length) {
+      return
+    }
+    app.apiPost(app.apiList.getspecs, {
+      goods_id: list[index].goods_id
+    }, (res) => {
+      let activity = this.data.activity
+      let goodslist = activity.act_goods
+      let gIndex = goodslist.findIndex(v => v.goods_id == list[index].goods_id)
+      const specs_pfmoney = Math.min(...res.data.map(item => Number(item['specs_pfmoney'])).filter(price => !isNaN(price)))
+      const specs_tgmoney = Math.min(...res.data.map(item => Number(item['specs_tgmoney'])).filter(price => !isNaN(price)))
+      const specs_erpmoney = Math.min(...res.data.map(item => Number(item['specs_erpmoney'])).filter(price => !isNaN(price)))
+      const specs_vipmoney = Math.min(...res.data.map(item => Number(item['specs_vipmoney'])).filter(price => !isNaN(price)))
+      goodslist[gIndex].specs_pfmoney = (specs_pfmoney || 0).toFixed(2)
+      goodslist[gIndex].specs_tgmoney = (specs_tgmoney || 0).toFixed(2)
+      goodslist[gIndex].specs_vipmoney = (specs_vipmoney || 0).toFixed(2)
+      goodslist[gIndex].specs_erpmoney = (specs_erpmoney || 0).toFixed(2)
+      const totalStock = res.data.reduce((sum, item) => sum + (Number(item.specs_stock) || 0), 0)
+      goodslist[gIndex].all_goodsstock = totalStock
+      goodslist[gIndex].number = res.data.reduce((sum, item) => sum + (Number(item.shoppingspecs?.number) || 0), 0)
+      goodslist[gIndex].specs = res.data
+      activity.act_goods = goodslist
+      this.setData({
+        activity
+      })
+      this.getspecs(list, index + 1)
     })
   },
   //商品详情
@@ -81,7 +113,7 @@ Page({
     }
     var goods_id = that.data.activity.act_goods[e.currentTarget.dataset.index].goods_id
     wx.navigateTo({
-      url: '/pages/addorder/addorder?num=1&goods_id=' + goods_id + '&active_id='+ that.data.act_id,
+      url: '/pages/addorder/addorder?num=1&goods_id=' + goods_id + '&active_id=' + that.data.act_id,
     })
     return
     app.apiPost(app.apiList.goodsDetail, {
@@ -152,7 +184,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow() {
-    if(!wx.getStorageSync('token_new')){
+    if (!wx.getStorageSync('token_new')) {
       wx.showToast({
         title: '请先登录',
         icon: 'none'

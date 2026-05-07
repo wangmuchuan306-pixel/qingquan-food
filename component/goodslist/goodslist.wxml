@@ -4,8 +4,8 @@
       <view class="item_box" bind:tap="gotoDetail" data-id="{{item.goods_id}}">
         <view class="item_img_box">
             <image class="item_img" src="{{item.goods_img}}" mode="widthFix" />
-            <!-- <image wx:if="{{item.goodsvideo}}" class="item_img_tag" src="{{iconurl}}c_playvoide.png" />
-            <view wx:if="{{item.label_info.length>0}}" class="item_img_tip" style="background-color: {{item.label_info[0].color}};">{{item.label_info[0].label_name}}</view> -->
+            <!-- <image wx:if="{{item.goodsvideo}}" class="item_img_tag" src="{{iconurl}}c_playvoide.png" /> -->
+            <view wx:if="{{item.label_name}}" class="item_img_tip" style="background-color: #f60;">{{item.label_name}}</view>
         </view>
         <view class="item_info">
             <view class="item_name txt2">{{item.goods_name}}</view>
@@ -18,7 +18,7 @@
                 <image class="item_price_right" src="https://icon.0315678.cn/c_right_b79264.png" />
             </view>
             <view class="item_count flex_sb">
-                <view class="item_count_text">¥ {{userinfo.user_level == 2 ? item.line_price : (userinfo.user_level == 1 ? item.memberprice : item.normalprice)}}</view>
+                <view class="item_count_text">¥ {{userinfo.user_level == 2 ? item.specs_pfmoney : (userinfo.user_level == 1 ? item.specs_tgmoney : (userinfo.user_level == 3 ? item.specs_vipmoney : item.specs_erpmoney))}}<text wx:if="{{item.specs.length > 1}}" style="color: #999;font-size: 22rpx;"> 起</text></view>
                 <!-- <image class="item_count_add" src="{{iconurl}}greenjia_c.png" /> -->
             </view>
         </view>

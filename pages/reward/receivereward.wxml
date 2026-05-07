@@ -37,7 +37,7 @@
               <view wx:if="{{commodity.is_discount==1}}" style="display:inline-block;height:40rpx;line-height:40rpx;background:#f60;color:#fff;vertical-align:middle;border-radius:10rpx 0 0 10rpx; padding-left:10rpx">
                 {{commodity.zhekou_num == 0?'免单券':commodity.zhekou_num+'折 折扣券'}}
               </view>
-              <view wx:else style="display:inline-block;height:40rpx;line-height:42rpx;background:#015637;color:#fff;vertical-align:middle; border-radius:10rpx 0 0 10rpx;padding-left:10rpx">
+              <view wx:else style="display:inline-block;height:40rpx;line-height:42rpx;background:#003B73;color:#fff;vertical-align:middle; border-radius:10rpx 0 0 10rpx;padding-left:10rpx">
                 ￥{{commodity.used_amount}} 代金券
               </view>
               <image style="width:30rpx;height:40rpx;display:inline-block;vertical-align:middle;" src="{{url}}/summer/quanright.png"></image>
@@ -62,7 +62,7 @@
           <view class="guoqi" wx:else>{{commodity.end_day==1?'今天过期':commodity.end_day==2?'明天过期':commodity.end_day-1+'天后过期'}}</view>
         </view>
         <!-- 立即使用 -->
-        <view class="btn3" style="background:{{treasurelog_type==2?'#015637':'#ccc'}};" wx:if="{{userinfo.user_id!=fromuid}}" data-index="{{index}}" bindtap="tousecoupon">
+        <view class="btn3" style="background:{{treasurelog_type==2?'#003B73':'#ccc'}};" wx:if="{{userinfo.user_id!=fromuid}}" data-index="{{index}}" bindtap="tousecoupon">
           立即使用
         </view>
       </view>

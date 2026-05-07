@@ -1,11 +1,13 @@
 // app.js
 import Config from 'utils/config.js';
 var url = 'https://qqspapi.0315678.cn'; //域名
+
+const requestUrl = 'https://qqspapi.0315678.cn'; //域名
 // var url = 'https://yhtcapi.sbjft.com'; //临时域名
 var util = require('/utils/util.js');
 App({
   onLaunch() {
-    
+
     const updateManager = wx.getUpdateManager()
 
     updateManager.onCheckForUpdate(function (res) {
@@ -29,9 +31,9 @@ App({
     updateManager.onUpdateFailed(function () {
       // 新版本下载失败
     })
-    this.apiPost(this.apiList.userCenter,{},(res)=>{
-      if(res.status == 1){
-        if(res.data.nickname == '微信用户' || !res.data.phone){
+    this.apiPost(this.apiList.userCenter, {}, (res) => {
+      if (res.status == 1) {
+        if (res.data.nickname == '微信用户' || !res.data.phone) {
           wx.navigateTo({
             url: '/pages/setpage/setpage',
           })
@@ -46,6 +48,7 @@ App({
     qiniuUrl: 'https://qiniu.0315678.cn/',
   },
   apiList: {
+    getspecs: url + '/ApiIndex/getspecs', //获取商品规格
     ongoodsnotingwc: url + '/ApiUser/ongoodsnotingwc', //查询未付款商品
     addOrdermorewxss: url + '/ApiOrderswxpay/addOrdermorewxss', //多下单
     // 2025.10.16 新增英雄联盟活动
@@ -398,6 +401,13 @@ App({
                 })
               }
             }
+          })
+        } else if (res.data.status == 20260407) {
+          wx.showModal({
+            title: '提示',
+            content: '当前用户状态异常',
+            showCancel: false,
+            confirmText: '我知道了',
           })
         } else {
           that.alert(res.data.msg);

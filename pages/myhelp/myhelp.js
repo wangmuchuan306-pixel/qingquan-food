@@ -25,7 +25,7 @@ const posterConfig = {
 
     images: [ //商品图片
 
-      { //清泉食品二维码
+      { //冀唐清泉二维码
         width: 300,
         height: 300,
         x: 223,
@@ -65,7 +65,7 @@ Page({
     isself: 0, //isThelp=true   当前人是否已经帮忙助力过
     issuccess: 0, //当前助力是否已完成 1-已完成  
     id: 0, //列表id
-    title: '唐山本地生活就上清泉食品！便宜实惠还给钱～！',
+    title: '唐山本地生活就上冀唐清泉！便宜实惠还给钱～！',
     disabled: false,
     posterConfig: posterConfig.jdConfig, //调用写好的海报数据
   },
@@ -740,7 +740,7 @@ Page({
     var that = this;
     if (!app.get('token_new')) {
       wx.showModal({
-        title: '清泉食品提示您',
+        title: '冀唐清泉提示您',
         content: '请绑登录后操作',
         showCancel: true,
         cancelText: '取消',

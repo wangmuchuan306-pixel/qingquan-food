@@ -30,25 +30,9 @@
   </view>
   <view class="xbk">
     <view class="spnc">{{Detail.goods_name}}</view>
-    <block wx:if="{{act_status == 1}}">
-      <view class="jg">
-        <view class="jc">￥ {{active_price}}</view>
-        <!-- <view class="scjg">￥ {{Detail.line_price}}</view> -->
-        <view wx:if="{{userinfo.level == 1}}" style="font-size: 26rpx;color: #999;margin-top: 10rpx;">非会员价 ￥ {{Detail.normalprice}} / 市场价 <text style="text-decoration: line-through;">￥ {{Detail.line_price}}</text></view>
-        <view wx:else style="font-size: 26rpx;color: #999;margin-top: 10rpx;">会员价 {{Detail.memberprice}} / 市场价 <text style="text-decoration: line-through;">￥ {{Detail.line_price}}</text></view>
-      </view>
-    </block>
-    <block wx:else>
-      <view class="jg" wx:if="{{userinfo.level == 1}}">
-        <view class="jc">￥ {{Detail.memberprice}}</view>
-        <!-- <view class="scjg">￥ {{Detail.line_price}}</view> -->
-        <view style="font-size: 26rpx;color: #999;margin-top: 10rpx;">非会员价 ￥ {{Detail.normalprice}} / 市场价 <text style="text-decoration: line-through;">￥ {{Detail.line_price}}</text></view>
-      </view>
-      <view wx:else class="jg">
-        <view class="jc">￥ {{Detail.normalprice}}</view>
-        <view style="font-size: 26rpx;color: #999;margin-top: 10rpx;">会员价 {{Detail.memberprice}} / 市场价 <text style="text-decoration: line-through;">￥ {{Detail.line_price}}</text></view>
-      </view>
-    </block>
+    <view class="jg">
+      <view class="jc">¥ {{userinfo.user_level == 2 ? Detail.specs_pfmoney_min : (userinfo.user_level == 1 ? Detail.specs_tgmoney_min : (userinfo.user_level == 3 ? Detail.specs_vipmoney_min : Detail.specs_erpmoney_min))}}<text wx:if="{{Detail.specs.length > 1}}"> ~ {{userinfo.user_level == 2 ? Detail.specs_pfmoney_max : (userinfo.user_level == 1 ? Detail.specs_tgmoney_max : (userinfo.user_level == 3 ? Detail.specs_vipmoney_max : Detail.specs_erpmoney_max))}}</text></view>
+    </view>
   </view>
   <!-- <view class="xbk">
     <view class="fbt">{{Detail.small_title}}</view>
@@ -69,7 +53,7 @@
       <button open-type="contact" style="width: 100%;height: 100%;position: absolute;top: 0;left: 0;border: none;" plain></button>
     </view>
     <button class="fx" style="font-size: 30rpx;" open-type="share">分享给好友</button>
-    <view class="dg" bindtap="commodityshow" style="font-size: 30rpx;">立即订购</view>
+    <view class="dg" bindtap="{{Detail.specs.length == 1 ? 'commodityshow' : 'showchospecs'}}" style="font-size: 30rpx;">立即订购</view>
   </view>
   <van-popup show="{{commodityshow}}" bind:close="commodityclo" closeable="true" position="bottom" style="z-index: 999;" safe-area-inset-bottom="{{false}}" custom-style="background-color:#eee;">
     <view style="padding: 30rpx 30rpx 0;">
@@ -81,7 +65,7 @@
         <view style="z-index: 1;width: 50%;line-height: 100rpx;text-align: center;font-size: 30rpx;color: #999999;" bind:tap="nottap" data-type="2" wx:else>送货上门</view>
         <view style="z-index: 1;width: 50%;line-height: 100rpx;text-align: center;font-size: 30rpx;{{chooseStyle==1?'color:white;font-weight: bold;':''}}" bind:tap="chooseStyle" data-id="1" wx:if="{{zttype!=2}}">线下自提</view>
         <view style="z-index: 1;width: 50%;line-height: 100rpx;text-align: center;font-size: 30rpx;color: #999999;" bind:tap="nottap" data-type="1" wx:else>线下自提</view>
-        <view style="width: 334rpx;height: 94rpx;margin: 5rpx;position: absolute;background-color: #015637;border-radius: 20rpx;z-index: 0;transform: translate({{xdistance}}rpx);transition:transform 0.5s"></view>
+        <view style="width: 334rpx;height: 94rpx;margin: 5rpx;position: absolute;background-color: #003B73;border-radius: 20rpx;z-index: 0;transform: translate({{xdistance}}rpx);transition:transform 0.5s"></view>
       </view>
       <scroll-view scroll-y="true" style="width: 100%;height: 60vh;margin-top: 30rpx;">
       <block wx:if="{{Detail.goods_vip_type == 0 || Detail.goods_vip == 2}}">
@@ -90,7 +74,7 @@
             <view style="width: 630rpx;display: flex;align-items: center;justify-content: space-between;">
               <view style="font-size: 30rpx;">收货地址</view>
               <view style="display: flex;align-items: center;">
-                <view wx:if="{{shouAddress}}" style="font-size: 30rpx;color: #015637;margin-right: 10rpx;">{{shouAddress.username}} {{shouAddress.phone}}</view>
+                <view wx:if="{{shouAddress}}" style="font-size: 30rpx;color: #003B73;margin-right: 10rpx;">{{shouAddress.username}} {{shouAddress.phone}}</view>
                 <image src="/images/blackjiantou.png" mode="" class="yjt"></image>
               </view>
             </view>
@@ -122,8 +106,8 @@
             <view style="width: 630rpx;display: flex;align-items: center;justify-content: space-between;">
               <view style="font-size: 30rpx;">自提门店</view>
               <view style="display: flex;align-items: center;">
-                <view wx:if="{{ztdian}}" style="font-size: 30rpx;color: #015637;margin-right: 10rpx;">{{ztdian.zt_name}}</view>
-                <view wx:else style="font-size: 30rpx;color: #015637;margin-right: 10rpx;">请选择自提门店地址</view>
+                <view wx:if="{{ztdian}}" style="font-size: 30rpx;color: #003B73;margin-right: 10rpx;">{{ztdian.zt_name}}</view>
+                <view wx:else style="font-size: 30rpx;color: #003B73;margin-right: 10rpx;">请选择自提门店地址</view>
                 <image src="/images/blackjiantou.png" mode="" class="yjt"></image>
               </view>
             </view>
@@ -169,7 +153,7 @@
           <view class="underline flex3">
             <view class="flex2">
               <text class="orderH2" style="color:red;">使用积分</text>
-              <!-- <van-switch checked="{{checked}}" bind:change="checkedChan" active-color="#015637" inactive-color="#f8f8f8" size="20px" style="margin-left: 20rpx;margin-bottom: -10rpx;" /> -->
+              <!-- <van-switch checked="{{checked}}" bind:change="checkedChan" active-color="#003B73" inactive-color="#f8f8f8" size="20px" style="margin-left: 20rpx;margin-bottom: -10rpx;" /> -->
             </view>
             <view class="flex2" bind:tap="balanShow">
               <text style="font-size: 28rpx;color: red;margin-right: 20rpx;">{{'-'+reduce_balance}} (￥{{all_balance}})</text>
@@ -234,7 +218,7 @@
     <view style="height: 180rpx;width: 100%;padding: 20rpx 30rpx 0;box-sizing: border-box;background-color: #fff;">
       <view class="flex3">
         <view>
-          <view style="font-size: 36rpx;color: #015637;font-weight: bold;">￥{{zongprice}}</view>
+          <view style="font-size: 36rpx;color: #003B73;font-weight: bold;">￥{{zongprice}}</view>
           <view style="font-size: 24rpx;color: #999;">实付金额</view>
         </view>
         <view class="tjdd1 flex1" bindtap="back">
@@ -289,14 +273,14 @@
         <text style="font-size: 46rpx;font-weight: bold;color: #333;margin-right: 30rpx;">￥</text>
         <input type="number" value="{{balanMoney2}}" bindinput="balanValue" confirm-type="done" style="height: 70rpx;width: 400rpx;" />
       </view>
-      <view class="flex1" bind:tap="balanValue2" style="font-size: 26rpx;border-radius: 40rpx;width: 160rpx;height: 70rpx;border: 1rpx solid #015637;color: #015637;"><text>最多可用</text></view>
+      <view class="flex1" bind:tap="balanValue2" style="font-size: 26rpx;border-radius: 40rpx;width: 160rpx;height: 70rpx;border: 1rpx solid #003B73;color: #003B73;"><text>最多可用</text></view>
     </view>
     <view style="font-size: 24rpx;margin: 30rpx 0rpx;">账户积分 ￥{{integral}} , 订单金额 ￥{{all_zongprice}}</view>
     <view style="width: 630rpx;padding: 30rpx;background-color: #f8f8f8;border-radius: 20rpx;font-size: 24rpx;color: #999;">
       <view>1. 退款后抵扣金额自动退回到余额</view>
       <view>2. 积分与人民币的比例为 100 ： 1</view>
     </view>
-    <view class="flex1" bind:tap="validated" style="font-size: 30rpx;color: #fff;width: 690rpx;height: 100rpx;border-radius: 20rpx;background-color: #015637;margin: 60rpx 0rpx 0rpx;"><text>确认使用</text></view>
+    <view class="flex1" bind:tap="validated" style="font-size: 30rpx;color: #fff;width: 690rpx;height: 100rpx;border-radius: 20rpx;background-color: #003B73;margin: 60rpx 0rpx 0rpx;"><text>确认使用</text></view>
   </view>
 </van-popup>
 <van-popup show="{{timeShow}}" custom-style="z-index: 999;" round position="bottom" bind:click-overlay="closePopup">
@@ -344,4 +328,38 @@
     <view class="ztbut1 flex1" bind:tap="choztdian123"><text>选择其他自提点</text></view>
     <view class="ztbut2 flex1" bind:tap="yesztdian"><text>确认并提交订单</text></view>
   </view>
+</van-popup>
+
+<van-popup show="{{ specshow }}" round position="bottom" bind:close="specsClose" closeable z-index="999">
+  <view style="font-size: 30rpx;margin: 30rpx;">已选 {{Detail.specs[specsindex].specs_name}}</view>
+  <view style="width: 690rpx;margin: 30rpx;border-bottom: 2rpx solid #eee;display: flex;align-items: center;">
+    <image src="{{Detail.specs[specsindex].specs_img?qiniu+Detail.specs[specsindex].specs_img:Detail.goods_img}}" style="width: 180rpx;height: 180rpx;border-radius: 20rpx;" mode="aspectFill" />
+    <view style="margin-left: 30rpx;width: 480rpx;">
+      <view style="width: 100%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;font-size: 30rpx;">{{Detail.goods_name}}</view>
+      <view style="color:#999;font-size: 24rpx;margin: 20rpx 0;">
+        销量{{Detail.volume + 1000}} ·
+        <text wx:if="{{Detail.all_goodsstock<10}}" style="color: #f30;">{{Detail.all_goodsstock==0?'已售罄':'即将售罄'}}</text>
+        <text wx:else>库存{{Detail.all_goodsstock}}</text>
+        <text wx:if="{{thisgoods.xg_num>0}}"> · 限购 {{thisgoods.xg_num}}</text>
+      </view>
+      <view style="color: #f60;font-size: 30rpx;">￥{{userinfo.user_level == 2 ? Detail.specs[specsindex].specs_pfmoney : (userinfo.user_level == 1 ? Detail.specs[specsindex].specs_tgmoney : (userinfo.user_level == 3 ? Detail.specs[specsindex].specs_vipmoney : Detail.specs[specsindex].specs_erpmoney))}}</view>
+    </view>
+  </view>
+  <view style="font-size: 30rpx;margin: 30rpx;margin-bottom: 0;">选择规格</view>
+  <scroll-view style="width: 100%;height: 500rpx;" scroll-y>
+    <view class="{{specsindex==index?'isspecs':'specsbox'}}" wx:for="{{Detail.specs}}" bind:tap="choosespecs" data-index="{{index}}">
+      <view style="display: flex;align-items: center;">
+        <view style="max-width: 300rpx;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">{{item.specs_name}}</view>
+        <view style="margin-left: 20rpx;color: {{specsindex==index?'':'#999'}};">库存{{item.specs_stock}}</view>
+        <!-- <view style="margin-left: 20rpx;color: {{specsindex==index?'':'#999'}};">已售{{item.buy_num}}</view> -->
+      </view>
+      <!-- <view wx:if="{{is_erp && item.specs_iserp}}" style="margin-left: 20rpx;">¥ {{item.specs_erpmoney}}</view> -->
+      <view style="margin-left: 20rpx;">¥ {{userinfo.user_level == 2 ? item.specs_pfmoney : (userinfo.user_level == 1 ? item.specs_tgmoney : (userinfo.user_level == 3 ? item.specs_vipmoney : item.specs_erpmoney))}}</view>
+    </view>
+  </scroll-view>
+  <view style="width: 690rpx;display: flex;align-items: center;justify-content: space-between;margin: 30rpx;">
+    <view style="font-size: 30rpx;">数量</view>
+    <van-stepper value="{{specsnum}}" bind:change="onChangeshop" min="{{Detail.specs[specsindex].specs_batch}}" max="{{specsmaxnum}}" />
+  </view>
+  <view class="btmbtn" bind:tap="{{is_thisspecsadd ? 'commodityshow' : ''}}" style="background-color: {{is_thisspecsadd ? '' : '#ccc'}};">确定</view>
 </van-popup>

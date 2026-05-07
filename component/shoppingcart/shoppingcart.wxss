@@ -14,7 +14,7 @@
 }
 .shopping-cart-container {
     position: fixed;
-    bottom: 0;
+    bottom: calc(var(--tbH) - 14rpx);
     left: 0;
     width: 100%;
     display: flex;
@@ -84,7 +84,7 @@
     width: var(--size);
     height: var(--size);
     border-radius: calc(var(--size) / 2);
-    background-color: #156c34;
+    background-color: #003B73;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -132,7 +132,7 @@
     width: 220rpx;
     height: var(--h);
     border-radius: calc(var(--h) / 2);
-    background-color: #156c34;
+    background-color: #003B73;
     color: #fff;
     font-size: 30rpx;
     font-weight: bold;
@@ -153,7 +153,7 @@
 .chanumbox {
   width: 50rpx;
   height: 50rpx;
-  background-color: #156c34;
+  background-color: #003B73;
   color: white;
   text-align: center;
   /* font-weight: bolder; */

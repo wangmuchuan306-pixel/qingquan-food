@@ -7,7 +7,11 @@ Component({
         userinfo: {
             type: Object,
             value: {}
-        }
+        },
+        tabBarHeight: {
+            type: String,
+            value: ''
+        },
     },
 
     /**
@@ -80,7 +84,7 @@ Component({
                 var delcartsid = []
                 var cartlist = res.data
                 cartlist.forEach(v => {
-                    v.Selected = selectIdlist.filter(id => id == v.goods_id).length > 0
+                    v.Selected = selectIdlist.filter(id => id.g_id == v.goods_id && id.s_id == v.specs_id).length > 0
                     // if (!v.goodslist) {
                     //     delcartsid.push(v.id)
                     // }
@@ -91,13 +95,31 @@ Component({
                     all_Selected,
                     cartSelectNum: cartlist.filter(v => v.Selected).length
                 })
+                this.getspecs(cartlist, 0)
                 if (delcartsid.length > 0) {
                     this.setData({
                         delcartsid,
                     })
                     this.delnogoodcart(0)
                 }
+            })
+        },
+
+        getspecs(list, index) {
+            if (index >= list.length) {
                 this.setallmoney()
+                return
+            }
+            app.apiPost(app.apiList.getspecs, {
+                goods_id: list[index].goods_id
+            }, (res) => {
+                let cartlist = this.data.cartlist
+                let gIndex = cartlist.findIndex(v => v.goods_id == list[index].goods_id && v.specs_id == list[index].specs_id)
+                cartlist[gIndex].specs = res.data.filter(v => v.specs_id == cartlist[gIndex].specs_id)
+                this.setData({
+                    cartlist
+                })
+                this.getspecs(list, index + 1)
             })
         },
 
@@ -127,12 +149,12 @@ Component({
             var selectIdlist = this.data.selectIdlist || []
             cartlist[index].Selected = !cartlist[index].Selected
             if (cartlist[index].Selected) {
-                if (selectIdlist.filter(d => d == cartlist[index].goods_id).length == 0) {
-                    selectIdlist.push(cartlist[index].goods_id)
+                if (selectIdlist.filter(d => d.g_id == cartlist[index].goods_id && d.s_id == cartlist[index].specs_id).length == 0) {
+                    selectIdlist.push({g_id:cartlist[index].goods_id,s_id:cartlist[index].specs_id})
                 }
             } else {
-                if (selectIdlist.filter(d => d == cartlist[index].goods_id).length > 0) {
-                    selectIdlist = selectIdlist.filter(d => d != cartlist[index].goods_id)
+                if (selectIdlist.filter(d => d.g_id == cartlist[index].goods_id && d.s_id == cartlist[index].specs_id).length > 0) {
+                    selectIdlist = selectIdlist.filter(d => d.g_id != cartlist[index].goods_id || d.s_id != cartlist[index].specs_id)
                 }
             }
             var all_Selected = cartlist.every(item => item.Selected);
@@ -162,13 +184,13 @@ Component({
             cartlist.forEach(v => {
                 if (all_Selected) {
                     v.Selected = true
-                    if (selectIdlist.filter(d => d == v.goods_id).length == 0) {
-                        selectIdlist.push(v.goods_id)
+                    if (selectIdlist.filter(d => d.g_id == v.goods_id && d.s_id == v.specs_id).length == 0) {
+                        selectIdlist.push({g_id:v.goods_id,s_id:v.specs_id})
                     }
                 } else {
                     v.Selected = false
-                    if (selectIdlist.filter(d => d == v.goods_id).length > 0) {
-                        selectIdlist = selectIdlist.filter(d => d != v.goods_id)
+                    if (selectIdlist.filter(d => d.g_id == v.goods_id && d.s_id == v.specs_id).length > 0) {
+                        selectIdlist = selectIdlist.filter(d => d.g_id != v.goods_id || d.s_id != v.specs_id)
                     }
                 }
             })
@@ -191,7 +213,7 @@ Component({
             var userinfo = this.data.userinfo
             var all_price = 0
             cartlist.forEach(v => {
-                all_price += v.number * (userinfo.user_level == 2 ? v.line_price : (userinfo.user_level == 1 ? v.memberprice : v.normalprice))
+                all_price += v.number * (userinfo.user_level == 2 ? v.specs[0].specs_pfmoney : (userinfo.user_level == 1 ? v.specs[0].specs_tgmoney : (userinfo.user_level == 3 ? v.specs[0].specs_vipmoney : v.specs[0].specs_erpmoney)))
             })
             all_price = Number(all_price).toFixed(2)
             this.setData({
@@ -256,7 +278,11 @@ Component({
                     var goodslist = prevPage.data.goodslist
                     goodslist.forEach(v => {
                         if (v.goods_id == thisgoods.goods_id) {
-                            v.number = 0
+                            let specs_index = v.specs.findIndex(item => item.specs_id == thisgoods.specs_id)
+                            if (v.specs[specs_index].shoppingspecs) {
+                                v.specs[specs_index].shoppingspecs.number = 0
+                            }
+                            v.number = v.specs.reduce((sum, item) => sum + (Number(item.shoppingspecs?.number) || 0), 0)
                         }
                     })
                     list.splice(index, 1)
@@ -278,36 +304,55 @@ Component({
             }
             var thisgoods = list[index]
             var selectIdlist = this.data.selectIdlist || []
-            if (selectIdlist.filter(v => v == thisgoods.goods_id).length == 0) {
-                selectIdlist.push(thisgoods.goods_id)
+            if (selectIdlist.filter(v => v.g_id == thisgoods.goods_id && v.s_id == thisgoods.specs_id).length == 0) {
+                selectIdlist.push({g_id:thisgoods.goods_id,s_id:thisgoods.specs_id})
             }
             this.setData({
                 selectIdlist,
             })
-            if (thisgoods.number == 1) {
+            if (thisgoods.specs[0].shoppingspecs.number <= thisgoods.specs[0].specs_batch || thisgoods.specs[0].specs_stock == 0 || thisgoods.specs[0].specs_batch > thisgoods.specs[0].specs_stock || (thisgoods.xg_num > 0 && thisgoods.specs[0].specs_batch > thisgoods.xg_num)) {
                 that.delonecartgoods(type, index, list)
             } else {
+                let specsnum = 1
+                let specsmaxnum = thisgoods.specs[0].specs_stock
+                if (thisgoods.xg_num > 0) {
+                    if (thisgoods.specs[0].specs_stock <= thisgoods.xg_num) {
+                        specsmaxnum = thisgoods.specs[0].specs_stock - (thisgoods.specs[0].shoppingspecs?.number || 0)
+                    } else {
+                        specsmaxnum = thisgoods.xg_num - (thisgoods.specs[0].shoppingspecs?.number || 0)
+                    }
+                } else {
+                    specsmaxnum = thisgoods.specs[0].specs_stock - (thisgoods.specs[0].shoppingspecs?.number || 0)
+                }
+                if (thisgoods.specs[0].shoppingspecs.number > specsmaxnum) {
+                    specsnum = thisgoods.specs[0].shoppingspecs.number - specsmaxnum
+                }
                 app.apiPost(app.apiList.decshopping, {
                     goods_id: thisgoods.goods_id,
-                    number: 1,
+                    specs_id: type == 'list' ? thisgoods.specs[0].specs_id : thisgoods.specs_id,
+                    number: specsnum,
                     store_id: 1,
                     goodsa_id: thisgoods.goodsa_id || thisgoods.id,
                 }, (res) => {
                     if (res.status == 1) {
-                        list[index].number--
+                        list[index].number -= specsnum
                         if (type == 'list') {
                             that.setData({
                                 goodslist: list
                             })
                         } else {
-                            var goodslist = that.data.goodslist
+                            let pages = getCurrentPages()
+                            let page = pages[pages.length - 1]
+                            var goodslist = page.data.goodslist
                             goodslist.forEach(v => {
                                 if (v.goods_id == thisgoods.goods_id) {
-                                    v.number -= 1
+                                    v.number -= specsnum
                                 }
                             })
                             that.setData({
                                 cartlist: list,
+                            })
+                            page.setData({
                                 goodslist
                             })
                         }
@@ -348,29 +393,31 @@ Component({
             }
             var thisgoods = list[index]
             var selectIdlist = this.data.selectIdlist || []
-            if (selectIdlist.filter(v => v == thisgoods.goods_id).length == 0) {
-                selectIdlist.push(thisgoods.goods_id)
+            if (selectIdlist.filter(v => v.g_id == thisgoods.goods_id && v.s_id == thisgoods.specs_id).length == 0) {
+                selectIdlist.push({g_id:thisgoods.goods_id,s_id:thisgoods.specs_id})
             }
             this.setData({
                 selectIdlist,
             })
-            if (thisgoods.xg_num > 0 && thisgoods.havebuy + thisgoods.number >= thisgoods.xg_num) {
+            let thisspecs = thisgoods.specs[0]
+            let specsnum = 1
+            if (thisspecs.specs_stock - (thisspecs.shoppingspecs.number || 0) <= 0) {
                 wx.showToast({
-                    title: '商品已达限购',
+                    title: '已达库存上限',
                     icon: 'none'
                 })
                 return
-            }
-            if (thisgoods.number >= thisgoods.num) {
+            } else if (thisgoods.xg_num > 0 && thisgoods.xg_num - (thisspecs.shoppingspecs.number || 0) <= 0) {
                 wx.showToast({
-                    title: '商品已达最大库存',
+                    title: '已达限购上限',
                     icon: 'none'
                 })
                 return
             }
             app.apiPost(app.apiList.inshopping, {
                 goods_id: thisgoods.goods_id,
-                num: 1,
+                specs_id: type == 'list' ? thisgoods.specs[0].specs_id : thisgoods.specs_id,
+                num: specsnum,
                 store_id: 1,
                 goodsa_id: thisgoods.goodsa_id || thisgoods.id,
             }, (res) => {
@@ -379,20 +426,24 @@ Component({
                     icon: 'none'
                 })
                 if (res.status == 1) {
-                    list[index].number++
+                    list[index].number += specsnum
                     if (type == 'list') {
                         that.setData({
                             goodslist: list
                         })
                     } else {
-                        var goodslist = that.data.goodslist
+                        let pages = getCurrentPages()
+                        let page = pages[pages.length - 1]
+                        var goodslist = page.data.goodslist
                         goodslist.forEach(v => {
                             if (v.goods_id == thisgoods.goods_id) {
-                                v.number += 1
+                                v.number += specsnum
                             }
                         })
                         that.setData({
                             cartlist: list,
+                        })
+                        page.setData({
                             goodslist
                         })
                     }
@@ -415,30 +466,37 @@ Component({
             }
             var thisgoods = list[index]
             var selectIdlist = this.data.selectIdlist || []
-            if (selectIdlist.filter(v => v == thisgoods.goods_id).length == 0) {
-                selectIdlist.push(thisgoods.goods_id)
+            if (selectIdlist.filter(v => v.g_id == thisgoods.goods_id && v.s_id == thisgoods.specs_id).length == 0) {
+                selectIdlist.push({g_id:thisgoods.goods_id,s_id:thisgoods.specs_id})
             }
             this.setData({
                 selectIdlist,
             })
-            if (thisgoods.xg_num > 0 && thisgoods.havebuy + num >= thisgoods.xg_num) {
-                wx.showToast({
-                    title: '商品已达限购',
-                    icon: 'none'
-                })
-                num = thisgoods.xg_num - thisgoods.havebuy
+            if (num == thisspecs.shoppingspecs.number) {
+                return
             }
-            if (num >= thisgoods.num) {
-                wx.showToast({
-                    title: '商品已达最大库存',
-                    icon: 'none'
-                })
-                num = thisgoods.num
-            }
-            if (num > thisgoods.number) {
+            let thisspecs = thisgoods.specs[0]
+            if (num > thisspecs.shoppingspecs.number) {
+                if (thisspecs.specs_stock - (thisspecs.shoppingspecs.number || 0) <= 0) {
+                    wx.showToast({
+                        title: '已达最大库存',
+                        icon: 'none'
+                    })
+                    this.setData({
+                        goodslist: list
+                    })
+                    return
+                }
+                let specsnum = thisspecs.specs_batch
+                if (thisspecs.specs_stock - num <= 0) {
+                    specsnum = thisspecs.specs_stock - (thisspecs.shoppingspecs.number || 0)
+                } else {
+                    specsnum = num - (thisspecs.shoppingspecs.number || 0)
+                }
                 app.apiPost(app.apiList.inshopping, {
                     goods_id: thisgoods.goods_id,
-                    num: num - thisgoods.number,
+                    specs_id: type == 'list' ? thisgoods.specs[0].specs_id : thisgoods.specs_id,
+                    num: specsnum,
                     store_id: 1,
                     goodsa_id: thisgoods.goodsa_id || thisgoods.id,
                 }, (res) => {
@@ -453,7 +511,9 @@ Component({
                                 goodslist: list
                             })
                         } else {
-                            var goodslist = that.data.goodslist
+                            let pages = getCurrentPages()
+                            let page = pages[pages.length - 1]
+                            var goodslist = page.data.goodslist
                             goodslist.forEach(v => {
                                 if (v.goods_id == thisgoods.goods_id) {
                                     v.number = num
@@ -461,6 +521,8 @@ Component({
                             })
                             that.setData({
                                 cartlist: list,
+                            })
+                            page.setData({
                                 goodslist
                             })
                         }
@@ -470,11 +532,12 @@ Component({
                     }
                 })
             } else {
-                if (num == 0) {
+                if (num == 0 || num < thisspecs.specs_batch || thisspecs.specs_stock == 0 || thisspecs.specs_batch > thisspecs.specs_stock) {
                     that.delonecartgoods(type, index, list)
                 } else {
                     app.apiPost(app.apiList.decshopping, {
                         goods_id: thisgoods.goods_id,
+                        specs_id: type == 'list' ? thisgoods.specs[0].specs_id : thisgoods.specs_id,
                         number: thisgoods.number - num,
                         store_id: 1,
                         goodsa_id: thisgoods.goodsa_id || thisgoods.id,
@@ -486,7 +549,9 @@ Component({
                                     goodslist: list
                                 })
                             } else {
-                                var goodslist = that.data.goodslist
+                                let pages = getCurrentPages()
+                                let page = pages[pages.length - 1]
+                                var goodslist = page.data.goodslist
                                 goodslist.forEach(v => {
                                     if (v.goods_id == thisgoods.goods_id) {
                                         v.number = num
@@ -494,6 +559,8 @@ Component({
                                 })
                                 that.setData({
                                     cartlist: list,
+                                })
+                                page.setData({
                                     goodslist
                                 })
                             }
@@ -533,7 +600,7 @@ Component({
                     title: '请先登录',
                     icon: 'none'
                 })
-                
+
                 setTimeout(() => {
                     wx.navigateTo({
                         url: '/pages/login/login',
@@ -552,6 +619,16 @@ Component({
                 return
             }
             var cartlist = this.data.cartlist.filter(v => v.Selected)
+            cartlist.forEach(v => {
+                v.specs_pfmoney = v.specs[0].specs_pfmoney
+                v.specs_tgmoney = v.specs[0].specs_tgmoney
+                v.specs_erpmoney = v.specs[0].specs_erpmoney
+                v.specs_vipmoney = v.specs[0].specs_vipmoney
+                v.specs_stock = v.specs[0].specs_stock
+                v.specs_batch = v.specs[0].specs_batch
+                v.specs_name = v.specs[0].specs_name
+                v.specs_img = v.specs[0].specs_img ? 'https://qiniu.0315678.cn/' + v.specs[0].specs_img : v.goods_img
+            })
             var ordertype = '/pages/lotaddorder2/lotaddorder2?ordertype=2&zttype=' + 2
             wx.setStorageSync('cartlist_pay', cartlist)
             this.setData({

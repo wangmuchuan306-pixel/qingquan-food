@@ -1,5 +1,6 @@
 // pages/mypage/mypage.js
 const app = getApp()
+const tab_bar = require('../../custom-tab-bar/utils/tab-bar.js')
 import {
   base64src
 } from '../../utils/base64src.js'
@@ -15,22 +16,33 @@ Page({
       height: '1920rpx',
       views: [{
         type: 'image',
+        url: '/images/logo.png',
+        css: {
+          width: '350rpx',
+          height: '350rpx',
+          top: '475rpx',
+          left: '365rpx',
+          background: '#fff'
+        }
+      }, {
+        type: 'image',
         url: '',
         css: {
-          width: '600rpx',
-          height: '600rpx',
-          bottom: '200rpx',
-          left: '240rpx'
+          width: '370rpx',
+          height: '370rpx',
+          bottom: '630rpx',
+          left: '355rpx',
+          background: '#fff'
         }
       }]
     }
   },
-    // 跳转视频号
-  gotovedio(){
-    wx.openChannelsUserProfile({
-      finderUserName: 'sphNf8HuJnJox76'
-    })
-  },
+  // 跳转视频号
+  gotovedio() {
+    wx.openChannelsUserProfile({
+      finderUserName: 'sphNf8HuJnJox76'
+    })
+  },
   //跳转代理商工作台
   tohhr() {
     wx.navigateTo({
@@ -73,7 +85,7 @@ Page({
         base64src(data.base64img.base64, res => {
           console.log(res) // 返回图片地址，直接赋值到image标签即可
           var hbinfo = that.data.hbinfo
-          hbinfo.views[0].url = res
+          hbinfo.views[1].url = res
           that.setData({
             hbinfo
           })
@@ -110,6 +122,7 @@ Page({
       this.setData({
         show: true
       })
+      tab_bar.changeTabBar(0)
     } else {
       wx.navigateTo({
         url: '/pages/login/login',
@@ -120,6 +133,7 @@ Page({
     this.setData({
       show: false
     })
+    tab_bar.changeTabBar(1)
   },
   callphone() {
     wx.makePhoneCall({
@@ -209,12 +223,12 @@ Page({
       this.drawErcode()
     })
   },
-  gotojianjie(){
+  gotojianjie() {
     wx.navigateTo({
-      url: '/pages/jianjie/jianjie?id=4',
+      url: '/pages/jianjie/jianjie?id=17',
     })
   },
-  gotojianjie6(){
+  gotojianjie6() {
     wx.navigateTo({
       url: '/pages/jianjie/jianjie?id=6',
     })
@@ -237,6 +251,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow() {
+    tab_bar.getTab(3)
     this.userCenter()
   },
 
@@ -275,7 +290,7 @@ Page({
     return {
       path: '/pages/index/index?ruid=' + wx.getStorageSync('uid'),
       imageUrl: '/images/logo.jpg',
-      title: '清泉食品'
+      title: '冀唐清泉'
     }
   }
 })

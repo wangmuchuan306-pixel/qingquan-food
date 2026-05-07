@@ -15,7 +15,7 @@ page{
 }
 .item2{
 font-size: 66rpx;
-color: #015637;
+color: #003B73;
 font-weight: bold;
 margin-top: 10rpx;
 display: flex;
@@ -23,7 +23,7 @@ justify-content: space-between;
 }
 .item3{
   font-size: 24rpx;
-  color: #015637;
+  color: #003B73;
   width: 100%;
   display: flex;
   align-items: center;
@@ -97,7 +97,7 @@ justify-content: space-between;
 }
 .money{
   font-size: 32rpx;
-  color: #015637;
+  color: #003B73;
   font-weight: bold;
   cursor: default;
 }

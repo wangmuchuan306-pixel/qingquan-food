@@ -7,7 +7,7 @@ page {
 .gbox {
   width: 180rpx;
   height: 80rpx;
-  background-color: #005832;
+  background-color: #003B73;
   border-radius: 20rpx;
   text-align: center;
   line-height: 80rpx;
@@ -59,7 +59,7 @@ page {
 }
 
 .contentList>image {
-  width: 18rpx;
+  width: 14rpx;
   height: 24rpx;
 }
 

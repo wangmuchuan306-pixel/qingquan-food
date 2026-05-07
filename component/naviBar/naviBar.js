@@ -11,7 +11,7 @@ Component({
         },
         title: {
             type: String,
-            value: '清泉食品'
+            value: '冀唐清泉'
         },
         position: {
             type: String,

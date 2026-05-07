@@ -25,7 +25,7 @@
           <view class="hbox" style="height: 120rpx;height: 40rpx;font-size: 24rpx;line-height: 40rpx;">{{item.xg_num==0?'不限购':'限购 '+item.xg_num}}</view>
         </view>
         <view style="display: flex;align-items: center;justify-content: space-between;">
-          <view style="font-size: 32rpx;font-weight: bold;color: #005832;width: 300rpx;margin: 0 auto;;">
+          <view style="font-size: 32rpx;font-weight: bold;color: #003B73;width: 300rpx;margin: 0 auto;;">
             <text>￥{{userinfo.level==1?item.normalprice:item.memberprice}}</text>
           </view>
 
@@ -42,10 +42,10 @@
         <view class="txt1" style="font-size: 34rpx;width: 100%;margin-bottom: 20rpx;">{{item.goods_name}}</view>
         <view class="flex2">
           <view style="flex: 1;min-width: 0;">
-            <view style="font-size: 42rpx;color: #005832;font-weight: bold;">￥{{userinfo.level==1?item.normalprice:item.memberprice}}</view>
+            <view style="font-size: 42rpx;color: #003B73;font-weight: bold;">￥{{userinfo.level==1?item.normalprice:item.memberprice}}</view>
             <view style="font-size: 26rpx;color: #999;margin-top: 10rpx;">市场价 ￥{{item.line_price}} / 已售 {{item.volume+1000}}</view>
           </view>
-          <view style="width: 180rpx;height: 80rpx;border-radius: 20rpx;background-color: #005832;color: #fff;line-height: 80rpx;text-align: center;font-size: 30rpx;">立即购买</view>
+          <view style="width: 180rpx;height: 80rpx;border-radius: 20rpx;background-color: #003B73;color: #fff;line-height: 80rpx;text-align: center;font-size: 30rpx;">立即购买</view>
         </view>
       </view>
     </view>

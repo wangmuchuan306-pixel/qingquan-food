@@ -9,8 +9,7 @@
     "goodslist": "/component/goodslist/goodslist"
   },
   "backgroundColorBottom": "#f8f8f8",
-  "backgroundColorTop": "#015637",
+  "backgroundColorTop": "#f8f8f8",
   "navigationBarTextStyle":"white",
-  "navigationBarBackgroundColor": "#005832",
-  "navigationStyle": "custom"
+  "navigationBarBackgroundColor": "#003B73"
 }

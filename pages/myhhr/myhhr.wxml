@@ -1,5 +1,5 @@
 <!--pages/myztdian/myztdian.wxml-->
-<view style="width: 100%;height: 400rpx;position: absolute;z-index: -1;top: 0;background-color: #015637;"></view>
+<view style="width: 100%;height: 400rpx;position: absolute;z-index: -1;top: 0;background-color: #003B73;"></view>
 <view style="width: 690rpx;padding: 30rpx;display: flex;align-items: center;justify-content: space-between;">
   <view style="font-size: 26rpx;font-weight: bold;color: white;">累计佣金</view>
   <image src="/images/Refresh.png" style="width: 30rpx;height: 30rpx;" bind:tap="Refresh" />

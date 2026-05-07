@@ -53,13 +53,13 @@
       <image class="goodsImage" src="{{item.goods_img}}" mode="aspectFill" />
       <view class="goodsDetails">
         <view class="goodsH1">{{item.goods_name}}</view>
-        <view class="goodsH2">市场价 ￥{{item.line_price}} / 已拼 {{item.volume}}</view>
+        <view class="goodsH2">库存 {{item.all_goodsstock}} / 销量 {{item.volume + 1000}}</view>
         <view class="flex2 goodsLabel">
           <view class="goodsLabel1 txt1">{{item.zttype == 1 ? '仅自提' : item.zttype == 2 ? '仅配送' : '配送/自提'}}</view>
           <view class="goodsLabel1 txt1">{{item.xg_num==0 ? '不限购' : '限购 '+ item.xg_num}}</view>
         </view>
         <view class="goodsH3 flex3">
-          <text>￥ {{userinfo && userinfo.level>0 ? item.memberprice : item.normalprice}}</text>
+          <text>￥ {{userinfo.user_level == 2 ? item.specs_ptmoney : (userinfo.user_level == 1 ? item.specs_tgmoney : item.specs_erpmoney)}}<text wx:if="{{item.specs.length > 1}}" style="color: #999;font-size: 22rpx;"> 起</text></text>
           <!-- 加号/减号 -->
           <!-- <view class="SurvivalOrDeath flex2">
               <image wx:if="" src="/images/minusSign.png" mode=""/>

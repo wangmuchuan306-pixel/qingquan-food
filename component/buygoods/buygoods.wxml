@@ -8,14 +8,14 @@
     <view style="z-index: 1;width: 50%;line-height: 100rpx;text-align: center;font-size: 30rpx;color: #999999;" bind:tap="nottap" data-type="2" wx:else>同城配送</view>
     <view style="z-index: 1;width: 50%;line-height: 100rpx;text-align: center;font-size: 30rpx;{{chooseStyle==1?'color:white;font-weight: bold;':''}}" bind:tap="chooseStyle" data-id="1" wx:if="{{zttype!=2}}">线下自提</view>
     <view style="z-index: 1;width: 50%;line-height: 100rpx;text-align: center;font-size: 30rpx;color: #999999;" bind:tap="nottap" data-type="1" wx:else>线下自提</view>
-    <view style="width: 334rpx;height: 94rpx;margin: 5rpx;position: absolute;background-color: #015637;border-radius: 20rpx;z-index: 0;transform: translate({{xdistance}}rpx);transition:transform 0.5s"></view>
+    <view style="width: 334rpx;height: 94rpx;margin: 5rpx;position: absolute;background-color: #003B73;border-radius: 20rpx;z-index: 0;transform: translate({{xdistance}}rpx);transition:transform 0.5s"></view>
   </view>
   <view style="width: 690rpx;background-color: white;margin: 30rpx 0;border-radius: 20rpx;padding-top: 30rpx;" wx:if="{{chooseStyle==2}}">
     <view style="padding-bottom: 30rpx;border-bottom: 2rpx solid #eee;width: 630rpx;margin: 0 auto;" bind:tap="take">
       <view style="width: 630rpx;display: flex;align-items: center;justify-content: space-between;">
         <view style="font-size: 30rpx;">送货地址</view>
         <view style="display: flex;align-items: center;">
-          <view wx:if="{{shouAddress}}" style="font-size: 30rpx;color: #015637;margin-right: 10rpx;">{{shouAddress.username}} {{shouAddress.phone}}</view>
+          <view wx:if="{{shouAddress}}" style="font-size: 30rpx;color: #003B73;margin-right: 10rpx;">{{shouAddress.username}} {{shouAddress.phone}}</view>
           <image src="/images/blackjiantou.png" mode="" class="yjt"></image>
         </view>
       </view>
@@ -38,8 +38,8 @@
       <view style="width: 630rpx;display: flex;align-items: center;justify-content: space-between;">
         <view style="font-size: 30rpx;">自提地址</view>
         <view style="display: flex;align-items: center;">
-          <view wx:if="{{ztdian}}" style="font-size: 30rpx;color: #015637;margin-right: 10rpx;">{{ztdian.zt_name}}</view>
-          <view wx:else style="font-size: 30rpx;color: #015637;margin-right: 10rpx;">请选择自提门店地址</view>
+          <view wx:if="{{ztdian}}" style="font-size: 30rpx;color: #003B73;margin-right: 10rpx;">{{ztdian.zt_name}}</view>
+          <view wx:else style="font-size: 30rpx;color: #003B73;margin-right: 10rpx;">请选择自提门店地址</view>
           <image src="/images/blackjiantou.png" mode="" class="yjt"></image>
         </view>
       </view>

@@ -9,7 +9,7 @@ page{
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #015637;
+  background-color: #003B73;
   color: white;
   margin-right: 30rpx;
 }
@@ -21,15 +21,15 @@ page{
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  border: 2rpx solid #015637;
-  color: #015637;
+  border: 2rpx solid #003B73;
+  color: #003B73;
   margin-right: 30rpx;
 }
 .gbtn{
   width: 450rpx;
   height: 90rpx;
   margin: 50rpx auto;
-  background-color: #015637;
+  background-color: #003B73;
   border-radius: 45rpx;
   text-align: center;
   line-height: 90rpx;
@@ -50,7 +50,7 @@ page{
   height: 100rpx;
   border-radius: 20rpx;
   margin: 30rpx;
-  background-color: #015637;
+  background-color: #003B73;
   font-size: 30rpx;
   font-weight: bold;
   text-align: center;
@@ -61,7 +61,7 @@ page{
   width: 190rpx;
   height: 60rpx;
   border-radius: 30rpx;
-  background-color: #015637;
+  background-color: #003B73;
   color: white;
   font-size: 26rpx;
   text-align: center;

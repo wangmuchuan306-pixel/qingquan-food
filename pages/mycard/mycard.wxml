@@ -1,9 +1,9 @@
 <view>
 <view style="width: 100%;height: 100rpx;display: flex;align-items: center;position: fixed;top: 0;background-color: white;z-index: 999;justify-content: space-around;">
-  <view class="titlebox" style="{{type == 1?'color: #015637;font-weight: bold;border-bottom: 6rpx solid #015637;':''}}" bind:tap="changetype" data-type="1">全部 {{yznum+dsnum+ysnum+nousenum}}</view>
-  <view class="titlebox" style="{{type == 2?'color: #015637;font-weight: bold;border-bottom: 6rpx solid #015637;':''}}" bind:tap="changetype" data-type="2">待使用 {{dsnum}}</view>
-  <view class="titlebox" style="{{type == 3?'color: #015637;font-weight: bold;border-bottom: 6rpx solid #015637;':''}}" bind:tap="changetype" data-type="3">已使用 {{ysnum}}</view>
-  <view class="titlebox" style="{{type == 4?'color: #015637;font-weight: bold;border-bottom: 6rpx solid #015637;':''}}" bind:tap="changetype" data-type="4">已转赠 {{yznum}}</view>
+  <view class="titlebox" style="{{type == 1?'color: #003B73;font-weight: bold;border-bottom: 6rpx solid #003B73;':''}}" bind:tap="changetype" data-type="1">全部 {{yznum+dsnum+ysnum+nousenum}}</view>
+  <view class="titlebox" style="{{type == 2?'color: #003B73;font-weight: bold;border-bottom: 6rpx solid #003B73;':''}}" bind:tap="changetype" data-type="2">待使用 {{dsnum}}</view>
+  <view class="titlebox" style="{{type == 3?'color: #003B73;font-weight: bold;border-bottom: 6rpx solid #003B73;':''}}" bind:tap="changetype" data-type="3">已使用 {{ysnum}}</view>
+  <view class="titlebox" style="{{type == 4?'color: #003B73;font-weight: bold;border-bottom: 6rpx solid #003B73;':''}}" bind:tap="changetype" data-type="4">已转赠 {{yznum}}</view>
 </view>
   <view style="height: 130rpx;background-color: #f8f8f8;"></view>
   <coupons couponsList="{{couponsList}}" usedCouponsList="{{usedCouponsList}}" permissions="{{permissions}}" type="{{type}}">

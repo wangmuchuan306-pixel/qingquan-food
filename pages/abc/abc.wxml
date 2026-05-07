@@ -1,24 +1,24 @@
 <!--pages/abc/abc.wxml-->
-<view style="height: {{height-490*pr}}px;width: 100%;background: linear-gradient(#005832, #fff);">
+<view style="height: {{height-490*pr}}px;width: 100%;background: linear-gradient(#003B73, #fff);">
   <view style="height: 50rpx;"></view>
   <view style="width: 160rpx;height: 160rpx;background-color: white;border-radius: 100%;margin:0 auto;display: flex;align-items: center;justify-content: center;">
     <image src="/images/logo.jpg" style="width: 148rpx;height: 128rpx;border-radius: 100%;" mode="" />
   </view>
-  <view style="margin:30rpx auto;text-align: center;font-size: 42rpx;font-weight: bold;color: white;">向清泉食品付款</view>
+  <view style="margin:30rpx auto;text-align: center;font-size: 42rpx;font-weight: bold;color: white;">向冀唐清泉付款</view>
   <view style="width: 670rpx;margin: 30rpx auto;background-color: white;border-radius: 20rpx;padding-bottom: 30rpx;">
     <view style="padding: 30rpx;font-weight: bold;font-size: 30rpx;">付款金额</view>
     <view style="display: flex;align-items: center;margin: 30rpx;margin-top: 0;border-bottom: 1rpx solid #eee;padding-bottom: 30rpx;">
       <view style="font-size: 80rpx;margin-right: 10rpx;font-weight: bold;">￥</view>
       <view style="height: 64rpx;display: flex;align-items: center;" catchtap="getStrPosition">
-        <view style="font-size:68rpx;color: #005832;font-weight: bold;" wx:if="{{money}}">{{money}}</view>
+        <view style="font-size:68rpx;color: #003B73;font-weight: bold;" wx:if="{{money}}">{{money}}</view>
         <view class="line" wx:if="{{focus}}"></view>
         <view style="font-size:60rpx;color: #ccc;" wx:if="{{!money}}">请输入付款金额</view>
       </view>
     </view>
-    <view class="btn" style="background-color: {{money?'#005832':'#ccc'}};" bind:tap="{{money?'topay':''}}">确定付款</view>
+    <view class="btn" style="background-color: {{money?'#003B73':'#ccc'}};" bind:tap="{{money?'topay':''}}">确定付款</view>
   </view>
   <view style="margin: 50rpx auto;text-align: center;">
-    <view style="font-size: 30rpx;font-weight: bold;color: #015637;">{{ztdian.zt_name}}</view>
+    <view style="font-size: 30rpx;font-weight: bold;color: #003B73;">{{ztdian.zt_name}}</view>
     <view style="font-size: 24rpx;color: #ccc;margin-top: 20rpx;" bind:tap="callphone">唐山共享科技有限公司提供技术支持</view>
   </view>
 </view>
