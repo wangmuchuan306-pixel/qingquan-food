@@ -80,7 +80,9 @@ App({
     getgoodscat: url + '/ApiGoods/getgoodscat', //获取商品分类
     zitijiehuo: url + '/ApiOrder/zitijiehuo', //自提点确认接货
     zitiReceiving: url + '/ApiOrder/zitiReceiving', //自提点确认接货
-    cancelOrderfy: url + '/ApiOrder/cancelOrderfy', //退款
+    // cancelOrderfy: url + '/ApiOrder/cancelOrderfy', //退款
+    cancelOrderfy: url + '/ApiOrderswxpay/c_orderRound', //退款
+    
 
     mydlsxx: url + '/ApiUser/mydlsxx', //我的代理商信息
     mydlssp: url + '/ApiUser/mydlssp', //查询代理商商品

@@ -99,7 +99,7 @@
               / 库存 {{item.all_goodsstock}}
             </view>
             <view style="width: 100%;display: flex;align-items: center;justify-content: space-between;">
-              <view style="font-size: 30rpx;color: #003B73;font-weight: bold;">¥ {{userinfo.user_level == 2 ? item.specs_pfmoney : (userinfo.user_level == 1 ? item.specs_tgmoney : item.specs_erpmoney)}}<text wx:if="{{item.specs.length > 1}}" style="color: #999;font-size: 22rpx;"> 起</text></view>
+              <view style="font-size: 30rpx;color: #003B73;font-weight: bold;">¥ {{userinfo.user_level == 2 ? item.specs_pfmoney : (userinfo.user_level == 1 ? item.specs_tgmoney : (userinfo.user_level == 3 ? item.specs_vipmoney : item.specs_erpmoney))}}<text wx:if="{{item.specs.length > 1}}" style="color: #999;font-size: 22rpx;"> 起</text></view>
               <view wx:if="{{item.specs.length == 1}}" style="display: flex;align-items: center;">
                 <block wx:if="{{item.number>0}}">
                   <view class="chanumbox" catch:tap="reducenum" data-type="list" data-index="{{index}}">-</view>
