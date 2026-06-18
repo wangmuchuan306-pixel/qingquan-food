@@ -167,10 +167,14 @@ Page({
       app.apiPost(app.apiList.integral_list, {
          page: that.data.page
       }, (res) => {
+         // 如果返回未授权，不做处理
+         if (res.status === 10011) {
+           return;
+         }
          that.setData({
             integral: res.data.integral
          })
-      })
+      }, { requireAuth: false })
    },
    nottap(e) {
       wx.showToast({
@@ -726,6 +730,10 @@ Page({
          limit: 10,
          store_id: 1
       }, (res) => {
+         // 如果返回未授权，不做处理
+         if (res.status === 10011) {
+           return;
+         }
          if (this.data.cartpage == 1) {
             var cartlist = res.data
          } else {
@@ -734,7 +742,7 @@ Page({
          this.setData({
             cartlist
          })
-      })
+      }, { requireAuth: false })
    },
    //购物车单选
    checkcart(e) {
@@ -803,6 +811,10 @@ Page({
    //查询收货地址
    findAddress() {
       app.apiPost(app.apiList.findAddress, {}, (res) => {
+         // 如果返回未授权，不做处理
+         if (res.status === 10011) {
+           return;
+         }
          if (res.data.find(item => item.default == 1)) {
             var shouAddress = res.data.find(item => item.default == 1)
          } else {
@@ -812,10 +824,14 @@ Page({
             addresslist: res.data,
             shouAddress
          })
-      })
+      }, { requireAuth: false })
    },
    userCenter() {
       app.apiPost(app.apiList.userCenter, {}, (res) => {
+         // 如果返回未授权，不做处理
+         if (res.status === 10011) {
+           return;
+         }
          if (res.status == 1) {
             this.setData({
                userinfo: res.data
@@ -825,18 +841,8 @@ Page({
                   userphone: res.data.phone
                })
             }
-         } else {
-            wx.showToast({
-               title: '请先登录',
-               icon: 'none',
-               success() {
-                  wx.navigateTo({
-                     url: '/pages/login/login',
-                  })
-               }
-            })
          }
-      })
+      }, { requireAuth: false })
    },
    //scroll滚动
    scrolltolower() {
@@ -875,6 +881,11 @@ Page({
          }
       }
       app.apiPost(app.apiList.goodsPage, data, (res) => {
+         // 如果返回未授权，不做处理
+         if (res.status === 10011) {
+           wx.hideLoading();
+           return;
+         }
          res.data.forEach(v => {
             v['number'] = v.inshopping
          })
@@ -890,11 +901,15 @@ Page({
             this.getspecs(res.data, 0)
          }
          wx.hideLoading()
-      })
+      }, { requireAuth: false })
    },
    //分类列表
    getgoodscat() {
       app.apiPost(app.apiList.getgoodscat, {}, (res) => {
+         // 如果返回未授权，不做处理
+         if (res.status === 10011) {
+           return;
+         }
          res.data = res.data.filter(item => item.cate_name != '年卡')
          res.data.forEach(v => {
             v.list.unshift({
@@ -920,7 +935,7 @@ Page({
             catelist: res.data,
          })
          this.goodsPage()
-      })
+      }, { requireAuth: false })
    },
    ssjs() {
       var that = this
@@ -942,6 +957,10 @@ Page({
          latitude: this.data.latitude,
          longitude: this.data.longitude
       }, (res) => {
+         // 如果返回未授权，不做处理
+         if (res.status === 10011) {
+           return;
+         }
          //  this.setData({
          //     ztdian: res.data[0]
          //  })
@@ -949,20 +968,26 @@ Page({
          //     key: 'ztdian',
          //     data: res.data[0],
          //  });
-         res.data[0].distance = (res.data[0].distance / 1000).toFixed(2)
-         this.setData({
-            ztdian2: res.data[0]
-         })
-      })
+         if (res.data && res.data[0]) {
+            res.data[0].distance = (res.data[0].distance / 1000).toFixed(2)
+            this.setData({
+               ztdian2: res.data[0]
+            })
+         }
+      }, { requireAuth: false })
    },
    cartcount() {
       app.apiPost(app.apiList.cartcount, {
          store_id: 1
       }, (res) => {
+         // 如果返回未授权，不做处理
+         if (res.status === 10011) {
+           return;
+         }
          this.setData({
             gwcNumber: res.data
          })
-      })
+      }, { requireAuth: false })
    },
    //获取自提点
    getztdian() {
@@ -975,10 +1000,16 @@ Page({
                page: 1,
                limit: 1
             }, (data) => {
-               that.setData({
-                  ztdian: data.data[0]
-               })
-            })
+               // 如果返回未授权，不做处理
+               if (data.status === 10011) {
+                 return;
+               }
+               if (data.data && data.data[0]) {
+                  that.setData({
+                     ztdian: data.data[0]
+                  })
+               }
+            }, { requireAuth: false })
          }
       })
    },
@@ -1054,7 +1085,7 @@ Page({
             send_tip: res.twoData
          })
          this.findsendtime()
-      })
+      }, { requireAuth: false })
    },
    findsendtime() {
       var that = this
@@ -1117,7 +1148,7 @@ Page({
          this.setData({
             timelist
          })
-      })
+      }, { requireAuth: false })
    },
    //关闭立即订购商品列表
    commodityclo() {

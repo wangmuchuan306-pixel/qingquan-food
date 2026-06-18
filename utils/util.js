@@ -1,3 +1,8 @@
+/**
+ * 格式化时间为 YYYY/MM/DD HH:mm:ss 格式
+ * @param {Date} date - 日期对象
+ * @returns {string}
+ */
 const formatTime = date => {
    const year = date.getFullYear()
    const month = date.getMonth() + 1
@@ -7,6 +12,29 @@ const formatTime = date => {
    const second = date.getSeconds()
 
    return `${[year, month, day].map(formatNumber).join('/')} ${[hour, minute, second].map(formatNumber).join(':')}`
+}
+
+/**
+ * 格式化日期为 YYYY-MM-DD 格式
+ * @param {Date} date - 日期对象
+ * @returns {string}
+ */
+const formatDate = date => {
+   const year = date.getFullYear()
+   const month = String(date.getMonth() + 1).padStart(2, '0')
+   const day = String(date.getDate()).padStart(2, '0')
+   return `${year}-${month}-${day}`
+}
+
+/**
+ * 格式化时间为 HH:mm 格式
+ * @param {Date} date - 日期对象
+ * @returns {string}
+ */
+const formatHourMinute = date => {
+   const hour = String(date.getHours()).padStart(2, '0')
+   const minute = String(date.getMinutes()).padStart(2, '0')
+   return `${hour}:${minute}`
 }
 // 富文本换行
 function richText(htmlString) {
@@ -190,8 +218,99 @@ function checkTimeRange(startTime, endTime) {
 }
 
 
+/**
+ * 防抖函数
+ * @param {function} func - 需要防抖的函数
+ * @param {number} wait - 等待时间（毫秒）
+ * @returns {function}
+ */
+const debounce = (func, wait = 300) => {
+   let timeout = null;
+   return function (...args) {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func.apply(this, args), wait);
+   };
+};
+
+/**
+ * 节流函数
+ * @param {function} func - 需要节流的函数
+ * @param {number} limit - 限制时间（毫秒）
+ * @returns {function}
+ */
+const throttle = (func, limit = 300) => {
+   let inThrottle = false;
+   return function (...args) {
+      if (!inThrottle) {
+         func.apply(this, args);
+         inThrottle = true;
+         setTimeout(() => (inThrottle = false), limit);
+      }
+   };
+};
+
+/**
+ * 深拷贝对象
+ * @param {any} obj - 需要拷贝的对象
+ * @returns {any}
+ */
+const deepClone = obj => {
+   if (obj === null || typeof obj !== 'object') return obj;
+   if (obj instanceof Date) return new Date(obj.getTime());
+   if (obj instanceof Array) return obj.map(item => deepClone(item));
+   if (typeof obj === 'object') {
+      const clonedObj = {};
+      for (const key in obj) {
+         if (obj.hasOwnProperty(key)) {
+            clonedObj[key] = deepClone(obj[key]);
+         }
+      }
+      return clonedObj;
+   }
+};
+
+/**
+ * 金额格式化（分转元）
+ * @param {number} amount - 金额（分）
+ * @returns {string}
+ */
+const formatMoney = amount => {
+   return (Number(amount) / 100).toFixed(2);
+};
+
+/**
+ * 手机号脱敏处理
+ * @param {string} phone - 手机号
+ * @returns {string}
+ */
+const maskPhone = phone => {
+   if (!phone || phone.length !== 11) return phone;
+   return phone.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2');
+};
+
+/**
+ * 数组去重
+ * @param {array} arr - 需要去重的数组
+ * @param {string} key - 对象数组的去重键（可选）
+ * @returns {array}
+ */
+const uniqueArray = (arr, key) => {
+   if (!key) {
+      return [...new Set(arr)];
+   }
+   const seen = new Set();
+   return arr.filter(item => {
+      const value = item[key];
+      if (seen.has(value)) return false;
+      seen.add(value);
+      return true;
+   });
+};
+
 module.exports = {
    formatTime,
+   formatDate,
+   formatHourMinute,
    isLogin: isLogin,
    getDateDiff: countDate,
    getDistance,
@@ -200,4 +319,10 @@ module.exports = {
    timeStamp,
    timeStamp123,
    checkTimeRange,
+   debounce,
+   throttle,
+   deepClone,
+   formatMoney,
+   maskPhone,
+   uniqueArray,
 }

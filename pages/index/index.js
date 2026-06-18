@@ -18,6 +18,8 @@ Page({
       viplist: [],
       goods_vip: 1,
       xdistance: 0,
+      loading: true,
+      requestCount: 0,
       hbinfo: {
          background: 'https://qqspapi.0315678.cn/summer/hbackground.jpg',
          width: '1080rpx',
@@ -50,14 +52,34 @@ Page({
       showQrcodePopup: false,
       cate_pid: 0
    },
+   //请求开始
+   requestStart() {
+      this.setData({
+         requestCount: this.data.requestCount + 1
+      })
+   },
+   //请求完成
+   requestComplete() {
+      this.setData({
+         requestCount: this.data.requestCount - 1
+      })
+      if (this.data.requestCount <= 0) {
+         this.setData({
+            loading: false
+         })
+         wx.hideLoading()
+      }
+   },
    //活动商品
    getactivitylist2() {
+      this.requestStart()
       let data = {
          page: 1,
          limit: 5,
          active_type: 0,
       }
       app.apiPost(app.apiList.getactivitylist, data, (res) => {
+         this.requestComplete()
          if (res.status == 1) {
             var activitylist = res.data
             if (activitylist.length > 0) {
@@ -77,7 +99,7 @@ Page({
                icon: 'none'
             })
          }
-      })
+      }, { requireAuth: false, showLoading: false })
    },
    goranking(e) {
       let type = e.currentTarget.dataset.type
@@ -87,7 +109,9 @@ Page({
    },
    //分类列表
    getgoodscat() {
+      this.requestStart()
       app.apiPost(app.apiList.getgoodscat, {}, (res) => {
+         this.requestComplete()
          res.data = res.data.filter(item => item.cate_name != '年卡')
          // res.data.forEach(v => {
          //    v.list.unshift({
@@ -108,7 +132,7 @@ Page({
             catelist: res.data
          })
          // this.goodsPage()
-      })
+      }, { requireAuth: false, showLoading: false })
    },
    choosecate(e) {
       let id = e.currentTarget.dataset.id
@@ -293,17 +317,22 @@ Page({
          })
       }
    },
-   // 获取积分
-   walletsList() {
-      var that = this;
-      app.apiPost(app.apiList.integral_list, {
-         page: that.data.page
-      }, (res) => {
-         that.setData({
-            integral: res.data.integral
-         })
-      })
-   },
+   /**
+   * 获取积分
+   */
+  walletsList() {
+    app.apiPost(app.apiList.integral_list, {
+      page: this.data.page
+    }, (res) => {
+      // 如果返回未授权，不做处理
+      if (res.status === 10011) {
+        return;
+      }
+      this.setData({
+        integral: res.data.integral
+      });
+    }, { requireAuth: false });
+  },
    toreceive() {
       wx.navigateTo({
          url: '/pages/receivequan/receivequan',
@@ -326,43 +355,62 @@ Page({
          }
       })
    },
-   //抢购
-   tobuy(e) {
-      var that = this
-      var userinfo = that.data.userinfo
-      if (!userinfo) {
+   /**
+    * 检查用户是否已登录
+    * @returns {boolean}
+    */
+   checkLogin() {
+      if (!this.data.userinfo) {
          wx.showToast({
             title: '请先登录',
             icon: 'none',
-            success() {
+            success: () => {
                setTimeout(() => {
-                  wx.navigateTo({
-                     url: '/pages/login/login',
-                  })
-               })
+                  wx.navigateTo({ url: '/pages/login/login' });
+               }, 1000);
             }
-         })
-         return
+         });
+         return false;
       }
-      if (userinfo.headimg == 'https://thirdwx.qlogo.cn/mmopen/vi_32/POgEwh4mIHO4nibH0KlMECNjjGxQUq24ZEaGT4poC6icRiccVGKSyXwibcPq4BWmiaIGuG1icwxaQX6grC9VemZoJ8rg/132' || userinfo.nickname == '微信用户' || !userinfo.phone) {
+      return true;
+   },
+
+   /**
+    * 检查用户信息是否完善
+    * @returns {boolean}
+    */
+   checkUserProfile() {
+      const userinfo = this.data.userinfo;
+      if (!userinfo) return false;
+      
+      const defaultHeadimg = 'https://thirdwx.qlogo.cn/mmopen/vi_32/POgEwh4mIHO4nibH0KlMECNjjGxQUq24ZEaGT4poC6icRiccVGKSyXwibcPq4BWmiaIGuG1icwxaQX6grC9VemZoJ8rg/132';
+      
+      if (userinfo.headimg === defaultHeadimg || userinfo.nickname === '微信用户' || !userinfo.phone) {
          wx.showModal({
             title: '提示',
             content: '请先完善信息',
             complete: (res) => {
-               if (res.cancel) { }
                if (res.confirm) {
-                  wx.navigateTo({
-                     url: '/pages/setpage/setpage',
-                  })
+                  wx.navigateTo({ url: '/pages/setpage/setpage' });
                }
             }
-         })
-         return
+         });
+         return false;
       }
-      var goods_id = that.data.goodslist[e.currentTarget.dataset.index].goods_id
+      return true;
+   },
+
+   /**
+    * 抢购
+    */
+   tobuy(e) {
+      if (!this.checkLogin()) return;
+      if (!this.checkUserProfile()) return;
+      
+      const goods_id = this.data.goodslist[e.currentTarget.dataset.index].goods_id;
       wx.navigateTo({
          url: '/pages/addorder/addorder?num=1&goods_id=' + goods_id,
-      })
+      });
       return
       app.apiPost(app.apiList.goodsDetail, {
          goods_id
@@ -402,13 +450,15 @@ Page({
       })
    },
    getusersendtime() {
+      this.requestStart()
       app.apiPost(app.apiList.getusersendtime, {}, (res) => {
+         this.requestComplete()
          this.setData({
             usersendtime: Number(res.data),
             send_tip: res.twoData
          })
          this.findsendtime()
-      })
+      }, { requireAuth: false, showLoading: false })
    },
    findsendtime() {
       var that = this
@@ -544,11 +594,15 @@ Page({
    //计算总价格
    zongprice() {
       var that = this
-      if (that.data.userinfo.level == 1) {
-         var price = Number(that.data.Detail.memberprice)
+      var userinfo = that.data.userinfo;
+      var price;
+      
+      if (userinfo && userinfo.level == 1) {
+         price = Number(that.data.Detail.memberprice)
       } else {
-         var price = Number(that.data.Detail.normalprice)
+         price = Number(that.data.Detail.normalprice)
       }
+      
       var zongprice = (price * that.data.num).toFixed(2)
       var zongmoney = (price * that.data.num).toFixed(2)
       if (that.data.reducemoney) {
@@ -798,7 +852,7 @@ Page({
          return
       }
       var userinfo = that.data.userinfo
-      if (that.data.chooseStyle == 1 && (userinfo.headimg == 'https://thirdwx.qlogo.cn/mmopen/vi_32/POgEwh4mIHO4nibH0KlMECNjjGxQUq24ZEaGT4poC6icRiccVGKSyXwibcPq4BWmiaIGuG1icwxaQX6grC9VemZoJ8rg/132' || userinfo.nickname == '微信用户' || !userinfo.phone)) {
+      if (userinfo && that.data.chooseStyle == 1 && (userinfo.headimg == 'https://thirdwx.qlogo.cn/mmopen/vi_32/POgEwh4mIHO4nibH0KlMECNjjGxQUq24ZEaGT4poC6icRiccVGKSyXwibcPq4BWmiaIGuG1icwxaQX6grC9VemZoJ8rg/132' || userinfo.nickname == '微信用户' || !userinfo.phone)) {
          wx.showToast({
             title: '请先完善您的资料',
             icon: 'none',
@@ -902,7 +956,8 @@ Page({
       var that = this
       var goods_num = that.data.num //商品数量
       var goods_name = that.data.Detail.goods_name //商品名称
-      var goods_price = that.data.userinfo.level == 1 ? that.data.Detail.memberprice : that.data.Detail.normalprice //商品价格
+      var userinfo = that.data.userinfo;
+      var goods_price = (userinfo && userinfo.level == 1) ? that.data.Detail.memberprice : that.data.Detail.normalprice //商品价格
       var goods_id = that.data.Detail.goods_id //商品id
       var Address = that.data.Address ?? 0
       if (that.data.address_id) {
@@ -943,7 +998,7 @@ Page({
          var username = shouAddress.username //收货人姓名
       } else {
          var userphone = that.data.userphone
-         var username = that.data.userinfo.nickname
+         var username = that.data.userinfo ? that.data.userinfo.nickname : '用户'
          var useraddress = '自提：' + that.data.ztdian.zt_addressxinagxi
       }
       var pay_real_money = that.data.zongprice //实际付款金额
@@ -997,69 +1052,81 @@ Page({
       //   data['quan_id'] = that.data.coupon.quan_id
       //   data['quan_money'] = that.data.coupon.coupon_money
       // }
-      app.apiPost(app.apiList.fyaddOrder, data, (data) => {
-         if (data.status = 1) {
+      app.apiPost(app.apiList.fyaddOrder, data, (res) => {
+         if (res.status === 1) {
             that.setData({
-               btnstatus: false,
-               // msg: ''
-            })
-            var pay_real_money = data.orderinfo.pay_real_money
-            var orderno = data.orderinfo.orderno
-            if ((that.data.useye && that.data.zongprice == 0) || data.iszero == 1) {
-               console.error('余额支付/0元券')
-               wx.showLoading({
-                  title: '订单支付成功',
-                  mask: 'true'
-               })
-               setTimeout(function () {
-                  wx.hideLoading()
-                  //跳转到购买成功页面
-                  wx.redirectTo({
-                     url: '/pages/buysuccess/buysuccess?orderno=' + orderno,
-                  })
-               }, 1500)
+               btnstatus: false
+            });
+            
+            const pay_real_money = res.orderinfo.pay_real_money;
+            const orderno = res.orderinfo.orderno;
+            
+            if ((that.data.useye && that.data.zongprice == 0) || res.iszero == 1) {
+               that.handleZeroPayment(orderno);
                return;
             }
-            wx.requestPayment({
-               timeStamp: data.payinfo.timeStamp,
-               nonceStr: data.payinfo.nonceStr,
-               package: data.payinfo.package,
-               signType: 'MD5',
-               paySign: data.payinfo.paySign,
-               success(q) {
-                  wx.showToast({
-                     title: '订单支付成功',
-                     mask: 'true',
-                     success() {
-                        setTimeout(function () {
-                           wx.hideLoading()
-                           //跳转到购买成功页面
-                           wx.redirectTo({
-                              url: '/pages/buysuccess/buysuccess?orderno=' + orderno,
-                           })
-                        }, 1500)
-                     }
-                  })
-               },
-               fail(res) {
-                  console.log(res)
-                  that.setData({
-                     btnstatus: false
-                  })
-                  wx.showToast({
-                     title: '支付失败...',
-                     icon: 'loading'
-                  })
-                  console.log('失败')
-               }
-            })
+            
+            that.requestPayment(res.payinfo, orderno);
          } else {
             wx.showToast({
-               title: '下单失败',
-            })
+               title: res.msg || '下单失败',
+               icon: 'none'
+            });
          }
-      })
+      });
    },
+
+   /**
+    * 处理零元支付
+    */
+   handleZeroPayment(orderno) {
+      wx.showLoading({
+         title: '订单支付成功',
+         mask: true
+      });
+      setTimeout(() => {
+         wx.hideLoading();
+         wx.redirectTo({
+            url: '/pages/buysuccess/buysuccess?orderno=' + orderno,
+         });
+      }, 1500);
+   },
+
+   /**
+    * 请求微信支付
+    */
+   requestPayment(payinfo, orderno) {
+      wx.requestPayment({
+         timeStamp: payinfo.timeStamp,
+         nonceStr: payinfo.nonceStr,
+         package: payinfo.package,
+         signType: 'MD5',
+         paySign: payinfo.paySign,
+         success: () => {
+            wx.showToast({
+               title: '订单支付成功',
+               icon: 'success',
+               duration: 1500,
+               success: () => {
+                  setTimeout(() => {
+                     wx.redirectTo({
+                        url: '/pages/buysuccess/buysuccess?orderno=' + orderno,
+                     });
+                  }, 1500);
+               }
+            });
+         },
+         fail: (res) => {
+            console.error('支付失败:', res);
+            this.setData({ btnstatus: false });
+            wx.showToast({
+               title: '支付失败',
+               icon: 'none'
+            });
+         }
+      });
+   },
+
    //选择自提点
    choztdian() {
       wx.navigateTo({
@@ -1323,10 +1390,6 @@ Page({
    //商品列表
    goodsPage() {
       var that = this
-      wx.showLoading({
-         title: '数据加载中',
-         mask: true
-      })
       var data = {
          page: that.data.page,
          limit: 50,
@@ -1348,7 +1411,9 @@ Page({
             data['paixu'] = that.data.paixuindex
          }
       }
+      this.requestStart()
       app.apiPost(app.apiList.goodsPage, data, (res) => {
+         this.requestComplete()
          // var viplist = that.data.viplist
          // res.data.forEach(v => {
          //   if (v.is_vip == 1) {
@@ -1374,15 +1439,15 @@ Page({
          //     notscroll: false
          //   })
          // }, 1000)
-         wx.hideLoading()
          // } else {
          // wx.hideLoading()
          // }
-      })
+      }, { requireAuth: false, showLoading: false })
    },
    //商品列表
    hotGoods() {
       var that = this
+      this.requestStart()
       var data = {
          page: 1,
          limit: 5,
@@ -1394,15 +1459,17 @@ Page({
          ishot: 1
       }
       app.apiPost(app.apiList.goodsPage, data, (res) => {
+         that.requestComplete()
          that.setData({
             hotgoodslist: res.data,
          })
          this.getspecs(res.data, 0, 'hotgoodslist')
-      })
+      }, { requireAuth: false, showLoading: false })
    },
    //商品列表
    cuxiaoGoods() {
       var that = this
+      this.requestStart()
       var data = {
          page: 1,
          limit: 6,
@@ -1415,17 +1482,20 @@ Page({
          is_cx: 1
       }
       app.apiPost(app.apiList.goodsPage, data, (res) => {
+         that.requestComplete()
          this.setData({ cxgoosList: res.data })
          this.getspecs(res.data, 0, 'cxgoosList')
-      })
+      }, { requireAuth: false, showLoading: false })
    },
    getspecs(list, index, key) {
       if (index >= list.length) {
          return
       }
+      this.requestStart()
       app.apiPost(app.apiList.getspecs, {
          goods_id: list[index].goods_id
       }, (res) => {
+         this.requestComplete()
          let list = this.data[key]
          let gIndex = list.findIndex(v => v.goods_id == list[index].goods_id)
          const specs_pfmoney = Math.min(...res.data.map(item => Number(item['specs_pfmoney'])).filter(price => !isNaN(price)))
@@ -1438,15 +1508,18 @@ Page({
          list[gIndex].specs_vipmoney = (specs_vipmoney || 0).toFixed(2)
          const totalStock = res.data.reduce((sum, item) => sum + (Number(item.specs_stock) || 0), 0)
          list[gIndex].all_goodsstock = totalStock
+         list[gIndex].goodsstock = totalStock
          list[gIndex].specs = res.data
          this.setData({
             [key]: list
          })
          this.getspecs(list, index + 1, key)
-      })
+      }, { showLoading: false, requireAuth: false })
    },
    miniIndex() {
+      this.requestStart()
       app.apiPost(app.apiList.miniIndex, {}, (res) => {
+         this.requestComplete()
          //跑马灯文案
          var pmd = res.data.rolatist;
          var pmd_text = [];
@@ -1464,7 +1537,7 @@ Page({
             bannerlist: res.data.bannerlist,
             pmd_text
          })
-      })
+      }, { requireAuth: false, showLoading: false })
    },
    //商品详情
    toinfo(e) {
@@ -1472,24 +1545,44 @@ Page({
          url: '/pages/goodsinfo/goodsinfo?id=' + e.currentTarget.dataset.id,
       })
    },
-   userCenter() {
-      app.apiPost(app.apiList.userCenter, {}, (res) => {
-         this.setData({
-            userinfo: res.data
-         })
-         if (res.data.phone) {
-            this.setData({
-               userphone: res.data.phone
-            })
-         }
-         var register_time = Number(res.data.register_time) * 1000
-         var thistime = new Date().getTime()
-         if ((register_time + 7 * 24 * 60 * 60 * 1000) > thistime && res.data.phone && res.data.nickname != '微信用户' && res.data.headimg != '') {
-            this.newquan()
-         }
-         this.drawErcode()
-      })
-   },
+   /**
+   * 获取用户中心信息
+   */
+  userCenter() {
+    // 先从本地存储读取用户信息作为备用
+    const localUserInfo = wx.getStorageSync('userinfo');
+    if (localUserInfo) {
+      this.setData({ userinfo: localUserInfo });
+      if (localUserInfo.phone) {
+        this.setData({ userphone: localUserInfo.phone });
+      }
+    }
+    
+    app.apiPost(app.apiList.userCenter, {}, (res) => {
+      // 如果返回未授权，不做处理
+      if (res.status === 10011) {
+        return;
+      }
+      
+      this.setData({
+        userinfo: res.data
+      });
+      if (res.data.phone) {
+        this.setData({
+          userphone: res.data.phone
+        });
+      }
+      // 更新本地存储
+      wx.setStorageSync('userinfo', res.data);
+      
+      const register_time = Number(res.data.register_time) * 1000;
+      const thistime = new Date().getTime();
+      if ((register_time + 7 * 24 * 60 * 60 * 1000) > thistime && res.data.phone && res.data.nickname != '微信用户' && res.data.headimg != '') {
+        this.newquan();
+      }
+      this.drawErcode();
+    }, { showLoading: false, requireAuth: false });
+  },
    changevip(e) {
       this.setData({
          goods_vip: e.currentTarget.dataset.type,
@@ -1498,6 +1591,7 @@ Page({
    },
    nklist() {
       var that = this
+      that.requestStart()
       app.apiPost(app.apiList.goodsPage, {
          page: 1,
          limit: 2,
@@ -1506,10 +1600,11 @@ Page({
          latitude: 0,
          longitude: 0,
       }, (res) => {
+         that.requestComplete()
          that.setData({
             nklist: res.data
          })
-      })
+      }, { requireAuth: false, showLoading: false })
    },
    //得到小程序二维码
    drawErcode() {
@@ -1546,11 +1641,13 @@ Page({
    },
    //首页的横向分类
    getIndexCat() {
+      this.requestStart()
       app.apiPost(app.apiList.getIndexCat, {}, (res) => {
+         this.requestComplete()
          this.setData({
             indexcat: res.data
          })
-      })
+      }, { requireAuth: false, showLoading: false })
    },
    gotoactivity() {
       wx.navigateTo({
@@ -1588,13 +1685,15 @@ Page({
       });
    },
    getIndexSet() {
+      this.requestStart()
       app.apiPost(app.apiList.getIndexSet, {}, (res) => {
+         this.requestComplete()
          this.setData({
             sharepic: res.data.sharepic,
             kanYiDao: res.data.kanYiDao,
             KYDimg: res.data.KYDimg,
          })
-      })
+      }, { requireAuth: false, showLoading: false })
    },
    newquan() {
       app.apiPost(app.apiList.newquan, {}, (res) => {
@@ -1614,6 +1713,17 @@ Page({
    onLoad(options) {
       console.log(options)
       var that = this
+      //显示全局 loading
+      wx.showLoading({
+         title: '加载中...',
+         mask: true
+      })
+      //初始化请求计数
+      this.setData({
+         loading: true,
+         requestCount: 0
+      })
+      
       this.goodsPage()
       this.miniIndex()
       this.nklist()
@@ -1676,7 +1786,7 @@ Page({
       tab_bar.getTab(0)
       this.userCenter()
       this.walletsList()
-      this.goodsPage()
+      // onShow 中不重新加载商品列表，避免重复请求
       wx.getLocation({
          success(res) {
             that.setData({

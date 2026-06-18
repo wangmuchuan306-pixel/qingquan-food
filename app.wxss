@@ -25,7 +25,7 @@ page {
 }
 
 .money {
-  color: #030;
+  color: #003B73;
   font-size: 30rpx;
 }
 

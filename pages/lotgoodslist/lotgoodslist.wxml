@@ -197,7 +197,7 @@
         <text wx:else>库存{{thisgoods.all_goodsstock}}</text>
         <text wx:if="{{thisgoods.xg_num>0}}"> · 限购 {{thisgoods.xg_num}}</text>
       </view>
-      <view style="color: #f60;font-size: 30rpx;">￥{{userinfo.user_level == 2 ? thisgoods.specs[specsindex].specs_pfmoney : (userinfo.user_level == 1 ? thisgoods.specs[specsindex].specs_tgmoney : thisgoods.specs[specsindex].specs_erpmoney)}}</view>
+      <view style="color: #003B73;font-size: 30rpx;">￥{{userinfo.user_level == 2 ? thisgoods.specs[specsindex].specs_pfmoney : (userinfo.user_level == 1 ? thisgoods.specs[specsindex].specs_tgmoney : thisgoods.specs[specsindex].specs_erpmoney)}}</view>
     </view>
   </view>
   <view style="font-size: 30rpx;margin: 30rpx;margin-bottom: 0;">选择规格</view>

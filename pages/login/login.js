@@ -6,7 +6,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    loading: false,
+    canSubmit: false,
   },
   //获取头像
   chooseloge(e) {
@@ -14,24 +15,32 @@ Page({
     var tmpheadimg = e.detail.avatarUrl
     that.setData({
       tmpheadimg,
+    }, () => {
+      that.checkCanSubmit()
     })
   },
   //获取手机号
   getphone(e) {
     var that = this
+    if (!e.detail.code) return
     app.apiPost(app.apiList.wxphone, {
       code: e.detail.code
     }, (res) => {
-      console.log(res);
-      that.setData({
-        p_phone: res.data.phone
-      })
+      if (res.status == 1 && res.data.phone) {
+        that.setData({
+          p_phone: res.data.phone
+        }, () => {
+          that.checkCanSubmit()
+        })
+      }
     })
   },
   //输入手机号
   inphone(e) {
     this.setData({
       p_phone: e.detail.value
+    }, () => {
+      this.checkCanSubmit()
     })
   },
   //获取昵称
@@ -44,7 +53,18 @@ Page({
   inickname(e) {
     this.setData({
       p_username: e.detail.value
+    }, () => {
+      this.checkCanSubmit()
     })
+  },
+
+  checkCanSubmit() {
+    const { tmpheadimg, p_username, p_phone } = this.data
+    const isValidHeadimg = tmpheadimg && tmpheadimg != 'https://thirdwx.qlogo.cn/mmopen/vi_32/POgEwh4mIHO4nibH0KlMECNjjGxQUq24ZEaGT4poC6icRiccVGKSyXwibcPq4BWmiaIGuG1icwxaQX6grC9VemZoJ8rg/132'
+    const isValidUsername = p_username && p_username != '微信用户'
+    const isValidPhone = p_phone && /^1[3-9]\d{9}$/.test(p_phone)
+    const canSubmit = !!(isValidHeadimg && isValidUsername && isValidPhone)
+    this.setData({ canSubmit })
   },
   //修改资料
   setwxinfo() {
@@ -101,7 +121,13 @@ Page({
   //用户点击用户协议
   goWebview() {
     wx.navigateTo({
-      url: '/pages/webView/webView?id=2',
+      url: '/pages/jianjie/jianjie?id=20',
+    })
+  },
+
+  goPrivacy() {
+    wx.navigateTo({
+      url: '/pages/jianjie/jianjie?id=21',
     })
   },
   goback() {
@@ -109,11 +135,10 @@ Page({
   },
   getUserProfile(e) {
     var that = this;
+    that.setData({ loading: true });
     wx.getUserProfile({
-      desc: '用于完善会员资料', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
+      desc: '用于完善会员资料',
       success: (data) => {
-        console.log(data)
-        //修改用户信息
         var userinfo = {
           nickname: data.userInfo.nickName,
           headimg: data.userInfo.avatarUrl,
@@ -124,32 +149,12 @@ Page({
         that.setData({
           userinfo
         })
-        wx.showLoading({
-          title: '请稍等',
-          mask: true,
-        })
         that.userLogin()
-        return;
-        app.apiPost(app.apiList.userUpdate, data, (data) => {
-          if (data.status == 1) {
-            //缓存是否是新用户字段
-            if (that.data.navtype == 1) {
-              wx.redirectTo({
-                url: that.data.navurl
-              })
-            } else if (that.data.navtype == 2) {
-              wx.switchTab({
-                url: that.data.navurl
-              })
-            } else {
-              wx.navigateBack({})
-            }
-          }
-        })
       },
       fail(re) {
+        that.setData({ loading: false });
         wx.showToast({
-          title: '请升级微信',
+          title: '请授权登录',
           icon: 'none'
         })
       }
@@ -214,11 +219,9 @@ Page({
     console.log(data)
     app.apiPost(app.apiList.login, data, (data) => {
       console.log(data)
-      console.log('请求授权')
-      wx.hideLoading({})
+      that.setData({ loading: false })
 
       if (data.status == 1) {
-        console.log(1111)
         data.data.phone ? wx.setStorageSync('userPhone', data.data.phone) : "";
         //缓存是否是新用户字段
         var random = Math.floor((Math.random() + Math.floor(Math.random() * 9 + 1)) * Math.pow(10, 5 - 1));
@@ -234,7 +237,26 @@ Page({
         // })
         // return
         if (data.data.nickname != '微信用户' && data.data.headimg != 'https://thirdwx.qlogo.cn/mmopen/vi_32/POgEwh4mIHO4nibH0KlMECNjjGxQUq24ZEaGT4poC6icRiccVGKSyXwibcPq4BWmiaIGuG1icwxaQX6grC9VemZoJ8rg/132' && data.data.phone) {
-          wx.navigateBack({});
+          // 判断是否从 tabBar 页面跳转过来
+          const pages = getCurrentPages();
+          if (pages.length > 1) {
+            const prevPage = pages[pages.length - 2];
+            const prevPageRoute = prevPage.route;
+            // 如果上一页是 tabBar 页面，使用 switchTab 返回
+            const tabBarPages = ['pages/index/index', 'pages/lotgoodslist/lotgoodslist', 'pages/orderlist/orderlist', 'pages/mypage/mypage'];
+            if (tabBarPages.includes(prevPageRoute)) {
+              wx.switchTab({
+                url: '/' + prevPageRoute,
+              });
+            } else {
+              wx.navigateBack({});
+            }
+          } else {
+            // 如果没有上一页，默认跳转到首页
+            wx.switchTab({
+              url: '/pages/index/index',
+            });
+          }
         } else {
           that.setData({
             loginShow: true

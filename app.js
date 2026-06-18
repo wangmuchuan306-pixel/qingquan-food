@@ -1,45 +1,64 @@
 // app.js
-import Config from 'utils/config.js';
-var url = 'https://qqspapi.0315678.cn'; //域名
+const url = 'https://qqspapi.0315678.cn'; // 域名
+const util = require('/utils/util.js');
 
-const requestUrl = 'https://qqspapi.0315678.cn'; //域名
-// var url = 'https://yhtcapi.sbjft.com'; //临时域名
-var util = require('/utils/util.js');
 App({
   onLaunch() {
+    this.initUpdateManager();
+    this.checkUserProfile();
+  },
 
-    const updateManager = wx.getUpdateManager()
+  /**
+   * 初始化版本更新管理器
+   */
+  initUpdateManager() {
+    if (!wx.getUpdateManager) {
+      console.warn('当前微信版本不支持更新功能');
+      return;
+    }
+    
+    const updateManager = wx.getUpdateManager();
+    
+    updateManager.onCheckForUpdate((res) => {
+      console.log('检查更新结果:', res.hasUpdate);
+    });
 
-    updateManager.onCheckForUpdate(function (res) {
-      // 请求完新版本信息的回调
-      console.log(res.hasUpdate)
-    })
-
-    updateManager.onUpdateReady(function () {
+    updateManager.onUpdateReady(() => {
       wx.showModal({
         title: '更新提示',
         content: '新版本已经准备好，是否重启应用？',
-        success: function (res) {
+        success: (res) => {
           if (res.confirm) {
-            // 新的版本已经下载好，调用 applyUpdate 应用新版本并重启
-            updateManager.applyUpdate()
+            updateManager.applyUpdate();
           }
         }
-      })
-    })
+      });
+    });
 
-    updateManager.onUpdateFailed(function () {
-      // 新版本下载失败
-    })
+    updateManager.onUpdateFailed(() => {
+      wx.showToast({
+        title: '更新失败，请稍后重试',
+        icon: 'none'
+      });
+    });
+  },
+
+  /**
+   * 检查用户资料完整性
+   */
+  checkUserProfile() {
     this.apiPost(this.apiList.userCenter, {}, (res) => {
-      if (res.status == 1) {
-        if (res.data.nickname == '微信用户' || !res.data.phone) {
+      if (res.status === 10011) {
+        return;
+      }
+      if (res.status === 1) {
+        if (res.data.nickname === '微信用户' || !res.data.phone) {
           wx.navigateTo({
             url: '/pages/setpage/setpage',
-          })
+          });
         }
       }
-    })
+    }, { requireAuth: false });
   },
   menu: wx.getMenuButtonBoundingClientRect(),
   globalData: {
@@ -341,180 +360,248 @@ App({
     groupList: url + '/ApiGoods/groupList', //全部拼团
     getcdkvip: url + '/ApiGift/getcdkvip' //会员兑换
   },
-  apiPost: function (url, data, callback) {
-    var that = this;
-    var header = {
-      'content-type': 'application/json;charset=UTF-8',
-      "X-Requested-With": 'XMLHttpRequest',
-      'version': that.globalData.version,
-      'api-ver': that.globalData.api_ver,
-    };
-    if (that.get('token_new')) {
-      header['access-token'] = that.get('token_new');
+  /**
+   * 封装的 API POST 请求方法
+   * @param {string} apiUrl - 请求的 API 地址
+   * @param {object} data - 请求参数
+   * @param {function} callback - 成功回调函数
+   * @param {object} options - 可选配置（如 showLoading, loadingText）
+   */
+  apiPost(apiUrl, data, callback, options = {}) {
+    const showLoading = options.showLoading !== false;
+    const loadingText = options.loadingText || '加载中...';
+    const requireAuth = options.requireAuth !== false; // 默认需要登录
+    
+    if (showLoading) {
+      wx.showLoading({
+        title: loadingText,
+        mask: true
+      });
     }
-    let pages = getCurrentPages();
-    let prevPage = pages[pages.length - 1];
-    // wx.showLoading({
-    //   title: '正在加载...',
-    //   mask:true
-    // })
+
+    const header = {
+      'content-type': 'application/json;charset=UTF-8',
+      'X-Requested-With': 'XMLHttpRequest',
+    };
+
+    const token = this.get('token_new');
+    if (token) {
+      header['access-token'] = token;
+    }
+
     wx.request({
-      url: url,
-      data: data,
+      url: apiUrl,
+      data: data || {},
       method: 'POST',
       dataType: 'json',
       header: header,
       success: (res) => {
-        if (res.data.status == 1) {
-          // setTimeout(function () {
-          //   prevPage.setData({
-          //     loading: true
-          //   })
-          // }, 500)
-          return callback(res.data);
-        } else if (res.data.status == 0) {
-          that.alert(res.data.msg);
-        } else if (res.data.status == 2) {
+        if (showLoading) {
+          wx.hideLoading();
+        }
+        
+        if (!res.data) {
+          this.showError('服务器返回数据异常');
+          return;
+        }
+
+        const { status, msg } = res.data;
+        
+        if (status === 1) {
+          typeof callback === 'function' && callback(res.data);
+        } else if (status === 0) {
+          this.showError(msg || '操作失败');
+        } else if (status === 2) {
           wx.showModal({
             title: '提示',
-            content: res.data.msg,
+            content: msg,
             showCancel: false,
             confirmText: '我知道了',
-          })
-          // that.alert(res.data.msg);
-        } else if (res.data.status == 10011) {
-          // this.alert('请登录');
-          console.log('请登录')
-          // wx.clearStorageSync();
-          // util.isLogin({
-          //   success() {}
-          // })
-          wx.hideLoading()
-          //登录提示
-        } else if (res.data.status == 10012) {
+          });
+        } else if (status === 10011) {
+          // 根据 requireAuth 选项决定是否强制跳转登录
+          if (requireAuth) {
+            this.handleUnauthorized();
+          } else {
+            // 不需要强制登录的接口，静默处理，不提示用户
+            console.log('未授权但不需要强制登录:', apiUrl);
+            typeof callback === 'function' && callback({ status: 10011, msg });
+          }
+        } else if (status === 10012) {
           wx.showModal({
             title: '提示',
-            content: res.data.msg,
+            content: msg,
             confirmText: '购买会员',
-            success(rea) {
-              if (rea.confirm) {
+            success: (res) => {
+              if (res.confirm) {
                 wx.navigateTo({
-                  url: '/packageB/pages/memberPage_bk/memberPage_bk?type=1',
-                })
+                  url: '/pages/exchangeCDK/exchangeCDK',
+                });
               }
             }
-          })
-        } else if (res.data.status == 20260407) {
+          });
+        } else if (status === 20260407) {
           wx.showModal({
             title: '提示',
             content: '当前用户状态异常',
             showCancel: false,
             confirmText: '我知道了',
-          })
+          });
         } else {
-          that.alert(res.data.msg);
+          this.showError(msg || '请求失败');
         }
-
       },
-      fail: function (res) {
-        console.log(res)
-        console.error(url + '请求失败')
-        setTimeout(function () {
-          prevPage.setData({
-            loading: true
-          })
-        }, 500)
+      fail: (error) => {
+        if (showLoading) {
+          wx.hideLoading();
+        }
+        console.error(`API请求失败: ${apiUrl}`, error);
+        this.showError('网络请求失败，请稍后重试');
       },
-      complete: function (res) {
-
+      complete: () => {
+        if (showLoading) {
+          wx.hideLoading();
+        }
       }
-    })
+    });
   },
-  apiUpload: function (file, callback) {
-    var that = this
-    var header = {
-      'content-type': 'application/json;charset=UTF-8',
-      "X-Requested-With": 'XMLHttpRequest',
-      'version': this.globalData.version,
-      'api-ver': this.globalData.api_ver,
-    };
-    if (that.get('token_new')) {
-      header['access-token'] = that.get('token_new');
+
+  /**
+   * 处理未授权状态
+   */
+  handleUnauthorized() {
+    // 检查本地是否有登录信息
+    const token = this.get('token_new');
+    const userinfo = wx.getStorageSync('userinfo');
+    
+    // 如果本地有登录信息但服务器返回未授权，可能是 token 过期
+    if (token && userinfo) {
+      wx.showModal({
+        title: '提示',
+        content: '登录状态已过期，请重新登录',
+        showCancel: false,
+        success: () => {
+          wx.removeStorageSync('token_new');
+          wx.removeStorageSync('uid');
+          wx.removeStorageSync('userinfo');
+          wx.navigateTo({
+            url: '/pages/login/login',
+          });
+        }
+      });
+    } else {
+      // 本地没有登录信息，直接提示登录
+      wx.showModal({
+        title: '提示',
+        content: '请先登录',
+        showCancel: false,
+        success: () => {
+          wx.navigateTo({
+            url: '/pages/login/login',
+          });
+        }
+      });
     }
+  },
+
+  /**
+   * 统一错误提示
+   * @param {string} msg - 错误信息
+   */
+  showError(msg) {
+    wx.showToast({
+      title: msg,
+      icon: 'none',
+      duration: 2000
+    });
+  },
+  /**
+   * 封装的文件上传方法
+   * @param {string} file - 文件路径
+   * @param {function} callback - 成功回调函数
+   */
+  apiUpload(file, callback) {
+    const header = {
+      'X-Requested-With': 'XMLHttpRequest',
+    };
+
+    const token = this.get('token_new');
+    if (token) {
+      header['access-token'] = token;
+    }
+
     wx.uploadFile({
-      url: url + '/ApiUpload/uploadImg', //服务器接口
-      method: 'POST', //这句话好像可以不用
+      url: url + '/ApiUpload/uploadImg', // 服务器接口
       filePath: file,
       name: 'file',
       header: header,
-      success: function (e) {
-        var data = JSON.parse(e.data);
-        if (data.status == 1) {
-          callback(data)
-        } else {
-          that.alert(data.msg)
+      success: (e) => {
+        try {
+          const data = JSON.parse(e.data);
+          if (data.status === 1) {
+            typeof callback === 'function' && callback(data);
+          } else {
+            this.showError(data.msg || '上传失败');
+          }
+        } catch (error) {
+          console.error('文件上传解析失败:', error);
+          this.showError('上传失败，请重试');
         }
-
       },
-      fail: function () {
-        console.log('接口调用失败')
+      fail: () => {
+        console.error('文件上传失败');
+        this.showError('文件上传失败，请检查网络');
       }
-    })
+    });
   },
-  // 微信原装修改
+
+  /**
+   * 设置微信主题样式
+   */
   wxAllchange() {
-    // 判断是否为tarbar
-    console.log('引入成功')
-    if (wx.getStorageSync('theme')) {
-      var theme = wx.getStorageSync('theme')
-      if (theme == 'dark') {
-        var themes = '#0f0c1a'
-        var themescolor = '#ffffff'
-        var pullloding = 'light'
-        var bgtheme = '#1C1926'
-        var rtheme = '#0f0c1a'
+    const theme = wx.getStorageSync('theme');
+    if (!theme) return;
 
-      } else {
-        var themes = '#ffffff'
-        var themescolor = '#000000'
-        var pullloding = 'dark'
-        var bgtheme = '#ffffff'
-        var rtheme = '#f8f8f8'
-      }
-      let pages = getCurrentPages()
-      if (pages.length > 0) {
-        let prevPage = pages[pages.length - 1]
-        if (prevPage.route === 'pages/home/home' || prevPage.route === 'pages/buzz/buzz' || prevPage.route === 'pages/mypage/mypage' || prevPage.route === 'pages/find_treasures/find_treasure') {
-          console.log('是他爸')
-          // tarbar
-          wx.setTabBarStyle({
-            color: themescolor,
-            selectedColor: '#ff6600',
-            backgroundColor: bgtheme,
-            borderStyle: 'white'
-          })
-        }
-      }
-      // nav
-      wx.setNavigationBarColor({
-        frontColor: themescolor,
-        backgroundColor: themes,
-        animation: {
-          duration: 0,
-          timingFunc: 'easeIn'
-        }
-      })
-      // xiala
-      wx.setBackgroundTextStyle({
-        textStyle: pullloding // 下拉背景字体、loading 图的样式为dark
-      })
-      wx.setBackgroundColor({
-        backgroundColorTop: rtheme, // 顶部窗口的背景
-        backgroundColorBottom: rtheme, // 底部窗口的背
-        backgroundColor: rtheme //安卓手机
-      })
+    const isDark = theme === 'dark';
+    const themes = isDark ? '#0f0c1a' : '#ffffff';
+    const themescolor = isDark ? '#ffffff' : '#000000';
+    const pullloding = isDark ? 'light' : 'dark';
+    const bgtheme = isDark ? '#1C1926' : '#ffffff';
+    const rtheme = isDark ? '#0f0c1a' : '#f8f8f8';
 
+    const pages = getCurrentPages();
+    if (pages.length > 0) {
+      const currentPage = pages[pages.length - 1];
+      const tabBarPages = ['pages/index/index', 'pages/lotgoodslist/lotgoodslist', 'pages/orderlist/orderlist', 'pages/mypage/mypage'];
+      
+      if (tabBarPages.includes(currentPage.route)) {
+        wx.setTabBarStyle({
+          color: themescolor,
+          selectedColor: '#003B73',
+          backgroundColor: bgtheme,
+          borderStyle: 'white'
+        });
+      }
     }
+
+    wx.setNavigationBarColor({
+      frontColor: themescolor,
+      backgroundColor: themes,
+      animation: {
+        duration: 0,
+        timingFunc: 'easeIn'
+      }
+    });
+
+    wx.setBackgroundTextStyle({
+      textStyle: pullloding
+    });
+
+    wx.setBackgroundColor({
+      backgroundColorTop: rtheme,
+      backgroundColorBottom: rtheme,
+      backgroundColor: rtheme
+    });
   },
   alert: function (msg) {
     wx.showModal({

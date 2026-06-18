@@ -83,7 +83,7 @@
 .item_count_text{
     font-size: 30rpx;
     font-weight: bold;
-    color: #f60;
+    color: #003B73;
 }
 .item_count_add{
     width: 50rpx;

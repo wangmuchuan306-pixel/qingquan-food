@@ -11,14 +11,14 @@
       <image src="{{Detail.goods_img}}" mode="" class="sptp"></image>
     </view> -->
   <view style="position: relative;">
-    <swiper autoplay="ture" style="width: 750rpx;height: 800rpx;" bindchange="swiperchenge" current="{{current}}">
+    <swiper autoplay="{{swiperlength > 1}}" style="width: 750rpx;height: 800rpx;" bindchange="swiperchenge" current="{{current}}">
       <swiper-item wx:if="{{Detail.goodsvideo}}">
         <video src="{{Detail.goodsvideo}}" style="width: 100%;height: 100%;" autoplay />
       </swiper-item>
       <swiper-item>
         <image src="{{Detail.goods_img}}" style="width: 100%;height: 100%;" mode="aspectFill"></image>
       </swiper-item>
-      <swiper-item wx:for="{{Detail.gallery}}">
+      <swiper-item wx:for="{{Detail.gallery}}" wx:for-item="galleryItem" wx:key="index">
         <image src="{{item}}" style="width: 100%;height: 100%;" mode="aspectFill"></image>
       </swiper-item>
     </swiper>
@@ -186,7 +186,7 @@
       <view style="width: 690rpx;display: flex;align-items: center;justify-content: space-between;">
         <view style="font-size: 30rpx;">使用余额</view>
         <view style="display: flex;align-items: center;" bind:tap="chooseye">
-          <text style="font-size:24rpx;color:#f60;" wx:if="{{useye &&money != 0}}">-￥{{reducemoney}}</text>
+          <text style="font-size:24rpx;color:#003B73;" wx:if="{{useye &&money != 0}}">-￥{{reducemoney}}</text>
           <text style="font-size:24rpx;color:#65696D;" wx:else>{{userinfo.blance==0.00?'暂无可用余额':'账户余额'+userinfo.blance}}</text>
           <image src="/images/blackjiantou.png" style="margin-left: 10rpx;" mode="" class="yjt"></image>
         </view>
@@ -297,12 +297,12 @@
   </view>
   <view class="flex2" style="height: 50vh;">
     <scroll-view style="width: 250rpx;height: 100%;background-color: #f6f6f6;padding: 16rpx 20rpx;box-sizing: border-box;">
-      <block wx:for="{{timelist}}">
+      <block wx:for="{{timelist}}" wx:key="index">
         <view class="flex1 {{indexday == index ? 'day_act' : ''}}" bind:tap="selectDay" data-index="{{index}}" style="width: 210rpx;height: 60rpx;font-size: 24rpx;{{index + 1  == timelist.length ? '' : 'margin-bottom: 20rpx;'}}"><text>{{item.day}}</text></view>
       </block>
     </scroll-view>
     <scroll-view style="width: 500rpx;height: 100%;background-color: #fff;padding: 16rpx 30rpx 16rpx 50rpx;box-sizing: border-box;">
-      <block wx:for="{{timelist[indexday].items}}">
+      <block wx:for="{{timelist[indexday].items}}" wx:key="index">
         <view class="flex3 {{indextime == index ? 'time_act' : ''}}" bind:tap="selectTime" data-index="{{index}}" style="font-size: 30rpx;height: 60rpx;width: 100%;{{index + 1  == timelist[indexday].items.length ? '' : 'margin-bottom: 30rpx;padding-bottom: 30rpx;border-bottom: 1rpx solid #eee;'}}">
           <text>{{item.sendstar + '-' + item.sendend}}</text>
           <image wx:if="{{indextime == index}}" src="/images/timeset.png" style="width: 40rpx;height: 40rpx;" mode="" />
@@ -343,19 +343,19 @@
         <text wx:else>库存{{Detail.all_goodsstock}}</text>
         <text wx:if="{{thisgoods.xg_num>0}}"> · 限购 {{thisgoods.xg_num}}</text>
       </view>
-      <view style="color: #f60;font-size: 30rpx;">￥{{userinfo.user_level == 2 ? Detail.specs[specsindex].specs_pfmoney : (userinfo.user_level == 1 ? Detail.specs[specsindex].specs_tgmoney : (userinfo.user_level == 3 ? Detail.specs[specsindex].specs_vipmoney : Detail.specs[specsindex].specs_erpmoney))}}</view>
+      <view style="color: #003B73;font-size: 30rpx;">￥{{userinfo.user_level == 2 ? Detail.specs[specsindex].specs_pfmoney : (userinfo.user_level == 1 ? Detail.specs[specsindex].specs_tgmoney : (userinfo.user_level == 3 ? Detail.specs[specsindex].specs_vipmoney : Detail.specs[specsindex].specs_erpmoney))}}</view>
     </view>
   </view>
   <view style="font-size: 30rpx;margin: 30rpx;margin-bottom: 0;">选择规格</view>
   <scroll-view style="width: 100%;height: 500rpx;" scroll-y>
-    <view class="{{specsindex==index?'isspecs':'specsbox'}}" wx:for="{{Detail.specs}}" bind:tap="choosespecs" data-index="{{index}}">
+    <view class="{{specsindex==index?'isspecs':'specsbox'}}" wx:for="{{Detail.specs}}" wx:key="index" bind:tap="choosespecs" data-index="{{index}}">
       <view style="display: flex;align-items: center;">
         <view style="max-width: 300rpx;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">{{item.specs_name}}</view>
         <view style="margin-left: 20rpx;color: {{specsindex==index?'':'#999'}};">库存{{item.specs_stock}}</view>
         <!-- <view style="margin-left: 20rpx;color: {{specsindex==index?'':'#999'}};">已售{{item.buy_num}}</view> -->
       </view>
       <!-- <view wx:if="{{is_erp && item.specs_iserp}}" style="margin-left: 20rpx;">¥ {{item.specs_erpmoney}}</view> -->
-      <view style="margin-left: 20rpx;">¥ {{userinfo.user_level == 2 ? item.specs_pfmoney : (userinfo.user_level == 1 ? item.specs_tgmoney : (userinfo.user_level == 3 ? item.specs_vipmoney : item.specs_erpmoney))}}</view>
+      <view style="margin-left: 20rpx;color: #003B73;">¥ {{userinfo.user_level == 2 ? item.specs_pfmoney : (userinfo.user_level == 1 ? item.specs_tgmoney : (userinfo.user_level == 3 ? item.specs_vipmoney : item.specs_erpmoney))}}</view>
     </view>
   </scroll-view>
   <view style="width: 690rpx;display: flex;align-items: center;justify-content: space-between;margin: 30rpx;">
