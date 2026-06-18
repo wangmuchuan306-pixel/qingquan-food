@@ -59,7 +59,7 @@
           <view class="goodsLabel1 txt1">{{item.xg_num==0 ? '不限购' : '限购 '+ item.xg_num}}</view>
         </view>
         <view class="goodsH3 flex3">
-          <text>￥ {{userinfo.user_level == 2 ? item.specs_ptmoney : (userinfo.user_level == 1 ? item.specs_tgmoney : item.specs_erpmoney)}}<text wx:if="{{item.specs.length > 1}}" style="color: #999;font-size: 22rpx;"> 起</text></text>
+          <text>￥ {{userinfo.user_level == 2 ? item.specs_pfmoney : (userinfo.user_level == 1 ? item.specs_tgmoney : (userinfo.user_level == 3 ? item.specs_vipmoney : item.specs_erpmoney))}}<text wx:if="{{item.specs.length > 1}}" style="color: #999;font-size: 22rpx;"> 起</text></text>
           <!-- 加号/减号 -->
           <!-- <view class="SurvivalOrDeath flex2">
               <image wx:if="" src="/images/minusSign.png" mode=""/>

@@ -914,7 +914,8 @@ Page({
     })
   },
   //打开立即订购商品列表
-  commodityshow() {
+  commodityshow(e) {
+    const type = e.currentTarget.dataset.type
     var that = this
     utils.isLogin({
       success() {
@@ -954,25 +955,44 @@ Page({
               })
               return
             }
-            res.data[0].number = Detail.specs[specsindex].specs_batch
-            res.data[0].specs_id = Detail.specs[specsindex].specs_id
-            res.data[0].specs_pfmoney = Detail.specs[specsindex].specs_pfmoney
-            res.data[0].specs_tgmoney = Detail.specs[specsindex].specs_tgmoney
-            res.data[0].specs_erpmoney = Detail.specs[specsindex].specs_erpmoney
-            res.data[0].specs_vipmoney = Detail.specs[specsindex].specs_vipmoney
-            res.data[0].specs_stock = Detail.specs[specsindex].specs_stock
-            res.data[0].specs_batch = Detail.specs[specsindex].specs_batch
-            res.data[0].specs_name = Detail.specs[specsindex].specs_name
-            if (that.data.active_id) {
-              res.data[0].active_id = that.data.active_id
+            if (type == 1) {
+              let specs_id = Detail.specs[specsindex].specs_id
+              let goods_id = Detail.goods_id
+              let num = that.data.specsnum || Detail.specs[specsindex].specs_batch
+              let store_id = 1
+              let data = {
+                specs_id: specs_id,
+                goods_id: goods_id,
+                num: num,
+                store_id: store_id
+              }
+              app.apiPost(app.apiList.inshopping, data, (res) => {
+                wx.showToast({
+                  title: res.msg,
+                  icon: 'none'
+                })
+              })
+            } else if (type == 2) {
+              res.data[0].number = that.data.specsnum || Detail.specs[specsindex].specs_batch
+              res.data[0].specs_id = Detail.specs[specsindex].specs_id
+              res.data[0].specs_pfmoney = Detail.specs[specsindex].specs_pfmoney
+              res.data[0].specs_tgmoney = Detail.specs[specsindex].specs_tgmoney
+              res.data[0].specs_erpmoney = Detail.specs[specsindex].specs_erpmoney
+              res.data[0].specs_vipmoney = Detail.specs[specsindex].specs_vipmoney
+              res.data[0].specs_stock = Detail.specs[specsindex].specs_stock
+              res.data[0].specs_batch = Detail.specs[specsindex].specs_batch
+              res.data[0].specs_name = Detail.specs[specsindex].specs_name
+              if (that.data.active_id) {
+                res.data[0].active_id = that.data.active_id
+              }
+              res.data[0].specs_img = Detail.specs[specsindex].specs_img ? 'https://qiniu.0315678.cn/' + Detail.specs[specsindex].specs_img : Detail.goods_img
+              var cartlist = res.data
+              var ordertype = '/pages/lotaddorder2/lotaddorder2?ordertype=2&zttype=' + 2
+              wx.setStorageSync('cartlist_pay', cartlist)
+              wx.navigateTo({
+                url: ordertype,
+              })
             }
-            res.data[0].specs_img = Detail.specs[specsindex].specs_img ? 'https://qiniu.0315678.cn/' + Detail.specs[specsindex].specs_img : Detail.goods_img
-            var cartlist = res.data
-            var ordertype = '/pages/lotaddorder2/lotaddorder2?ordertype=2&zttype=' + 2
-            wx.setStorageSync('cartlist_pay', cartlist)
-            wx.navigateTo({
-              url: ordertype,
-            })
           }
         })
         // if(that.data.active_id){

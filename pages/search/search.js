@@ -112,12 +112,14 @@ Page({
     }, (res) => {
       let list = this.data[key]
       let gIndex = list.findIndex(v => v.goods_id == list[index].goods_id)
-      const specs_ptmoney = Math.min(...res.data.map(item => Number(item['specs_ptmoney'])).filter(price => !isNaN(price)))
+      const specs_pfmoney = Math.min(...res.data.map(item => Number(item['specs_pfmoney'])).filter(price => !isNaN(price)))
       const specs_tgmoney = Math.min(...res.data.map(item => Number(item['specs_tgmoney'])).filter(price => !isNaN(price)))
       const specs_erpmoney = Math.min(...res.data.map(item => Number(item['specs_erpmoney'])).filter(price => !isNaN(price)))
-      list[gIndex].specs_ptmoney = (specs_ptmoney || 0).toFixed(2)
+      const specs_vipmoney = Math.min(...res.data.map(item => Number(item['specs_vipmoney'])).filter(price => !isNaN(price)))
+      list[gIndex].specs_pfmoney = (specs_pfmoney || 0).toFixed(2)
       list[gIndex].specs_tgmoney = (specs_tgmoney || 0).toFixed(2)
       list[gIndex].specs_erpmoney = (specs_erpmoney || 0).toFixed(2)
+      list[gIndex].specs_vipmoney = (specs_vipmoney || 0).toFixed(2)
       const totalStock = res.data.reduce((sum, item) => sum + (Number(item.specs_stock) || 0), 0)
       list[gIndex].all_goodsstock = totalStock
       list[gIndex].specs = res.data
@@ -214,6 +216,7 @@ Page({
     // })
     // this.searchHis()
     this.localValue()
+    this.userCenter()
   },
   // 获取本地搜索历史
   localValue() {

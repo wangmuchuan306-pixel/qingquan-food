@@ -397,10 +397,11 @@ page {
   width: 690rpx;
   height: 100rpx;
   border-radius: 50rpx;
-  background-color: #003B73;
+  /* background-color: #003B73; */
   text-align: center;
   line-height: 100rpx;
   margin: 0 auto;
   font-size: 30rpx;
   color: white;
+  overflow: hidden;
 }
