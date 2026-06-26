@@ -140,6 +140,10 @@ Page({
          cate_pid: id
       })
       this.goodsPage()
+      wx.pageScrollTo({
+         selector: '#goodslist',
+         offsetTop: -104,
+      })
    },
    // 轮播图跳转
    bannernav(e) {

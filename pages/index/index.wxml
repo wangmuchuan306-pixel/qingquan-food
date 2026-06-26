@@ -116,5 +116,5 @@
         </swiper>
         </view>
 </view>
-<goodslist goodslist="{{goodslist}}" userinfo="{{userinfo}}" bind:myevent="myevent"></goodslist>
+<goodslist id="goodslist" goodslist="{{goodslist}}" userinfo="{{userinfo}}" bind:myevent="myevent"></goodslist>
 <view style="height: {{tabBarHeight}};"></view>
