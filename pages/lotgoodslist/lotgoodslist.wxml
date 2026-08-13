@@ -51,7 +51,7 @@
     <view class="catwobox" wx:for="{{catelist}}" wx:key="id" bind:tap="chaonecat" data-index="{{index}}">
       <view class="inbox" style="{{index==catindex?'background-color: #003B73;color: white;':''}}">{{item.cate_name}}</view>
     </view>
-    <view style="height: 180rpx;"></view>
+    <view style="height: 380rpx;"></view>
   </scroll-view>
   <view style="background-color: white;width: 570rpx;">
     <view style="width: 510rpx;display: flex;align-items: center;justify-content: space-between;height: 80rpx;margin:0 auto;">
@@ -124,7 +124,7 @@
         </view>
       </block>
 
-      <view style="height: calc(180rpx - {{tabBarHeight}});"></view>
+      <view style="height: calc(580rpx - {{tabBarHeight}});"></view>
     </scroll-view>
   </view>
 </view>

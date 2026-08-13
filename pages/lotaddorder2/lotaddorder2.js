@@ -1256,7 +1256,25 @@ Page({
     if (userinfo.iscan_zero == 0) {
       data.pay_real_money = zongprice
     }
-    if(data.pay_real_money == 0 && userinfo.iscan_zero == 0){
+    let hasStockIssue = pay_list[0].goods.some(function (v) {
+      let cartItem = cartlist.find(function (item) { return item.goods_id == v.goods_id })
+      if (!cartItem) return true  // 找不到对应商品，视为异常，拦截
+      return Number(cartItem.specs_stock) <= 0 || Number(cartItem.specs_stock) < Number(v.number)
+    })
+    if (hasStockIssue) {
+      wx.showModal({
+        title: '提示',
+        content: '商品库存不足！',
+        showCancel: false,
+        success: function (res) {
+          if (res.confirm) {
+            wx.navigateBack({ delta: 1 })
+          }
+        }
+      })
+      return
+    }
+    if (data.pay_real_money == 0 && userinfo.iscan_zero == 0) {
       wx.showToast({
         title: '错误',
         icon: 'loading'
