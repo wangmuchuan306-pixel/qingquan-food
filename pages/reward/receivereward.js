@@ -47,7 +47,7 @@ Page({
     })
     console.log(imgsrc)
     if(options.fromuid){
-      wx.setStorageSync('ruid', options.fromuid)
+      app.captureReferrer(options.fromuid)
     }
     that.setData({
       username: username,

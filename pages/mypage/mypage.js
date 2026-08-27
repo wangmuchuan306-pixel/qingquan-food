@@ -257,9 +257,7 @@ Page({
       content: '确定要退出登录吗？',
       success: (res) => {
         if (res.confirm) {
-          wx.removeStorageSync('token_new')
-          wx.removeStorageSync('uid')
-          wx.removeStorageSync('userinfo')
+          app.clearSession()
           wx.reLaunch({
             url: '/pages/index/index',
           })

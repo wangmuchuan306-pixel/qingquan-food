@@ -1538,7 +1538,7 @@ Page({
       })
     }
     if (options.ruid) {
-      wx.setStorageSync('ruid', options.ruid)
+      app.captureReferrer(options.ruid)
     }
     if (wx.getStorageSync('goodscoupon')) {
       var coupon = wx.getStorageSync('goodscoupon')

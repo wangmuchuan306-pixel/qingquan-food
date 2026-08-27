@@ -1747,14 +1747,14 @@ Page({
             var arr = scene.split("&");
             console.log(arr)
             if (arr[1] == "invite") {
-               wx.setStorageSync('ruid', arr[0])
+               app.captureReferrer(arr[0])
                // that.setData({
                //   ruid: arr[0]
                // })
             }
          }
          if (options.ruid) {
-            wx.setStorageSync('ruid', options.ruid)
+            app.captureReferrer(options.ruid)
             // that.setData({
             //   ruid: options.ruid
             // })

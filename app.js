@@ -4,6 +4,7 @@ const util = require('/utils/util.js');
 
 App({
   onLaunch() {
+    this.initializePendingReferrer();
     this.initUpdateManager();
     this.checkUserProfile();
   },
@@ -385,7 +386,8 @@ App({
     };
 
     const token = this.get('token_new');
-    if (token) {
+    // 登录接口建立新会话，禁止携带本地残留旧 token，避免串号
+    if (token && apiUrl.indexOf('/ApiLogin/') === -1) {
       header['access-token'] = token;
     }
 
@@ -481,9 +483,7 @@ App({
         content: '登录状态已过期，请重新登录',
         showCancel: false,
         success: () => {
-          wx.removeStorageSync('token_new');
-          wx.removeStorageSync('uid');
-          wx.removeStorageSync('userinfo');
+          this.clearSession();
           wx.navigateTo({
             url: '/pages/login/login',
           });
@@ -619,6 +619,100 @@ App({
       title: '加载中...',
       mask: true
     });
+  },
+  /**
+   * 保存登录会话：token 必须由后端签发，禁止前端伪造（伪造会导致串号）
+   */
+  saveSession(userInfo) {
+    if (!userInfo || !userInfo.id) return false;
+    const accessToken = userInfo.token || userInfo.access_token || userInfo.accessToken;
+    if (!accessToken) {
+      console.error('[登录] 后端未返回 token，无法建立会话，loginUsd 返回：', userInfo);
+      return false;
+    }
+    if (userInfo.phone) this.set('userPhone', userInfo.phone);
+    this.set('token_new', accessToken);
+    this.set('userinfo', userInfo);
+    this.set('uid', userInfo.id);
+    return true;
+  },
+  /**
+   * 原子清理账号会话，避免 token、uid、userinfo 来自不同账号。
+   */
+  clearSession(options) {
+    const clearReferrer = !options || options.clearReferrer !== false;
+    wx.removeStorageSync('token_new');
+    wx.removeStorageSync('uid');
+    wx.removeStorageSync('userinfo');
+    wx.removeStorageSync('userPhone');
+    if (clearReferrer) this.clearPendingReferrer();
+  },
+  /**
+   * 清理旧版本遗留的裸 ruid。
+   *
+   * 旧实现会永久保存分享人的 id，导致同一设备后续登录的其他账号
+   * 继续携带上一次的推荐关系。新版本只认可与元数据成对写入的值。
+   */
+  initializePendingReferrer() {
+    const token = this.get('token_new');
+    const currentUserId = this.get('uid');
+    const userInfo = this.get('userinfo');
+    const hasAnySessionPart = !!(token || currentUserId || userInfo);
+    const hasCompleteSession = !!(token && currentUserId && userInfo);
+
+    // 兼容旧版本“只删 token、残留 uid/userinfo”的半登录状态。
+    if (hasAnySessionPart && !hasCompleteSession) {
+      this.clearSession({ clearReferrer: false });
+    }
+
+    const referrerId = this.get('ruid');
+    const referrerMeta = this.get('ruid_meta');
+    if (referrerId && String(referrerMeta) !== String(referrerId)) {
+      this.clearPendingReferrer();
+    }
+  },
+  normalizeUserId(userId) {
+    const value = String(userId == null ? '' : userId).trim();
+    if (!/^\d+$/.test(value)) return '';
+    return value.replace(/^0+/, '');
+  },
+  /**
+   * 仅未登录用户可以记录本次分享入口的推荐人。
+   */
+  captureReferrer(userId) {
+    const referrerId = this.normalizeUserId(userId);
+    const currentUserId = this.normalizeUserId(this.get('uid'));
+    const hasSession = !!this.get('token_new');
+
+    if (!referrerId || hasSession || (currentUserId && currentUserId === referrerId)) {
+      this.clearPendingReferrer();
+      return false;
+    }
+
+    this.set('ruid', referrerId);
+    this.set('ruid_meta', referrerId);
+    return true;
+  },
+  getPendingReferrer() {
+    const referrerId = this.normalizeUserId(this.get('ruid'));
+    const referrerMeta = this.get('ruid_meta');
+    const currentUserId = this.normalizeUserId(this.get('uid'));
+
+    if (
+      !referrerId ||
+      String(referrerMeta) !== referrerId ||
+      this.get('token_new') ||
+      (currentUserId && currentUserId === referrerId)
+    ) {
+      this.clearPendingReferrer();
+      return '';
+    }
+
+    return referrerId;
+  },
+  clearPendingReferrer() {
+    wx.removeStorageSync('ruid');
+    wx.removeStorageSync('ruid_meta');
   },
   set: (key, val) => {
     wx.setStorageSync(key, val);

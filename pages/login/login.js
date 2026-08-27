@@ -186,11 +186,8 @@ Page({
     var that = this;
     typeof cb == "function" && cb(getApp().globalData.userInfo)
 
-    var ruid = '';
-    //邀请人的id
-    if (app.get('ruid')) {
-      ruid = app.get('ruid');
-    }
+    // 推荐人只能来自本次未登录状态下的有效分享入口
+    var ruid = app.getPendingReferrer();
     // console.log(ruid)
     // //如果有邀请码  则传邀请码
     // if (that.data.origin_id) {
@@ -217,18 +214,28 @@ Page({
       userinfo: userinfo
     }
     console.log(data)
+    // 登录前原子清空旧账号会话，但保留本次待消费的推荐人
+    app.clearSession({ clearReferrer: false })
     app.apiPost(app.apiList.login, data, (data) => {
       console.log(data)
       that.setData({ loading: false })
 
       if (data.status == 1) {
-        data.data.phone ? wx.setStorageSync('userPhone', data.data.phone) : "";
-        //缓存是否是新用户字段
-        var random = Math.floor((Math.random() + Math.floor(Math.random() * 9 + 1)) * Math.pow(10, 5 - 1));
-        var id = String(random) + data.data.id;
-        wx.setStorageSync('token_new', id);
-        wx.setStorageSync('userinfo', data.data);
-        wx.setStorageSync('uid', data.data.id);
+        // 用后端签发的真实 token 建立会话（兼容顶层/内层两种返回结构）
+        var session = data.data || {};
+        if (!session.token && !session.access_token && !session.accessToken) {
+          session.token = data.token || data.access_token || data.accessToken;
+        }
+        var sessionSaved = app.saveSession(session);
+        if (!sessionSaved) {
+          wx.showToast({
+            title: '登录会话建立失败，请稍后重试',
+            icon: 'none'
+          })
+          return
+        }
+        // 推荐关系仅允许消费一次，避免后续账号复用
+        app.clearPendingReferrer();
         that.setData({
           origin_id: ruid,
         })
@@ -293,7 +300,7 @@ Page({
     this.setData({
       loginShow: false,
     })
-    wx.removeStorageSync('token_new')
+    app.clearSession()
   },
   /**
    * 生命周期函数--监听页面加载

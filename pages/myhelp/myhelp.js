@@ -186,11 +186,8 @@ Page({
             var signature = data.signature;
             var encryptedData = data.encryptedData;
             var iv = data.iv;
-            var ruid = '';
-            //邀请人的id
-            if (app.get('ruid')) {
-              ruid = app.get('ruid');
-            }
+            // 推荐人只能来自本次未登录状态下的有效分享入口
+            var ruid = app.getPendingReferrer();
             var data = {
               code: code,
               rawData: rawData,
@@ -200,15 +197,23 @@ Page({
               origin_id: ruid
             }
             console.log(data);
+            // 登录前原子清空旧账号会话，但保留本次待消费的推荐人
+            app.clearSession({ clearReferrer: false })
             app.apiPost(app.apiList.login, data, (data) => {
               if (data.status == 1) {
-                var random = Math.floor((Math.random() + Math.floor(Math.random() * 9 + 1)) * Math.pow(10, 5 - 1));
-                console.log(random)
-                console.log(String(random) + data.data.id)
-                var id = String(random) + data.data.id;
-                wx.setStorageSync('token_new', id);
-                wx.setStorageSync('userinfo', data.data);
-                wx.setStorageSync('uid', data.data.id);
+                // 用后端签发的真实 token 建立会话
+                var session = data.data || {};
+                if (!session.token && !session.access_token && !session.accessToken) {
+                  session.token = data.token || data.access_token || data.accessToken;
+                }
+                if (!app.saveSession(session)) {
+                  wx.showToast({
+                    title: '登录会话建立失败，请稍后重试',
+                    icon: 'none'
+                  })
+                  return;
+                }
+                app.clearPendingReferrer();
                 //帮助好友助力
                 that.startLxZhuli();
                 that.KanYiDaoInfo(); //助力列表
@@ -563,7 +568,7 @@ Page({
         //查询助力列表
         this.KanYiDaoInfo()
       } else {
-        wx.setStorageSync('ruid', options.uid);
+        app.captureReferrer(options.uid);
         this.setData({
           isThelp: true,
           helpid: options.uid,
@@ -584,7 +589,7 @@ Page({
           //查询助力列表
           this.KanYiDaoInfo()
         } else {
-          wx.setStorageSync('ruid', arr[0]);
+          app.captureReferrer(arr[0]);
           this.setData({
             isThelp: true,
             helpid: arr[0]
