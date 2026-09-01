@@ -122,7 +122,7 @@
           </view>
         </view>
       </view>   -->
-      <view wx:for="{{info.goods}}">
+      <view wx:for="{{info.goods}}" wx:key="goodsid">
         <view style="padding: 30rpx 0;" bindtap="goGoodsinfo" data-gid="{{item.goodsid}}" class="pubborder" data-theme="{{theme}}">
           <view style="display: flex;">
             <image src="{{item.goodsimg}}" style="width: 180rpx;height: 180rpx;border-radius: 8rpx;" mode="aspectFill" />

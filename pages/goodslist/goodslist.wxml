@@ -13,13 +13,13 @@
   <view style="display: flex;width: 100%;">
     <scroll-view style="width: 200rpx;height: {{windowHeight-(100*pixelRatio)}}px;background-color: #eee;" scroll-y>
       <view class="leftbox">
-        <view wx:for="{{catelist}}" class="{{cateindex==index?'thiscate':'catebox'}}" bind:tap="changecate" data-index="{{index}}">{{item.cate_name}}</view>
+        <view wx:for="{{catelist}}" wx:key="id" class="{{cateindex==index?'thiscate':'catebox'}}" bind:tap="changecate" data-index="{{index}}">{{item.cate_name}}</view>
       </view>
     </scroll-view>
     <scroll-view style="width: 550rpx;height: {{windowHeight-(100*pixelRatio)}}px;" scroll-y bindscrolltolower="scrolltolower">
       <view wx:if="{{goodslist.length == 0}}" style="text-align: center;font-size: 30rpx;color: #999;margin-top: 200rpx;">暂无商品</view>
       <block wx:else>
-        <view class="goodsbox" wx:for="{{goodslist}}" bind:tap="choosegoods" data-index="{{index}}">
+        <view class="goodsbox" wx:for="{{goodslist}}" wx:key="goods_id" bind:tap="choosegoods" data-index="{{index}}">
           <image src="{{item.goods_img}}" style="width: 140rpx;height: 140rpx;border-radius: 20rpx;margin-right: 30rpx;" mode="aspectFill" />
           <view>
             <view style="font-size: 28rpx;width: 350rpx;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">{{item.goods_name}}</view>
@@ -35,7 +35,7 @@
   <scroll-view style="width: 100%;height: {{windowHeight-(100*pixelRatio)}}rpx;" scroll-y bindscrolltolower="scrolltolower">
     <view wx:if="{{goodslist.length == 0}}" style="text-align: center;font-size: 30rpx;color: #999;margin-top: 200rpx;">暂无商品</view>
     <block wx:else>
-      <view wx:for="{{goodslist}}" style="width: 690rpx;height: 120rpx;display: flex;align-items: center;justify-content: space-between;margin: 0 30rpx;border-bottom: 2rpx solid #eee;" bind:tap="choosegoods" data-index="{{index}}">
+      <view wx:for="{{goodslist}}" wx:key="goods_id" style="width: 690rpx;height: 120rpx;display: flex;align-items: center;justify-content: space-between;margin: 0 30rpx;border-bottom: 2rpx solid #eee;" bind:tap="choosegoods" data-index="{{index}}">
         <view style="font-size: 26rpx;font-weight: bold;">{{item.goods_name}}</view>
         <view style="font-size: 26rpx;color: #003B73;">￥{{userinfo.level==1?item.memberprice:item.normalprice}}</view>
       </view>

@@ -42,14 +42,14 @@
     "pages/myhelp/myhelp",
     "pages/activity/activity",
     "pages/activitydetail/activitydetail",
-    "pages/rankingList/rankingList"
+    "pages/rankingList/rankingList",
+    "pages/agreement/agreement"
   ],
   "window": {
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "冀唐清泉",
     "navigationBarBackgroundColor": "#ffffff"
   },
-  "componentFramework": "glass-easel",
   "sitemapLocation": "sitemap.json",
   "lazyCodeLoading": "requiredComponents",
   "tabBar": {

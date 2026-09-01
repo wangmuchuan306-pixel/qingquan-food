@@ -30,6 +30,7 @@ Page({
       notexNum: 0,
       specshow: false,
       qiniu: 'https://qiniu.0315678.cn/',
+      tabBarHeight: '',
    },
    notesValue(e) {
       var notesValue = e.detail.value
@@ -901,7 +902,7 @@ Page({
             this.getspecs(res.data, 0)
          }
          wx.hideLoading()
-      }, { requireAuth: false })
+      }, { requireAuth: false, showLoading: false })
    },
    //分类列表
    getgoodscat() {
@@ -1080,6 +1081,10 @@ Page({
    },
    getusersendtime() {
       app.apiPost(app.apiList.getusersendtime, {}, (res) => {
+         // 未登录时静默跳过，不强制登录、不报错
+         if (res.status === 10011) {
+            return;
+         }
          this.setData({
             usersendtime: Number(res.data),
             send_tip: res.twoData
@@ -1094,6 +1099,10 @@ Page({
       var stime = date.getTime() + usersendtime * 60 * 60 * 1000
       const today = new Date(date.setHours(0, 0, 0, 0)).getTime(); //获取当天零点的时间
       app.apiPost(app.apiList.findsendtime, {}, (res) => {
+         // 未登录时静默跳过，不强制登录、不报错
+         if (res.status === 10011) {
+            return;
+         }
          var timelist = []
          const days = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
          const todayweek = new Date().getDay();
@@ -1770,8 +1779,17 @@ Page({
       app.apiPost(app.apiList.getspecs, {
          goods_id: list[index].goods_id
       }, (res) => {
+         // 未登录时静默跳过，浏览商品列表/规格无需强制授权登录
+         if (res.status === 10011) {
+            return
+         }
          let goodslist = this.data.goodslist
          let gIndex = goodslist.findIndex(v => v.goods_id == list[index].goods_id)
+         // 商品不在当前列表（列表可能已刷新/筛选/搜索导致竞态），跳过该商品避免报错，继续下一个
+         if (gIndex === -1) {
+            this.getspecs(list, index + 1)
+            return
+         }
          const specs_pfmoney = Math.min(...res.data.map(item => Number(item['specs_pfmoney'])).filter(price => !isNaN(price)))
          const specs_tgmoney = Math.min(...res.data.map(item => Number(item['specs_tgmoney'])).filter(price => !isNaN(price)))
          const specs_erpmoney = Math.min(...res.data.map(item => Number(item['specs_erpmoney'])).filter(price => !isNaN(price)))
@@ -1788,7 +1806,7 @@ Page({
             goodslist
          })
          this.getspecs(list, index + 1)
-      })
+      }, { requireAuth: false })
    },
    showchospecs(e) {
       var that = this
@@ -1809,6 +1827,10 @@ Page({
          goods_id: this.data.goodslist[index].goods_id
       }, (res) => {
          let goodslist = this.data.goodslist
+         // 防御：列表刷新/筛选后 index 可能越界，跳过避免报错
+         if (!goodslist[index]) {
+            return
+         }
          const specs_pfmoney = Math.min(...res.data.map(item => Number(item['specs_pfmoney'])).filter(price => !isNaN(price)))
          const specs_tgmoney = Math.min(...res.data.map(item => Number(item['specs_tgmoney'])).filter(price => !isNaN(price)))
          const specs_erpmoney = Math.min(...res.data.map(item => Number(item['specs_erpmoney'])).filter(price => !isNaN(price)))

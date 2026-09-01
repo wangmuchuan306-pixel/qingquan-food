@@ -26,7 +26,7 @@
               </view>
             </view>
           </view>
-          <view class="list_center" data-theme="{{theme}}" wx:for="{{list.ordergoods}}">
+          <view class="list_center" data-theme="{{theme}}" wx:for="{{list.ordergoods}}" wx:key="goodsid">
             <!-- 商品图 -->
             <view style="position: relative;">
               <image src="{{item.goodsimg}}" style="width: 168rpx;height: 168rpx;border-radius: 16rpx;" bindtap="goOrderInfo" data-id="{{list.orderno}}" mode="aspectFill" />

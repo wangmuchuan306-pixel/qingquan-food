@@ -8,7 +8,7 @@
       <icon type="search" size="15" style="margin-right: 20rpx;"/>
       <input value="{{inputValue}}" placeholder="请输入商品关键字" placeholder-style="color:#999"	focus="true" style="width: 400rpx;"	bindblur="search" type="text" confirm-type="search" bindinput="searchChenga" />
     </view>
-    <image hidden="{{searchDel}}" src="/images/del.png" bind:tap="searchEmpty" style="width: 30rpx;height: 30rpx;" mode="" />
+    <image hidden="{{searchDel}}" src="/images/del2.png" bind:tap="searchEmpty" style="width: 30rpx;height: 30rpx;" mode="" />
   </view>
   <view style="color:white;" bind:tap="search">搜索</view>
 </view>

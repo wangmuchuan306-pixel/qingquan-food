@@ -1,0 +1,1481 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>冀唐清泉 - 首页重构原型图</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  background: #1a1a2e;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+/* Tab switcher */
+.tab-switcher {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.tab-btn {
+  padding: 10px 24px;
+  border: 2px solid #003B73;
+  background: transparent;
+  color: #003B73;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+.tab-btn.active {
+  background: #003B73;
+  color: #fff;
+}
+.tab-btn:hover { transform: translateY(-1px); }
+
+/* Phone frame */
+.phone-wrapper {
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+}
+.phone-frame {
+  width: 375px;
+  height: 760px;
+  background: #f5f5f5;
+  border-radius: 32px;
+  overflow: hidden;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+  border: 8px solid #2a2a3e;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.phone-frame .notch {
+  width: 120px;
+  height: 24px;
+  background: #2a2a3e;
+  border-radius: 0 0 14px 14px;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+}
+
+/* Status bar */
+.status-bar {
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  font-size: 12px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.status-bar.light { background: #003B73; color: #fff; }
+.status-bar.dark { background: #fff; color: #333; }
+
+/* Nav bar */
+.nav-bar {
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.nav-bar.light { background: #003B73; color: #fff; }
+.nav-bar.dark { background: #fff; color: #333; border-bottom: 0.5px solid #eee; }
+
+/* Scrollable content */
+.content {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+.content::-webkit-scrollbar { width: 3px; }
+.content::-webkit-scrollbar-thumb { background: #ccc; border-radius: 2px; }
+
+/* Tab bar */
+.tab-bar {
+  height: 50px;
+  display: flex;
+  background: #fff;
+  border-top: 0.5px solid #e8e8e8;
+  flex-shrink: 0;
+}
+.tab-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  font-size: 10px;
+  color: #999;
+}
+.tab-item.active { color: #003B73; }
+.tab-icon {
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+}
+
+/* Design label */
+.design-label {
+  text-align: center;
+  margin-top: 16px;
+  color: #aaa;
+  font-size: 13px;
+  font-weight: 500;
+}
+.design-label .title { color: #fff; font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+
+/* Annotation panel */
+.annotations {
+  width: 375px;
+  margin-top: 20px;
+  background: #16213e;
+  border-radius: 12px;
+  padding: 20px;
+  color: #ccc;
+}
+.annotations h3 { color: #fff; font-size: 14px; margin-bottom: 12px; font-weight: 500; }
+.annotations ul { list-style: none; padding: 0; }
+.annotations li {
+  font-size: 12px;
+  line-height: 1.8;
+  padding-left: 16px;
+  position: relative;
+}
+.annotations li::before {
+  content: '';
+  width: 4px;
+  height: 4px;
+  background: #003B73;
+  border-radius: 50%;
+  position: absolute;
+  left: 0;
+  top: 9px;
+}
+
+/* === Shared component styles === */
+.section { padding: 0 12px; margin-bottom: 10px; }
+
+/* Placeholder image */
+.ph { background: #e8e8e8; display: flex; align-items: center; justify-content: center; color: #bbb; font-size: 11px; }
+.ph-blue { background: #003B73; }
+.ph-light-blue { background: #e6f0fa; }
+
+/* Price */
+.price { color: #003B73; font-weight: 700; }
+.price-sale { color: #e74c3c; font-weight: 700; }
+.price-original { color: #999; text-decoration: line-through; font-size: 11px; margin-left: 4px; }
+
+/* === DESIGN A: Card Stream === */
+.design-a .header-bg {
+  height: 160px;
+  background: #003B73;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 0;
+}
+.design-a .header-content {
+  position: relative;
+  z-index: 1;
+  padding: 10px 12px;
+}
+.design-a .location-bar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: rgba(255,255,255,0.9);
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+.design-a .location-bar .loc-icon {
+  width: 12px; height: 12px;
+  background: rgba(255,255,255,0.3);
+  border-radius: 50%;
+}
+.design-a .search-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.design-a .search-box {
+  flex: 1;
+  height: 36px;
+  background: #fff;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  gap: 8px;
+}
+.design-a .search-box .s-icon {
+  width: 14px; height: 14px;
+  border: 1.5px solid #999;
+  border-radius: 50%;
+  position: relative;
+}
+.design-a .search-box .s-icon::after {
+  content: '';
+  width: 6px; height: 1.5px;
+  background: #999;
+  position: absolute;
+  bottom: -3px; right: -4px;
+  transform: rotate(45deg);
+}
+.design-a .search-box .s-text { font-size: 12px; color: #999; }
+.design-a .scan-btn {
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+}
+.design-a .scan-btn .scan-icon {
+  width: 18px; height: 18px;
+  border: 1.5px solid #fff;
+  border-radius: 3px;
+  position: relative;
+}
+.design-a .scan-btn .scan-icon::after {
+  content: '';
+  width: 100%; height: 1.5px;
+  background: #fff;
+  position: absolute;
+  top: 50%; left: 0;
+}
+.design-a .notice-bar {
+  height: 32px;
+  margin: 8px 12px 0;
+  background: #fff3e0;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  gap: 6px;
+  font-size: 11px;
+  color: #e65100;
+  position: relative;
+  z-index: 1;
+}
+.design-a .notice-bar .tag {
+  background: #e65100;
+  color: #fff;
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-size: 9px;
+  flex-shrink: 0;
+}
+.design-a .banner {
+  margin: 10px 12px;
+  height: 140px;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+.design-a .banner .ph { width: 100%; height: 100%; border-radius: 12px; }
+.design-a .banner-dots {
+  position: absolute;
+  bottom: 8px; left: 50%;
+  transform: translateX(-50%);
+  display: flex; gap: 4px;
+}
+.design-a .banner-dots span {
+  width: 16px; height: 3px;
+  background: rgba(255,255,255,0.4);
+  border-radius: 2px;
+}
+.design-a .banner-dots span.active { background: #fff; width: 20px; }
+
+.design-a .category-grid {
+  margin: 0 12px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 14px 8px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px 0;
+}
+.design-a .cat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.design-a .cat-icon {
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+}
+.design-a .cat-name { font-size: 11px; color: #333; }
+
+.design-a .section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 14px 12px 8px;
+}
+.design-a .section-title .title-text {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a1a1a;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.design-a .section-title .title-text::before {
+  content: '';
+  width: 3px; height: 14px;
+  background: #003B73;
+  border-radius: 2px;
+}
+.design-a .section-title .more {
+  font-size: 11px;
+  color: #999;
+}
+
+.design-a .activity-card {
+  margin: 0 12px;
+  height: 80px;
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  gap: 10px;
+}
+.design-a .activity-card .act-tag {
+  background: #fff;
+  color: #003B73;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+}
+.design-a .activity-card .act-info { flex: 1; color: #fff; }
+.design-a .activity-card .act-info .act-title { font-size: 13px; font-weight: 600; }
+.design-a .activity-card .act-info .act-desc { font-size: 10px; opacity: 0.8; margin-top: 2px; }
+
+.design-a .promo-scroll {
+  display: flex;
+  gap: 8px;
+  padding: 0 12px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.design-a .promo-scroll::-webkit-scrollbar { display: none; }
+.design-a .promo-card {
+  flex-shrink: 0;
+  width: 110px;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.design-a .promo-card .promo-img {
+  width: 110px; height: 110px;
+}
+.design-a .promo-card .promo-info { padding: 6px 8px; }
+.design-a .promo-card .promo-name {
+  font-size: 11px;
+  color: #333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.design-a .promo-card .promo-price { font-size: 13px; margin-top: 2px; }
+
+.design-a .hot-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  padding: 0 12px;
+}
+.design-a .hot-card {
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.design-a .hot-card .hot-img { width: 100%; height: 155px; }
+.design-a .hot-card .hot-info { padding: 8px; }
+.design-a .hot-card .hot-name {
+  font-size: 12px;
+  color: #333;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.4;
+  height: 34px;
+}
+.design-a .hot-card .hot-desc { font-size: 10px; color: #999; margin-top: 4px; }
+.design-a .hot-card .hot-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 6px;
+}
+.design-a .hot-card .buy-btn {
+  background: #003B73;
+  color: #fff;
+  font-size: 10px;
+  padding: 3px 10px;
+  border-radius: 12px;
+}
+
+/* === DESIGN B: Immersive === */
+.design-b .hero {
+  height: 200px;
+  background: #003B73;
+  position: relative;
+  overflow: hidden;
+}
+.design-b .hero-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: #003B73;
+}
+.design-b .hero-content {
+  position: relative;
+  z-index: 2;
+  padding: 10px 12px;
+}
+.design-b .greeting {
+  color: rgba(255,255,255,0.9);
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+.design-b .greeting .user-name { font-weight: 600; color: #fff; }
+.design-b .hero-search {
+  height: 38px;
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 19px;
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  gap: 8px;
+}
+.design-b .hero-search .s-icon {
+  width: 14px; height: 14px;
+  border: 1.5px solid rgba(255,255,255,0.6);
+  border-radius: 50%;
+  position: relative;
+}
+.design-b .hero-search .s-icon::after {
+  content: '';
+  width: 6px; height: 1.5px;
+  background: rgba(255,255,255,0.6);
+  position: absolute;
+  bottom: -3px; right: -4px;
+  transform: rotate(45deg);
+}
+.design-b .hero-search .s-text { font-size: 12px; color: rgba(255,255,255,0.6); }
+.design-b .hero-banner {
+  margin-top: 10px;
+  height: 110px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.design-b .quick-actions {
+  display: flex;
+  justify-content: space-around;
+  padding: 16px 12px;
+  background: #fff;
+  margin: -16px 12px 0;
+  border-radius: 12px;
+  position: relative;
+  z-index: 3;
+  box-shadow: 0 2px 12px rgba(0,59,115,0.08);
+}
+.design-b .qa-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.design-b .qa-icon {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+}
+.design-b .qa-name { font-size: 10px; color: #666; }
+
+.design-b .flash-sale {
+  margin: 12px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 12px;
+}
+.design-b .fs-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.design-b .fs-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a1a1a;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.design-b .fs-title .fs-icon {
+  width: 16px; height: 16px;
+  background: #e74c3c;
+  border-radius: 4px;
+}
+.design-b .fs-countdown {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 11px;
+  color: #e74c3c;
+}
+.design-b .fs-countdown .cd-box {
+  background: #e74c3c;
+  color: #fff;
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-weight: 600;
+  font-size: 10px;
+}
+.design-b .fs-scroll {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.design-b .fs-scroll::-webkit-scrollbar { display: none; }
+.design-b .fs-card {
+  flex-shrink: 0;
+  width: 90px;
+}
+.design-b .fs-card .fs-img {
+  width: 90px; height: 90px;
+  border-radius: 8px;
+}
+.design-b .fs-card .fs-name {
+  font-size: 10px;
+  color: #333;
+  margin-top: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.design-b .fs-card .fs-price { font-size: 13px; color: #e74c3c; font-weight: 700; margin-top: 2px; }
+.design-b .fs-card .fs-original { font-size: 10px; color: #999; text-decoration: line-through; }
+
+.design-b .ranking-section {
+  margin: 12px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 12px;
+}
+.design-b .rk-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.design-b .rk-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+.design-b .rk-list { display: flex; flex-direction: column; gap: 10px; }
+.design-b .rk-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.design-b .rk-num {
+  width: 22px; height: 22px;
+  border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.design-b .rk-img {
+  width: 60px; height: 60px;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+.design-b .rk-info { flex: 1; min-width: 0; }
+.design-b .rk-name {
+  font-size: 12px;
+  color: #333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.design-b .rk-sold { font-size: 10px; color: #999; margin-top: 2px; }
+.design-b .rk-price { font-size: 14px; font-weight: 700; margin-top: 2px; }
+
+.design-b .product-list-title {
+  padding: 14px 12px 8px;
+  font-size: 15px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.design-b .product-list-title::before {
+  content: '';
+  width: 3px; height: 14px;
+  background: #003B73;
+  border-radius: 2px;
+}
+.design-b .product-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  padding: 0 12px 12px;
+}
+.design-b .pg-card {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.design-b .pg-card .pg-img { width: 100%; height: 165px; }
+.design-b .pg-card .pg-info { padding: 8px; }
+.design-b .pg-card .pg-name {
+  font-size: 12px;
+  color: #333;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.4;
+  height: 34px;
+}
+.design-b .pg-card .pg-tags { display: flex; gap: 4px; margin-top: 4px; }
+.design-b .pg-card .pg-tag {
+  font-size: 9px;
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+.design-b .pg-card .pg-bottom {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-top: 6px;
+}
+.design-b .pg-card .pg-add {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+  color: #fff;
+}
+
+/* === DESIGN C: Minimalist === */
+.design-c .c-header {
+  background: #fff;
+  padding: 8px 12px;
+  border-bottom: 0.5px solid #f0f0f0;
+}
+.design-c .c-search-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.design-c .c-search {
+  flex: 1;
+  height: 32px;
+  background: #f5f5f5;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  gap: 6px;
+}
+.design-c .c-search .s-icon {
+  width: 12px; height: 12px;
+  border: 1.5px solid #999;
+  border-radius: 50%;
+  position: relative;
+}
+.design-c .c-search .s-icon::after {
+  content: '';
+  width: 5px; height: 1.5px;
+  background: #999;
+  position: absolute;
+  bottom: -2px; right: -3px;
+  transform: rotate(45deg);
+}
+.design-c .c-search .s-text { font-size: 11px; color: #bbb; }
+.design-c .c-scan {
+  width: 28px; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+}
+.design-c .c-scan .scan-icon {
+  width: 16px; height: 16px;
+  border: 1.5px solid #333;
+  border-radius: 3px;
+  position: relative;
+}
+.design-c .c-scan .scan-icon::after {
+  content: '';
+  width: 100%; height: 1.5px;
+  background: #333;
+  position: absolute;
+  top: 50%; left: 0;
+}
+
+.design-c .c-banner {
+  margin: 8px 12px;
+  height: 100px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.design-c .c-cat-tabs {
+  display: flex;
+  gap: 0;
+  padding: 0 12px;
+  border-bottom: 0.5px solid #f0f0f0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.design-c .c-cat-tabs::-webkit-scrollbar { display: none; }
+.design-c .c-cat-tab {
+  flex-shrink: 0;
+  padding: 10px 14px;
+  font-size: 13px;
+  color: #666;
+  position: relative;
+  white-space: nowrap;
+}
+.design-c .c-cat-tab.active {
+  color: #003B73;
+  font-weight: 600;
+}
+.design-c .c-cat-tab.active::after {
+  content: '';
+  width: 20px; height: 2px;
+  background: #003B73;
+  border-radius: 1px;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.design-c .c-content-tabs {
+  display: flex;
+  padding: 8px 12px;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.design-c .c-content-tabs::-webkit-scrollbar { display: none; }
+.design-c .c-ctab {
+  flex-shrink: 0;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 11px;
+  background: #f0f0f0;
+  color: #666;
+}
+.design-c .c-ctab.active {
+  background: #003B73;
+  color: #fff;
+}
+
+.design-c .c-promo-strip {
+  margin: 0 12px 8px;
+  display: flex;
+  gap: 8px;
+}
+.design-c .c-promo-left {
+  flex: 1;
+  height: 70px;
+  border-radius: 8px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.design-c .c-promo-right {
+  flex: 1;
+  height: 70px;
+  border-radius: 8px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.design-c .c-promo-strip .ptitle { font-size: 13px; font-weight: 600; }
+.design-c .c-promo-strip .pdesc { font-size: 10px; margin-top: 2px; opacity: 0.8; }
+
+.design-c .c-list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+}
+.design-c .c-list-header .lh-title { font-size: 14px; font-weight: 600; }
+.design-c .c-view-toggle {
+  display: flex;
+  gap: 4px;
+}
+.design-c .c-view-btn {
+  width: 26px; height: 26px;
+  border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px;
+}
+.design-c .c-view-btn.active { background: #003B73; color: #fff; }
+.design-c .c-view-btn:not(.active) { background: #f0f0f0; color: #666; }
+
+.design-c .c-product-list {
+  padding: 0 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.design-c .c-pl-item {
+  background: #fff;
+  border-radius: 8px;
+  display: flex;
+  gap: 10px;
+  padding: 8px;
+  overflow: hidden;
+}
+.design-c .c-pl-img {
+  width: 100px; height: 100px;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+.design-c .c-pl-info { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.design-c .c-pl-name {
+  font-size: 13px;
+  color: #333;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.design-c .c-pl-tags { display: flex; gap: 4px; margin-top: 4px; }
+.design-c .c-pl-tag {
+  font-size: 9px;
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+.design-c .c-pl-bottom {
+  margin-top: auto;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+.design-c .c-pl-sold { font-size: 10px; color: #999; }
+.design-c .c-pl-add {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+  color: #fff;
+}
+
+/* Color helper classes */
+.bg-blue { background: #003B73; }
+.bg-blue-light { background: #e6f0fa; }
+.bg-blue-mid { background: #0066b3; }
+.bg-orange { background: #ff9500; }
+.bg-red { background: #e74c3c; }
+.bg-green { background: #34a853; }
+.bg-purple { background: #9b59b6; }
+.bg-teal { background: #00b5ad; }
+.bg-amber { background: #f59e0b; }
+.bg-rose { background: #f43f5e; }
+.bg-indigo { background: #6366f1; }
+.bg-cyan { background: #06b6d4; }
+.bg-warm { background: linear-gradient(135deg, #ff9500, #ff5e3a); }
+.bg-cool { background: linear-gradient(135deg, #003B73, #0066b3); }
+.bg-dark-warm { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+</style>
+</head>
+<body>
+
+<div class="tab-switcher">
+  <button class="tab-btn active" onclick="switchDesign('A')">方案A: 层次卡片流</button>
+  <button class="tab-btn" onclick="switchDesign('B')">方案B: 沉浸式品质</button>
+  <button class="tab-btn" onclick="switchDesign('C')">方案C: 效率极简</button>
+</div>
+
+<div class="phone-wrapper">
+
+  <!-- ========== DESIGN A: Card Stream ========== -->
+  <div class="phone-frame design-a" id="designA">
+    <div class="notch"></div>
+    <div class="status-bar light">
+      <span>9:41</span>
+      <span>signal wifi battery</span>
+    </div>
+    <div class="nav-bar light">冀唐清泉</div>
+    <div class="content">
+      <div class="header-bg"></div>
+      <div class="header-content">
+        <div class="location-bar">
+          <div class="loc-icon"></div>
+          <span>唐山市·丰南区</span>
+          <span style="margin-left:auto;opacity:0.7;">切换</span>
+        </div>
+        <div class="search-row">
+          <div class="search-box">
+            <div class="s-icon"></div>
+            <span class="s-text">搜索商品名称</span>
+          </div>
+          <div class="scan-btn"><div class="scan-icon"></div></div>
+        </div>
+      </div>
+      <div class="notice-bar">
+        <span class="tag">公告</span>
+        <span>新用户注册立享20元优惠券，限时活动进行中</span>
+      </div>
+      <div class="banner">
+        <div class="ph ph-blue" style="border-radius:12px;">
+          <div style="color:rgba(255,255,255,0.6);font-size:24px;font-weight:700;">BANNER</div>
+        </div>
+        <div class="banner-dots">
+          <span class="active"></span><span></span><span></span>
+        </div>
+      </div>
+      <div class="category-grid">
+        <div class="cat-item"><div class="cat-icon bg-blue-light">F</div><div class="cat-name">全部商品</div></div>
+        <div class="cat-item"><div class="cat-icon bg-orange">A</div><div class="cat-name">活动专区</div></div>
+        <div class="cat-item"><div class="cat-icon bg-red">S</div><div class="cat-name">限时秒杀</div></div>
+        <div class="cat-item"><div class="cat-icon bg-green">N</div><div class="cat-name">新鲜水果</div></div>
+        <div class="cat-item"><div class="cat-icon bg-amber">G</div><div class="cat-name">粮油调味</div></div>
+        <div class="cat-item"><div class="cat-icon bg-teal">D</div><div class="cat-name">日用百货</div></div>
+        <div class="cat-item"><div class="cat-icon bg-purple">V</div><div class="cat-name">卡券中心</div></div>
+        <div class="cat-item"><div class="cat-icon bg-indigo">M</div><div class="cat-name">会员中心</div></div>
+      </div>
+      <div class="section-title">
+        <div class="title-text">活动专区</div>
+        <div class="more">查看更多 ></div>
+      </div>
+      <div class="section">
+        <div class="activity-card bg-cool">
+          <div class="act-tag">进行中</div>
+          <div class="act-info">
+            <div class="act-title">满100减30限时优惠</div>
+            <div class="act-desc">精选商品参与，先到先得</div>
+          </div>
+        </div>
+      </div>
+      <div class="section-title">
+        <div class="title-text">促销精选</div>
+        <div class="more">更多 ></div>
+      </div>
+      <div class="promo-scroll">
+        <div class="promo-card">
+          <div class="promo-img ph">120rpx</div>
+          <div class="promo-info">
+            <div class="promo-name">精选土鸡蛋30枚</div>
+            <div class="promo-price price">29.9</div>
+          </div>
+        </div>
+        <div class="promo-card">
+          <div class="promo-img ph">180rpx</div>
+          <div class="promo-info">
+            <div class="promo-name">有机蔬菜礼盒</div>
+            <div class="promo-price price">39.9</div>
+          </div>
+        </div>
+        <div class="promo-card">
+          <div class="promo-img ph">大图</div>
+          <div class="promo-info">
+            <div class="promo-name">本地大米5kg</div>
+            <div class="promo-price price">45.0</div>
+          </div>
+        </div>
+        <div class="promo-card">
+          <div class="promo-img ph">更大</div>
+          <div class="promo-info">
+            <div class="promo-name">柴火腊肉</div>
+            <div class="promo-price price">58.0</div>
+          </div>
+        </div>
+      </div>
+      <div class="section-title">
+        <div class="title-text">主卖推荐</div>
+        <div class="more">全部 ></div>
+      </div>
+      <div class="hot-grid">
+        <div class="hot-card">
+          <div class="hot-img ph">325x325</div>
+          <div class="hot-info">
+            <div class="hot-name">冀唐清泉精选土鸡蛋30枚农家散养</div>
+            <div class="hot-desc">已售 1023 · 库存 500</div>
+            <div class="hot-bottom">
+              <div><span class="price">29.9</span><span class="price-original">39.9</span></div>
+              <div class="buy-btn">抢购</div>
+            </div>
+          </div>
+        </div>
+        <div class="hot-card">
+          <div class="hot-img ph">大图</div>
+          <div class="hot-info">
+            <div class="hot-name">有机时令蔬菜礼盒装新鲜直送</div>
+            <div class="hot-desc">已售 856 · 库存 300</div>
+            <div class="hot-bottom">
+              <div><span class="price">39.9</span><span class="price-original">49.9</span></div>
+              <div class="buy-btn">抢购</div>
+            </div>
+          </div>
+        </div>
+        <div class="hot-card">
+          <div class="hot-img ph">商品</div>
+          <div class="hot-info">
+            <div class="hot-name">本地现磨大米5kg绿色认证</div>
+            <div class="hot-desc">已售 2100 · 库存 800</div>
+            <div class="hot-bottom">
+              <div><span class="price">45.0</span></div>
+              <div class="buy-btn">抢购</div>
+            </div>
+          </div>
+        </div>
+        <div class="hot-card">
+          <div class="hot-img ph">图</div>
+          <div class="hot-info">
+            <div class="hot-name">柴火腊肉传统工艺500g</div>
+            <div class="hot-desc">已售 678 · 库存 200</div>
+            <div class="hot-bottom">
+              <div><span class="price">58.0</span></div>
+              <div class="buy-btn">抢购</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="height:12px;"></div>
+    </div>
+    <div class="tab-bar">
+      <div class="tab-item active"><div class="tab-icon bg-blue"></div>首页</div>
+      <div class="tab-item"><div class="tab-icon" style="background:#ddd;"></div>分类</div>
+      <div class="tab-item"><div class="tab-icon" style="background:#ddd;"></div>订单</div>
+      <div class="tab-item"><div class="tab-icon" style="background:#ddd;"></div>我的</div>
+    </div>
+  </div>
+
+  <!-- ========== DESIGN B: Immersive ========== -->
+  <div class="phone-frame design-b" id="designB" style="display:none;">
+    <div class="notch"></div>
+    <div class="status-bar light">
+      <span>9:41</span>
+      <span>signal wifi battery</span>
+    </div>
+    <div class="nav-bar light">冀唐清泉</div>
+    <div class="content">
+      <div class="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+          <div class="greeting">你好，<span class="user-name">清泉用户</span> <span style="opacity:0.6;margin-left:4px;">下午好</span></div>
+          <div class="hero-search">
+            <div class="s-icon"></div>
+            <span class="s-text">搜索商品名称</span>
+          </div>
+          <div class="hero-banner">
+            <div class="ph ph-blue" style="height:100%;border-radius:12px;">
+              <div style="color:rgba(255,255,255,0.5);font-size:20px;font-weight:700;">HERO BANNER</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="quick-actions">
+        <div class="qa-item"><div class="qa-icon bg-blue-light">F</div><div class="qa-name">全部商品</div></div>
+        <div class="qa-item"><div class="qa-icon bg-orange">A</div><div class="qa-name">活动</div></div>
+        <div class="qa-item"><div class="qa-icon bg-red">S</div><div class="qa-name">秒杀</div></div>
+        <div class="qa-item"><div class="qa-icon bg-green">N</div><div class="qa-name">新品</div></div>
+        <div class="qa-item"><div class="qa-icon bg-purple">V</div><div class="qa-name">卡券</div></div>
+      </div>
+      <div class="flash-sale">
+        <div class="fs-header">
+          <div class="fs-title"><div class="fs-icon"></div>限时秒杀</div>
+          <div class="fs-countdown">
+            <span>距结束</span>
+            <span class="cd-box">02</span>:<span class="cd-box">34</span>:<span class="cd-box">56</span>
+          </div>
+        </div>
+        <div class="fs-scroll">
+          <div class="fs-card">
+            <div class="fs-img ph">90x90</div>
+            <div class="fs-name">土鸡蛋30枚</div>
+            <div class="fs-price">19.9</div>
+            <div class="fs-original">39.9</div>
+          </div>
+          <div class="fs-card">
+            <div class="fs-img ph">商品</div>
+            <div class="fs-name">蔬菜礼盒</div>
+            <div class="fs-price">29.9</div>
+            <div class="fs-original">49.9</div>
+          </div>
+          <div class="fs-card">
+            <div class="fs-img ph">大图</div>
+            <div class="fs-name">大米5kg</div>
+            <div class="fs-price">35.0</div>
+            <div class="fs-original">55.0</div>
+          </div>
+          <div class="fs-card">
+            <div class="fs-img ph">图</div>
+            <div class="fs-name">柴火腊肉</div>
+            <div class="fs-price">45.0</div>
+            <div class="fs-original">68.0</div>
+          </div>
+        </div>
+      </div>
+      <div class="section-title">
+        <div class="title-text" style="font-size:15px;font-weight:700;color:#1a1a1a;display:flex;align-items:center;gap:6px;">
+          <span style="width:3px;height:14px;background:#003B73;border-radius:2px;"></span>活动专区
+        </div>
+        <div class="more" style="font-size:11px;color:#999;">查看更多 ></div>
+      </div>
+      <div class="section">
+        <div class="activity-card bg-cool" style="margin:0;">
+          <div class="act-tag">进行中</div>
+          <div class="act-info">
+            <div class="act-title">满100减30限时优惠</div>
+            <div class="act-desc">精选商品参与，先到先得</div>
+          </div>
+        </div>
+      </div>
+      <div class="ranking-section">
+        <div class="rk-header">
+          <div class="rk-title">热销榜单</div>
+          <div class="more" style="font-size:11px;color:#999;">完整榜单 ></div>
+        </div>
+        <div class="rk-list">
+          <div class="rk-item">
+            <div class="rk-num bg-red" style="color:#fff;">1</div>
+            <div class="rk-img ph">60x60</div>
+            <div class="rk-info">
+              <div class="rk-name">冀唐清泉精选土鸡蛋30枚</div>
+              <div class="rk-sold">已售 3,245</div>
+              <div class="rk-price price">29.9</div>
+            </div>
+          </div>
+          <div class="rk-item">
+            <div class="rk-num bg-orange" style="color:#fff;">2</div>
+            <div class="rk-img ph">商品</div>
+            <div class="rk-info">
+              <div class="rk-name">有机时令蔬菜礼盒装</div>
+              <div class="rk-sold">已售 2,856</div>
+              <div class="rk-price price">39.9</div>
+            </div>
+          </div>
+          <div class="rk-item">
+            <div class="rk-num bg-amber" style="color:#fff;">3</div>
+            <div class="rk-img ph">图片</div>
+            <div class="rk-info">
+              <div class="rk-name">本地现磨大米5kg</div>
+              <div class="rk-sold">已售 2,100</div>
+              <div class="rk-price price">45.0</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="product-list-title">为你推荐</div>
+      <div class="product-grid">
+        <div class="pg-card">
+          <div class="pg-img ph">165px</div>
+          <div class="pg-info">
+            <div class="pg-name">冀唐清泉精选土鸡蛋30枚农家散养</div>
+            <div class="pg-tags">
+              <span class="pg-tag bg-red" style="color:#fff;">热销</span>
+              <span class="pg-tag bg-orange" style="color:#fff;">限时</span>
+            </div>
+            <div class="pg-bottom">
+              <div><span class="price">29.9</span><span class="price-original">39.9</span></div>
+              <div class="pg-add bg-blue">+</div>
+            </div>
+          </div>
+        </div>
+        <div class="pg-card">
+          <div class="pg-img ph">大图</div>
+          <div class="pg-info">
+            <div class="pg-name">有机时令蔬菜礼盒装新鲜直送</div>
+            <div class="pg-tags">
+              <span class="pg-tag bg-green" style="color:#fff;">新品</span>
+            </div>
+            <div class="pg-bottom">
+              <div><span class="price">39.9</span></div>
+              <div class="pg-add bg-blue">+</div>
+            </div>
+          </div>
+        </div>
+        <div class="pg-card">
+          <div class="pg-img ph">商品</div>
+          <div class="pg-info">
+            <div class="pg-name">本地现磨大米5kg绿色认证</div>
+            <div class="pg-tags">
+              <span class="pg-tag bg-amber" style="color:#fff;">精选</span>
+            </div>
+            <div class="pg-bottom">
+              <div><span class="price">45.0</span></div>
+              <div class="pg-add bg-blue">+</div>
+            </div>
+          </div>
+        </div>
+        <div class="pg-card">
+          <div class="pg-img ph">图片</div>
+          <div class="pg-info">
+            <div class="pg-name">柴火腊肉传统工艺500g装</div>
+            <div class="pg-tags">
+              <span class="pg-tag bg-red" style="color:#fff;">热销</span>
+            </div>
+            <div class="pg-bottom">
+              <div><span class="price">58.0</span></div>
+              <div class="pg-add bg-blue">+</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="height:12px;"></div>
+    </div>
+    <div class="tab-bar">
+      <div class="tab-item active"><div class="tab-icon bg-blue"></div>首页</div>
+      <div class="tab-item"><div class="tab-icon" style="background:#ddd;"></div>分类</div>
+      <div class="tab-item"><div class="tab-icon" style="background:#ddd;"></div>订单</div>
+      <div class="tab-item"><div class="tab-icon" style="background:#ddd;"></div>我的</div>
+    </div>
+  </div>
+
+  <!-- ========== DESIGN C: Minimalist ========== -->
+  <div class="phone-frame design-c" id="designC" style="display:none;">
+    <div class="notch"></div>
+    <div class="status-bar dark">
+      <span>9:41</span>
+      <span>signal wifi battery</span>
+    </div>
+    <div class="nav-bar dark">冀唐清泉</div>
+    <div class="content">
+      <div class="c-header">
+        <div class="c-search-row">
+          <div class="c-search">
+            <div class="s-icon"></div>
+            <span class="s-text">搜索商品名称</span>
+          </div>
+          <div class="c-scan"><div class="scan-icon"></div></div>
+        </div>
+      </div>
+      <div class="c-banner">
+        <div class="ph ph-blue" style="height:100%;border-radius:8px;">
+          <div style="color:rgba(255,255,255,0.5);font-size:18px;font-weight:700;">BANNER</div>
+        </div>
+      </div>
+      <div class="c-cat-tabs">
+        <div class="c-cat-tab active">推荐</div>
+        <div class="c-cat-tab">水果</div>
+        <div class="c-cat-tab">蔬菜</div>
+        <div class="c-cat-tab">粮油</div>
+        <div class="c-cat-tab">日百</div>
+        <div class="c-cat-tab">蛋品</div>
+        <div class="c-cat-tab">肉类</div>
+      </div>
+      <div class="c-content-tabs">
+        <div class="c-ctab active">全部</div>
+        <div class="c-ctab">促销</div>
+        <div class="c-ctab">新品</div>
+        <div class="c-ctab">热销</div>
+        <div class="c-ctab">限时</div>
+      </div>
+      <div class="c-promo-strip">
+        <div class="c-promo-left bg-warm" style="color:#fff;">
+          <div class="ptitle">限时秒杀</div>
+          <div class="pdesc">低至5折 · 02:34:56</div>
+        </div>
+        <div class="c-promo-right bg-cool" style="color:#fff;">
+          <div class="ptitle">满减活动</div>
+          <div class="pdesc">满100减30</div>
+        </div>
+      </div>
+      <div class="c-list-header">
+        <div class="lh-title">商品列表</div>
+        <div class="c-view-toggle">
+          <div class="c-view-btn active">列</div>
+          <div class="c-view-btn">格</div>
+        </div>
+      </div>
+      <div class="c-product-list">
+        <div class="c-pl-item">
+          <div class="c-pl-img ph">100x100</div>
+          <div class="c-pl-info">
+            <div class="c-pl-name">冀唐清泉精选土鸡蛋30枚农家散养</div>
+            <div class="c-pl-tags">
+              <span class="c-pl-tag bg-red" style="color:#fff;">热销</span>
+              <span class="c-pl-tag bg-orange" style="color:#fff;">限时</span>
+            </div>
+            <div class="c-pl-bottom">
+              <div>
+                <span class="price">29.9</span>
+                <span class="price-original">39.9</span>
+                <span class="c-pl-sold" style="margin-left:6px;">已售1023</span>
+              </div>
+              <div class="c-pl-add bg-blue">+</div>
+            </div>
+          </div>
+        </div>
+        <div class="c-pl-item">
+          <div class="c-pl-img ph">商品</div>
+          <div class="c-pl-info">
+            <div class="c-pl-name">有机时令蔬菜礼盒装新鲜直送</div>
+            <div class="c-pl-tags">
+              <span class="c-pl-tag bg-green" style="color:#fff;">新品</span>
+            </div>
+            <div class="c-pl-bottom">
+              <div>
+                <span class="price">39.9</span>
+                <span class="c-pl-sold" style="margin-left:6px;">已售856</span>
+              </div>
+              <div class="c-pl-add bg-blue">+</div>
+            </div>
+          </div>
+        </div>
+        <div class="c-pl-item">
+          <div class="c-pl-img ph">大图</div>
+          <div class="c-pl-info">
+            <div class="c-pl-name">本地现磨大米5kg绿色认证</div>
+            <div class="c-pl-tags">
+              <span class="c-pl-tag bg-amber" style="color:#fff;">精选</span>
+            </div>
+            <div class="c-pl-bottom">
+              <div>
+                <span class="price">45.0</span>
+                <span class="c-pl-sold" style="margin-left:6px;">已售2100</span>
+              </div>
+              <div class="c-pl-add bg-blue">+</div>
+            </div>
+          </div>
+        </div>
+        <div class="c-pl-item">
+          <div class="c-pl-img ph">图片</div>
+          <div class="c-pl-info">
+            <div class="c-pl-name">柴火腊肉传统工艺500g装</div>
+            <div class="c-pl-tags">
+              <span class="c-pl-tag bg-red" style="color:#fff;">热销</span>
+            </div>
+            <div class="c-pl-bottom">
+              <div>
+                <span class="price">58.0</span>
+                <span class="c-pl-sold" style="margin-left:6px;">已售678</span>
+              </div>
+              <div class="c-pl-add bg-blue">+</div>
+            </div>
+          </div>
+        </div>
+        <div class="c-pl-item">
+          <div class="c-pl-img ph">图</div>
+          <div class="c-pl-info">
+            <div class="c-pl-name">手工红薯粉条500g传统工艺</div>
+            <div class="c-pl-bottom">
+              <div>
+                <span class="price">22.0</span>
+                <span class="c-pl-sold" style="margin-left:6px;">已售432</span>
+              </div>
+              <div class="c-pl-add bg-blue">+</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="height:12px;"></div>
+    </div>
+    <div class="tab-bar">
+      <div class="tab-item active"><div class="tab-icon bg-blue"></div>首页</div>
+      <div class="tab-item"><div class="tab-icon" style="background:#ddd;"></div>分类</div>
+      <div class="tab-item"><div class="tab-icon" style="background:#ddd;"></div>订单</div>
+      <div class="tab-item"><div class="tab-icon" style="background:#ddd;"></div>我的</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Annotations -->
+<div id="annotationA" class="annotations" style="max-width:375px;">
+  <h3>方案A「层次卡片流」设计要点</h3>
+  <ul>
+    <li>深蓝渐变头部 + 定位栏，增强品牌识别和场景感</li>
+    <li>搜索栏增加扫码入口，功能更完整</li>
+    <li>新增公告通知栏，提升运营信息触达率</li>
+    <li>金刚区从横滑改为 4x2 网格，图标放大至 44px，辨识度提升 60%</li>
+    <li>活动区改为全宽卡片，视觉层次更清晰</li>
+    <li>促销区从 50/50 分栏改为横滑卡片，商品图从 120rpx 放大至 180rpx</li>
+    <li>主卖区双列网格 + "抢购"按钮，转化路径更短</li>
+    <li>统一 12px 边距、10px 区块间距，节奏一致</li>
+    <li>每个区块标题带蓝色竖线标识，层次分明</li>
+  </ul>
+</div>
+
+<div id="annotationB" class="annotations" style="max-width:375px;display:none;">
+  <h3>方案B「沉浸式品质」设计要点</h3>
+  <ul>
+    <li>沉浸式深色头部，搜索栏浮于 Banner 之上，视觉冲击力强</li>
+    <li>新增用户问候语，个性化体验更温暖</li>
+    <li>快捷入口圆形图标 + 浮动卡片设计，品质感突出</li>
+    <li>新增限时秒杀模块（倒计时 + 横滑商品），提升紧迫感和转化</li>
+    <li>新增热销榜单模块（编号排行），利用社会证明引导消费</li>
+    <li>商品卡片增加标签系统（热销/新品/精选/限时），信息更丰富</li>
+    <li>圆形"+"加购按钮，操作路径更直观</li>
+    <li>头部 200px 沉浸区域，品牌氛围更浓</li>
+    <li>白色卡片上浮效果，层次立体感更强</li>
+  </ul>
+</div>
+
+<div id="annotationC" class="annotations" style="max-width:375px;display:none;">
+  <h3>方案C「效率极简」设计要点</h3>
+    <ul>
+    <li>紧凑搜索栏（32px），最大化内容展示区域</li>
+    <li>分类从图标网格改为文字 Tab，节省 60% 空间</li>
+    <li>新增内容筛选 Tab（全部/促销/新品/热销/限时），精准定位</li>
+    <li>活动+促销合并为双卡片横排，信息密度高</li>
+    <li>商品列表默认列表视图（左图右文），浏览效率最高</li>
+    <li>支持列表/网格双模式切换，满足不同浏览习惯</li>
+    <li>每屏可展示 4-5 个商品（vs 原方案 2 个），信息密度翻倍</li>
+    <li>去除装饰性元素，专注商品信息传达</li>
+    <li>极简配色，仅蓝色主色 + 语义色标签</li>
+  </ul>
+</div>
+
+<script>
+function switchDesign(design) {
+  document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+  event.target.classList.add('active');
+
+  document.getElementById('designA').style.display = design === 'A' ? 'flex' : 'none';
+  document.getElementById('designB').style.display = design === 'B' ? 'flex' : 'none';
+  document.getElementById('designC').style.display = design === 'C' ? 'flex' : 'none';
+
+  document.getElementById('annotationA').style.display = design === 'A' ? 'block' : 'none';
+  document.getElementById('annotationB').style.display = design === 'B' ? 'block' : 'none';
+  document.getElementById('annotationC').style.display = design === 'C' ? 'block' : 'none';
+}
+</script>
+
+</body>
+</html>

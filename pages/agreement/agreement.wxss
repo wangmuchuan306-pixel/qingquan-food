@@ -1,0 +1,36 @@
+.agreement-container {
+  padding: 40rpx;
+  background-color: #ffffff;
+  box-sizing: border-box;
+  min-height: 100vh;
+}
+
+.agreement-content .title {
+  font-size: 40rpx;
+  font-weight: bold;
+  color: #222;
+  text-align: center;
+  margin-bottom: 16rpx;
+}
+
+.agreement-content .date {
+  font-size: 24rpx;
+  color: #999;
+  text-align: center;
+  margin-bottom: 40rpx;
+}
+
+.agreement-content h2 {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #003B73;
+  margin: 40rpx 0 20rpx;
+}
+
+.agreement-content p {
+  font-size: 28rpx;
+  color: #444;
+  line-height: 1.8;
+  margin-bottom: 16rpx;
+  text-align: justify;
+}

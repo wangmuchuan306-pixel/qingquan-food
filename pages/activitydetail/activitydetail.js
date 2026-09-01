@@ -14,6 +14,10 @@ Page({
       id: this.data.act_id
     }
     app.apiPost(app.apiList.getact, data, (res) => {
+      // 未登录时静默跳过，浏览活动详情无需强制授权登录
+      if (res.status === 10011) {
+        return
+      }
       if (res.status == 1) {
         var activity = res.data
         // if(activity.is_can_buy == 0){
@@ -41,7 +45,7 @@ Page({
           this.getspecs(res.data.act_goods, 0)
         }
       }
-    })
+    }, { requireAuth: false })
   },
   getspecs(list, index) {
     if (index >= list.length) {
@@ -50,6 +54,10 @@ Page({
     app.apiPost(app.apiList.getspecs, {
       goods_id: list[index].goods_id
     }, (res) => {
+      // 未登录时静默跳过，浏览活动商品规格无需强制授权登录
+      if (res.status === 10011) {
+        return
+      }
       let activity = this.data.activity
       let goodslist = activity.act_goods
       let gIndex = goodslist.findIndex(v => v.goods_id == list[index].goods_id)
@@ -70,7 +78,7 @@ Page({
         activity
       })
       this.getspecs(list, index + 1)
-    })
+    }, { requireAuth: false })
   },
   //商品详情
   toinfo(e) {
@@ -155,12 +163,16 @@ Page({
   },
   userCenter() {
     app.apiPost(app.apiList.userCenter, {}, (res) => {
+      // 未登录时静默跳过，不强制跳转登录
+      if (res.status === 10011) {
+        return
+      }
       if (res.status == 1) {
         this.setData({
           userinfo: res.data
         })
       }
-    })
+    }, { requireAuth: false })
   },
 
   /**
@@ -184,18 +196,6 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow() {
-    if (!wx.getStorageSync('token_new')) {
-      wx.showToast({
-        title: '请先登录',
-        icon: 'none'
-      })
-      setTimeout(() => {
-        wx.navigateTo({
-          url: '/pages/login/login',
-        })
-      }, 1500)
-      return
-    }
     this.userCenter()
     this.getact()
   },

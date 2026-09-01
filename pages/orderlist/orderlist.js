@@ -295,12 +295,6 @@ Page({
     */
    onLoad: function (options) {
       console.log(options)
-      if (!app.get('token_new')) {
-         console.log('未登录')
-         wx.navigateTo({
-            url: '/pages/login/login',
-         })
-      }
       var that = this;
       that.setData({
          theme: 'light'
@@ -690,6 +684,15 @@ Page({
          // order_status: that.data.order_status
       }
       app.apiPost(app.apiList.userOrderList, data, (data) => {
+         // 未登录时静默展示空状态，不强制跳转登录
+         if (data.status === 10011) {
+            that.setData({
+               order: [],
+               dixian: '登录后查看订单'
+            })
+            wx.hideLoading()
+            return
+         }
          var order = data.data;
          // if (that.data.order_status == 2) {
          //   order = order.filter(item=>item.)
@@ -719,7 +722,7 @@ Page({
          setTimeout(() => {
             wx.hideLoading()
          }, 1000)
-      })
+      }, { requireAuth: false, showLoading: false })
 
    },
    //给团长/商家拨打电话

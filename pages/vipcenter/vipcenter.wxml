@@ -14,7 +14,7 @@
   <view style="font-size: 30rpx;margin: 30rpx;">请选择会员年卡类型</view>
   <scroll-view scroll-x style="width: 630rpx;margin-left: 30rpx;height: 240rpx;">
     <view style="width: max-content;display: flex;align-items: center;justify-content: space-between;">
-      <view wx:for="{{open}}" class="{{index==vipindex?'vipbox':'borderbox'}}" bind:tap="choosevip" data-index="{{index}}">
+      <view wx:for="{{open}}" wx:key="id" class="{{index==vipindex?'vipbox':'borderbox'}}" bind:tap="choosevip" data-index="{{index}}">
         <view style="text-align: center;">
           <view style="font-size: 30rpx;">{{item.vipname}}</view>
           <view style="font-size: 42rpx;font-weight: bold;">￥{{item.vip_price}}</view>

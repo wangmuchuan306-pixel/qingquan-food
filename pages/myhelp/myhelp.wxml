@@ -83,7 +83,7 @@
         <image src="/images/helplt.png" style="transform: rotate(180deg);"></image>
       </view>
       <view class="main_main_bot">
-        <block wx:for="{{neednum}}">
+        <block wx:for="{{neednum}}" wx:key="*this">
           <view class="main_main_bot_list">
             <image src="{{helpnum>=index+1?helpList[index].userInfo.headimg:'/images/helptx.png'}}" mode="aspectFill"></image>
             <view>{{helpnum>=index+1?'已助力':'待助力'}}</view>

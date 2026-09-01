@@ -11,7 +11,7 @@
   <view class="login-section">
     <view class="login-btn {{loading ? 'loading' : ''}}" bindtap="getUserProfile">
       <view class="login-btn-content" wx:if="{{!loading}}">
-        <image src="/images/wechat.png" class="wechat-icon" mode="aspectFit"></image>
+        <image src="https://icon.0315678.cn/fff_wx.png" class="wechat-icon" mode="aspectFit"></image>
         <text>微信一键登录</text>
       </view>
       <view class="loading-content" wx:if="{{loading}}">
@@ -27,10 +27,15 @@
   </view>
 
   <view class="policy-section">
-    <view class="policy-text">登录即表示同意</view>
-    <view class="policy-link" bindtap="goWebview">《用户协议》</view>
+    <view class="agree-checkbox" bindtap="toggleAgree">
+      <view class="checkbox {{agreed ? 'checked' : ''}}">
+        <text wx:if="{{agreed}}" class="check-mark">✓</text>
+      </view>
+    </view>
+    <view class="policy-text">我已阅读并同意</view>
+    <view class="policy-link" catchtap="goWebview">《用户协议》</view>
     <view class="policy-text">和</view>
-    <view class="policy-link" bindtap="goPrivacy">《隐私政策》</view>
+    <view class="policy-link" catchtap="goPrivacy">《隐私政策》</view>
   </view>
 </view>
 
@@ -39,7 +44,7 @@
     <view class="flex3" style="margin-bottom: 20rpx;">
       <view style="font-size: 36rpx;font-weight: bold;">完善资料</view>
       <view class="close-btn" bind:tap="closePopup">
-        <image src="/images/del.png" style="width: 40rpx;height: 40rpx;" mode="aspectFit" />
+        <image src="/images/del2.png" style="width: 40rpx;height: 40rpx;" mode="aspectFit" />
       </view>
     </view>
     <view style="font-size: 26rpx;color: #666;margin-bottom: 30rpx;">请完善以下信息以获得完整服务</view>

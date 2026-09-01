@@ -142,7 +142,7 @@
       </view>
       <scroll-view wx:if="{{czsonglist.length>0}}" class="money_scroll" scroll-x="true">
         <view class="money_body flex2">
-          <block wx:for="{{czsonglist}}">
+          <block wx:for="{{czsonglist}}" wx:key="id">
             <view class="money_item flex1" bind:tap="chooseMoney" data-id="{{item.id}}">
               <view class="item_c">充¥{{item.cz_pay}}</view>
               <view class="item_s">送{{item.song_pay}}元</view>

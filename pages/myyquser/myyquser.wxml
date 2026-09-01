@@ -1,5 +1,5 @@
 <!--pages/myyquser/myyquser.wxml-->
-<view style="width: 690rpx;margin: 30rpx;background-color: white;border-radius: 20rpx;display: flex;align-items: center;justify-content: space-between;" wx:for="{{userlist}}">
+<view style="width: 690rpx;margin: 30rpx;background-color: white;border-radius: 20rpx;display: flex;align-items: center;justify-content: space-between;" wx:for="{{userlist}}" wx:key="id">
   <view style="display: flex;align-items: center;margin: 30rpx;">
     <image src="{{item.headimg}}" style="width: 100rpx;height: 100rpx;border-radius: 100%;" mode="aspectFill"/>
     <view style="margin-left: 30rpx;">

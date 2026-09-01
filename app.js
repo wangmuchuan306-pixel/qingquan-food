@@ -398,10 +398,6 @@ App({
       dataType: 'json',
       header: header,
       success: (res) => {
-        if (showLoading) {
-          wx.hideLoading();
-        }
-        
         if (!res.data) {
           this.showError('服务器返回数据异常');
           return;
@@ -454,9 +450,6 @@ App({
         }
       },
       fail: (error) => {
-        if (showLoading) {
-          wx.hideLoading();
-        }
         console.error(`API请求失败: ${apiUrl}`, error);
         this.showError('网络请求失败，请稍后重试');
       },

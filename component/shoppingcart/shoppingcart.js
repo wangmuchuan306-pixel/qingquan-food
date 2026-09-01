@@ -5,7 +5,7 @@ Component({
      */
     properties: {
         userinfo: {
-            type: Object,
+            type: null,
             value: {}
         },
         tabBarHeight: {
@@ -80,6 +80,10 @@ Component({
             app.apiPost(app.apiList.usershoppingcart, {
                 store_id: 1
             }, (res) => {
+                // 未登录时静默跳过，不强制登录
+                if (res.status === 10011) {
+                    return
+                }
                 var selectIdlist = this.data.selectIdlist || []
                 var delcartsid = []
                 var cartlist = res.data
@@ -102,7 +106,7 @@ Component({
                     })
                     this.delnogoodcart(0)
                 }
-            })
+            }, { requireAuth: false })
         },
 
         getspecs(list, index) {
@@ -113,6 +117,10 @@ Component({
             app.apiPost(app.apiList.getspecs, {
                 goods_id: list[index].goods_id
             }, (res) => {
+                // 未登录时静默跳过，不强制登录
+                if (res.status === 10011) {
+                    return
+                }
                 let cartlist = this.data.cartlist
                 let gIndex = cartlist.findIndex(v => v.goods_id == list[index].goods_id && v.specs_id == list[index].specs_id)
                 cartlist[gIndex].specs = res.data.filter(v => v.specs_id == cartlist[gIndex].specs_id)
@@ -120,7 +128,7 @@ Component({
                     cartlist
                 })
                 this.getspecs(list, index + 1)
-            })
+            }, { requireAuth: false })
         },
 
         cartcount() {

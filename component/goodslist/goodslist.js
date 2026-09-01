@@ -10,7 +10,7 @@ Component({
       value: []
     },
     userinfo: {
-      type: Object,
+      type: null,
       value: {}
     }
   },

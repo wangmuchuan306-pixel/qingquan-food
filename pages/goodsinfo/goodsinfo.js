@@ -24,7 +24,10 @@ Page({
     zindextime: -1,
     notexNum: 0,
     qiniu: 'https://qiniu.0315678.cn/',
+    url: app.globalData.url,
+    veision: app.globalData.veision,
     specsindex: 0,
+    Detail: { content: '' },
   },
   notesValue(e) {
     var notesValue = e.detail.value
@@ -305,6 +308,10 @@ Page({
     app.apiPost(app.apiList.goodsDetail, {
       goods_id
     }, (res) => {
+      // 未登录时静默跳过，浏览商品详情无需强制授权登录
+      if (res.status === 10011) {
+        return
+      }
       if (res.data.zttype == 1) {
         that.setData({
           chooseStyle: 1,
@@ -328,12 +335,16 @@ Page({
         freight_info: res.data.goodsinfo.freight_info
       })
       this.getspecs([res.data], 0, 'Detail')
-    })
+    }, { requireAuth: false })
   },
   getspecs() {
     app.apiPost(app.apiList.getspecs, {
       goods_id: this.data.Detail.goods_id
     }, (res) => {
+      // 未登录时静默跳过，浏览商品规格无需强制授权登录
+      if (res.status === 10011) {
+        return
+      }
       let Detail = this.data.Detail
       const specs_pfmoney_min = Math.min(...res.data.map(item => Number(item['specs_pfmoney'])).filter(price => !isNaN(price)))
       const specs_tgmoney_min = Math.min(...res.data.map(item => Number(item['specs_tgmoney'])).filter(price => !isNaN(price)))
@@ -357,7 +368,7 @@ Page({
       this.setData({
         Detail
       })
-    })
+    }, { requireAuth: false })
   },
   showchospecs(e) {
     var that = this

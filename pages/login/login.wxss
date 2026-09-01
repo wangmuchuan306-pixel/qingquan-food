@@ -155,6 +155,34 @@ page {
   box-sizing: border-box;
 }
 
+.agree-checkbox {
+  display: flex;
+  align-items: center;
+  margin-right: 8rpx;
+}
+
+.checkbox {
+  width: 32rpx;
+  height: 32rpx;
+  border: 2rpx solid #ccc;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.checkbox.checked {
+  background-color: #003B73;
+  border-color: #003B73;
+}
+
+.check-mark {
+  font-size: 20rpx;
+  color: #fff;
+  line-height: 1;
+}
+
 .policy-text {
   font-size: 24rpx;
   color: #999;

@@ -105,7 +105,7 @@
       <image src="https://yhtapi.ehetuan.cn/summer/order_none.png" mode="widthFix"></image>
       <view style="color: #999;">还没有订单哦~</view>
     </view>
-    <view style="width: 690rpx;padding: 30rpx;display: flex;align-items: center;justify-content: space-between;" wx:for="{{nsgoodslist[gindex].orderuser}}">
+    <view style="width: 690rpx;padding: 30rpx;display: flex;align-items: center;justify-content: space-between;" wx:for="{{nsgoodslist[gindex].orderuser}}" wx:key="orderno">
       <view style="display: flex;align-items: center;" bind:tap="chooseorder" data-index="{{index}}">
         <radio value="" color="#003B73" checked="{{item.ischecked}}" />
         <image src="{{item.headimg}}" style="width: 140rpx;height: 140rpx;border-radius: 100%;background-color: #eee;margin-left: 10rpx;" mode="aspectFill" />
